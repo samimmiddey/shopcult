@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a,
+ul,
+li {
+  text-decoration: none;
+  color: inherit;
+  list-style: none;
+}
+
+.container {
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* New Primary Button */
+.primary-button {
+  background-image: linear-gradient(to right, rgb(132, 76, 196) 0%, rgb(90, 57, 161) 51%, rgb(132, 76, 196) 100%);
+  background-size: 200% auto;
+}
+
+/* New Gradient Background */
+.gradient-background {
+  background: #6441A5;
+  background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+  background: linear-gradient(to right, #2a0845, #6441A5);
+}
+
+.background {
+  background: url(./assets/background2.jpg) no-repeat center center/cover;
+  border-radius: 50px;
+}
+
+.image {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.brand-img {
+  height: 40px;
+  object-fit: contain;
+}
+
+.brand-img-small {
+  height: 30px;
+  object-fit: contain;
+}
+
+.brand {
+  transition: 300ms ease;
+}
+
+.brand:hover {
+  transform: scale(1.1);
+}
+
+/* Hero Test */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  min-height: 100px;
+  width: 250px;
+  position: absolute;
+  top: 15%;
+  left: 93%;
+  transform: translateX(-93%);
+  z-index: 50;
+  padding: 10px 1rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+/* Circle Icon Background */
+.half-circle {
+  height: 100px;
+  width: 50px;
+  background: rgb(190, 173, 226);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 150px 0 0 150px;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.circle-icon-background {
+  position: absolute;
+  left: 13px;
+  background: rgb(90, 57, 161);
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Home Category Card Style && Brand Card Style */
+.home-category-card::after,
+.brand-card-extra::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: '';
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.brand-card-extra::after {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.brand-card::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: '';
+  display: block;
+  opacity: 0.7;
+  width: 100%;
+  height: 100%;
+  transform: scale(2) translateX(-75%) translateY(-75%) rotate(-28deg);
+  transition: transform 3s cubic-bezier(0.2, 1, 0.3, 1);
+  background: #6441A5;
+  background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+  background: linear-gradient(to right, #2a0845, #6441A5);
+}
+
+.home-category-card-img,
+.brand-card-img {
+  transition: 300ms ease;
+}
+
+.home-category-card:hover .home-category-card-img,
+.brand-card:hover .brand-card-img {
+  transform: scale(1.2);
+}
+
+.brand-card:hover::after {
+  transform: scale(2) translateX(0) translateY(0) rotate(-28deg);
+}
+
+/* Active Navbar Class */
+.active-nav .nav-text {
+  color: rgb(132, 76, 196);
+}
+
+/* Active Drawer Nav Class */
+.active-drawer-nav .active-drawer-nav-item {
+  background-color: rgb(236, 228, 255);
+}
+
+.image-cover {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Banking Card */
+.banking-card {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.active-category {
+  background-color: rgb(236, 228, 255);
+  border-radius: 10px;
+  color: rgb(132, 76, 196);
+}
+
+/* Text Wrapping for 2 lines */
+.text-wrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  /* word-wrap: break-word; */
+  /* line-height: X;
+  max-height: X*N; */
+}
+
+/* ShopFilter Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.025);
+  height: 100px;
+}
+
+::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+/* Google Map Height & Width */
+.map-container {
+  height: 100%;
+  width: 100%;
+}
+
+/* Wishlist Dropdown Menu Description Text Wrapping For 1 Line */
+.wishlist-text-wrap,
+.searchbody-text-wrap,
+.cart-text-wrap,
+.dp-text-wrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 185px;
+  display: inline-block;
+  -webkit-line-clamp: 0;
+  /* display: -webkit-box;
+  -webkit-box-orient: vertical; */
+}
+
+/* Scale Product Details Image on Hover */
+.hover-img:hover {
+  transform: scale(1.1);
+}
+
+/* Testimonial Curve Style */
+.testimonial-curve {
+  position: relative;
+}
+
+.testimonial-curve::after {
+  position: absolute;
+  content: '';
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background-color: #6441A5;
+  clip-path: ellipse(228% 100% at 144.34% 100%);
+}

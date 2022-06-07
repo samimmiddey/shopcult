@@ -1,0 +1,42 @@
+.hero-swiper .swiper {
+   width: 100%;
+   height: 100%;
+}
+
+.hero-swiper {
+   position: relative;
+}
+
+.hero-swiper .hero-swiper-button-container {
+   position: absolute;
+   top: 50%;
+   transform: translateY(-50%);
+   left: 0;
+   z-index: 99;
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   padding: 0 1px;
+}
+
+.hero-swiper .hero-swiper-button {
+   color: #fff;
+   min-width: 0;
+   width: 38px;
+   height: 70px;
+   background: rgb(59, 38, 103);
+   background: linear-gradient(90deg, rgb(109, 69, 196) 0%, rgb(126, 66, 196) 100%);
+}
+
+.hero-swiper .prev {
+   border-radius: 0 5px 5px 0;
+}
+
+.hero-swiper .next {
+   border-radius: 5px 0 0 5px;
+}
+
+.hero-swiper .hero-small-swiper-button {
+   width: 28px;
+   height: 50px;
+}

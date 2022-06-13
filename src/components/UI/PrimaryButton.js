@@ -16,6 +16,10 @@ const PrimaryButton = ({ text }) => {
             "&:hover": {
                backgroundPosition: 'right center'
             },
+            [theme.breakpoints.down('xl')]: {
+               padding: '10px 1.5rem',
+               fontSize: '15px'
+            },
             [theme.breakpoints.down('lg')]: {
                padding: '0.5rem 1.25rem',
                borderRadius: '5px',

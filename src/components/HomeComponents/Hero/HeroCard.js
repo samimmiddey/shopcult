@@ -21,11 +21,11 @@ const HeroCard = ({ image }) => {
             position: 'relative',
             background: `url(${image}) no-repeat center center/cover`,
             [theme.breakpoints.down('xl')]: {
-               height: '600px',
-            },
-            [theme.breakpoints.down('lg')]: {
                height: '550px',
                borderRadius: '20px'
+            },
+            [theme.breakpoints.down('lg')]: {
+               height: '500px',
             },
             [theme.breakpoints.down('md')]: {
                height: '400px'
@@ -65,11 +65,11 @@ const HeroCard = ({ image }) => {
                         lineHeight: '1.4',
                         color: 'rgb(196, 174, 243)',
                         [theme.breakpoints.down('xl')]: {
-                           fontSize: '3rem',
+                           fontSize: '2.5rem',
                            marginRight: '1rem'
                         },
                         [theme.breakpoints.down('lg')]: {
-                           fontSize: '2.5rem',
+                           fontSize: '2rem',
                         },
                         [theme.breakpoints.down('md')]: {
                            fontSize: '1.5rem',
@@ -90,6 +90,10 @@ const HeroCard = ({ image }) => {
                         color: 'rgb(187, 168, 228)',
                         marginRight: '4rem',
                         fontSize: '18px',
+                        [theme.breakpoints.down('xl')]: {
+                           lineHeight: 1.6,
+                           fontSize: '17px'
+                        },
                         [theme.breakpoints.down('lg')]: {
                            lineHeight: 1.5,
                            marginRight: '2rem'
@@ -139,6 +143,10 @@ const HeroCard = ({ image }) => {
                               "&:hover": {
                                  borderColor: 'rgb(155, 102, 216)'
                               },
+                              [theme.breakpoints.down('xl')]: {
+                                 padding: '10px 1.5rem',
+                                 fontSize: '15px',
+                              },
                               [theme.breakpoints.down('lg')]: {
                                  padding: '0.5rem 1.25rem',
                                  borderRadius: '5px'
@@ -177,7 +185,24 @@ const HeroCard = ({ image }) => {
                      })}>
                         <EmojiEventsIcon sx={{ color: 'rgb(187, 168, 228)' }} />
                         <Divider orientation='vertical' sx={{ height: '30px', backgroundColor: 'rgb(187, 168, 228)' }} />
-                        <p style={{ fontSize: `${mdWidth ? '16px' : '18px'}`, lineHeight: '1.7', fontWeight: 300, color: 'rgb(187, 168, 228)' }}>Award winning 24/7 customer service</p>
+                        <Typography
+                           sx={theme => ({
+                              fontSize: '18px',
+                              fontWeight: 300,
+                              color: 'rgb(187, 168, 228)',
+                              [theme.breakpoints.down('xl')]: {
+                                 fontSize: '17px'
+                              },
+                              [theme.breakpoints.down('md')]: {
+                                 fontSize: '16px'
+                              },
+                              [theme.breakpoints.down('sm')]: {
+                                 fontSize: '15px'
+                              },
+                           })}
+                        >
+                           Award winning 24/7 customer service
+                        </Typography>
                      </Box>
                      {!xlWidth && <RatingCard />}
                   </Box>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, styled } from '@mui/material';
+import { Button, styled, useMediaQuery, useTheme } from '@mui/material';
 import { Box, Grid, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import CustomInput from '../CustomFields/CustomInput';
@@ -9,7 +9,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchCountries, fetchSubdivisions, fetchOptions } from '../../../../store/fetch-products';
 import CustomSelect from '../CustomFields/CustomSelect';
 import { checkoutActions } from '../../../../store/checkout-slice';
-import ProgressBar from '../../../UI/ProgressBar';
 import TransparentProgress from '../../../UI/TransparentProgress';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -29,8 +28,7 @@ const defaultValues = {
    city: '',
    zip: '',
    selectCountry: '',
-   selectSubdivision: '',
-   selectOption: ''
+   selectSubdivision: ''
 }
 
 const AddressForm = ({ next }) => {
@@ -45,12 +43,16 @@ const AddressForm = ({ next }) => {
    const dispatch = useDispatch();
 
    const isLoading = useSelector(state => state.checkout.checkoutProgress);
+   const isCountryLoading = useSelector(state => state.checkout.checkoutCountryProgress);
    const isSubdivisionLoading = useSelector(state => state.checkout.checkoutSubdivisionProgress);
    const isOptionLoading = useSelector(state => state.checkout.checkoutOptionProgress);
    const cart = useSelector(state => state.cart.cart);
    const incomingOrder = useSelector(state => state.checkout.incomingOrder);
 
    const history = useHistory();
+
+   const theme = useTheme();
+   const width = useMediaQuery(theme.breakpoints.down(700));
 
    const validationSchema = Yup.object().shape({
       firstName: Yup.string()
@@ -83,9 +85,7 @@ const AddressForm = ({ next }) => {
       selectCountry: Yup.string()
          .required('Country is required'),
       selectSubdivision: Yup.string()
-         .required('Subdivision is required'),
-      selectOption: Yup.string()
-         .required('Option is required')
+         .required('Subdivision is required')
    });
 
    const {
@@ -130,10 +130,11 @@ const AddressForm = ({ next }) => {
       }
    }, [cart, history, incomingOrder]);
 
+   const loading = isLoading || isCountryLoading || isSubdivisionLoading || isOptionLoading;
+
    return (
       <>
-         {isLoading && <ProgressBar />}
-         {!isLoading && < TransparentProgress open={isSubdivisionLoading || isOptionLoading} />}
+         <TransparentProgress open={loading} />
          <Box sx={{ marginTop: '2.5rem' }}>
             <Typography
                variant='h6'
@@ -175,14 +176,59 @@ const AddressForm = ({ next }) => {
                      />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                     <CustomSelect
-                        title='Option'
-                        name='selectOption'
-                        value={isOptionLoading ? '' : option}
-                        items={options}
-                        register={register}
-                        errors={errors}
-                     />
+                     <Box
+                        sx={{
+                           width: '100%',
+                           display: 'flex',
+                           alignItems: 'center',
+                           justifyContent: 'flex-start',
+                           columnGap: '10px',
+                           marginTop: '10px'
+                        }}
+                     >
+                        <Typography
+                           sx={theme => ({
+                              color: 'text.secondary',
+                              fontWeight: 600,
+                              fontSize: '14px',
+                              [theme.breakpoints.down(700)]: {
+                                 display: 'none'
+                              }
+                           })}
+                        >
+                           Shipping<span style={{ marginLeft: '10px' }}>-</span>
+                        </Typography>
+                        <Box
+                           sx={theme => ({
+                              height: '40px',
+                              maxWidth: '100%',
+                              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              padding: '0 1rem',
+                              borderRadius: '5px',
+                              color: 'text.secondary',
+                              fontSize: '14px',
+                              fontWeight: 500,
+                              [theme.breakpoints.down(700)]: {
+                                 width: '100%',
+                                 justifyContent: 'flex-start'
+                              }
+                           })}
+                        >
+                           {
+                              width ? (
+                                 isOptionLoading ? 'Loading...' :
+                                    'Shipping - ' + options[0].label.substring(options[0].label.indexOf('$'))
+                              )
+                                 : (
+                                    isOptionLoading ? 'Loading...' :
+                                       options[0].label
+                                 )
+                           }
+                        </Box>
+                     </Box>
                   </Grid>
                </Grid>
                <Box
@@ -211,7 +257,7 @@ const AddressForm = ({ next }) => {
                      disableElevation
                      type='submit'
                      onClick={handleSubmit((data) => {
-                        next({ ...data });
+                        next({ ...data, selectOption: option });
                         reset({ ...defaultValues });
                         dispatch(checkoutActions.setShippingCountry(''));
                      })}

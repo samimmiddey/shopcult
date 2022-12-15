@@ -9,8 +9,9 @@ const initialState = {
    shippingOption: '',
    checkoutToken: '',
    checkoutProgress: true,
-   checkoutSubdivisionProgress: false,
-   checkoutOptionProgress: false,
+   checkoutCountryProgress: true,
+   checkoutSubdivisionProgress: true,
+   checkoutOptionProgress: true,
    incomingOrder: {},
    orderError: '',
    discountProgress: false
@@ -43,6 +44,9 @@ const checkoutSlice = createSlice({
       },
       setCheckoutProgress(state, action) {
          state.checkoutProgress = action.payload;
+      },
+      setCheckoutCountryProgress(state, action) {
+         state.checkoutCountryProgress = action.payload;
       },
       setCheckoutSubdivisionProgress(state, action) {
          state.checkoutSubdivisionProgress = action.payload;

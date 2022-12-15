@@ -71,7 +71,8 @@ const ProductDetails = () => {
    const [itemAmount, setItemAmount] = useState(1);
    const products = useSelector(state => state.products.products);
    const wishlistItems = useSelector(state => state.wishlist.wishlistItems);
-   const buttonLoading = useSelector(state => state.ui.buttonProgress);
+   const buttonLoading = useSelector(state => state.ui.productDetailsProgress);
+   const currentProduct = useSelector(state => state.ui.currentProduct);
    const [cartButton, setCartButton] = useState(false);
    const [buyButton, setBuyButton] = useState(false);
    const dispatch = useDispatch();
@@ -267,9 +268,13 @@ const ProductDetails = () => {
                      <Divider sx={{ margin: '1rem' }} />
                      <ResponsiveActions>
                         <ActionButton
+                           disabled={cartButton && buttonLoading && currentProduct === product.id}
                            onClick={() => {
-                              setCartButton(true);
-                              !buttonLoading && dispatch(addToCart(product.id, itemAmount));
+                              if (!buttonLoading) {
+                                 setCartButton(true);
+                                 dispatch(uiActions.setCurrentProduct(product.id));
+                                 dispatch(addToCart(product.id, itemAmount, 'product-details'));
+                              }
                            }}
                            disableElevation
                            color='secondary'
@@ -277,20 +282,24 @@ const ProductDetails = () => {
                         >
                            {cartButton && <ProgressButton loading={cartButton} />}
                            {!cartButton && <ShoppingCartOutlinedIcon sx={{ marginRight: '8px' }} />}
-                           {!cartButton && <>Add To Cart</>}
+                           {!cartButton && 'Add To Cart'}
                         </ActionButton>
                         <ActionButton
+                           disabled={buyButton && buttonLoading && currentProduct === product.id}
                            onClick={async () => {
-                              setBuyButton(true);
-                              !buttonLoading && await dispatch(addToCart(product.id, itemAmount));
-                              history.push('/cart');
+                              if (!buttonLoading) {
+                                 setBuyButton(true);
+                                 dispatch(uiActions.setCurrentProduct(product.id));
+                                 await dispatch(addToCart(product.id, itemAmount, 'product-details'));
+                                 history.push('/cart');
+                              }
                            }}
                            disableElevation
                            variant='contained'
                         >
                            {buyButton && <ProgressButton loading={buyButton} />}
                            {!buyButton && <BoltIcon sx={{ marginRight: '8px' }} />}
-                           {!buyButton && <>Buy Now</>}
+                           {!buyButton && 'Buy Now'}
                         </ActionButton>
                      </ResponsiveActions>
                   </div>

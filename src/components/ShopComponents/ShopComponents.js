@@ -6,7 +6,7 @@ import { Box, Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import FilterBottomModal from '../UI/FilterBottomModal';
 import { useTheme, useMediaQuery } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import CustomPagination from '../UI/CustomPagination';
 import ProgressBar from '../UI/ProgressBar';
 import search from '../../assets/search.svg';
@@ -31,7 +31,12 @@ const ShopComponents = () => {
    const sortProducts = useSelector(state => state.ui.sortProducts);
    const selectedItems = useSelector(state => state.ui.selectedItems);
    const searchedProducts = useSelector(state => state.ui.searchedProducts);
+   const allCategories = useSelector(state => state.products.categories);
    const [isLoading, setIsLoading] = useState(true);
+
+   const history = useHistory();
+
+   const { pathname } = useLocation();
 
    const { id } = useParams();
    const category = id.charAt(0).toUpperCase() + id.slice(1);
@@ -66,13 +71,10 @@ const ShopComponents = () => {
          shopProducts = HighToLowProducts;
          break;
       default:
-         shopProducts = category !== 'All' && selectedProducts.length < 1 && category !== 'Search' ?
-            categoryWiseProducts :
-            selectedProducts.length >= 1 && category !== 'Search' ?
-               selectedProducts :
-               searchedProducts.length >= 1 && category === 'Search' ?
-                  searchedProducts :
-                  products;
+         shopProducts = category !== 'All' && selectedProducts.length < 1 && !pathname.startsWith('/search') ?
+            categoryWiseProducts : selectedProducts.length >= 1 && !pathname.startsWith('/search') ?
+               selectedProducts : searchedProducts.length >= 1 && pathname.startsWith('/search') ?
+                  searchedProducts : products;
    }
 
    // Pagination Logic
@@ -103,14 +105,23 @@ const ShopComponents = () => {
       }
    }, [pageNumbers, pagCurrPage]);
 
+   // Set the loading state false
    useEffect(() => {
       if (products.length) {
          setIsLoading(false);
       }
    }, [products]);
 
+   // Redirect if category is invalid
+   useEffect(() => {
+      const categoriesArray = allCategories.map(item => item.slug);
+      if (pathname.startsWith('/shop') && !['all', ...categoriesArray].includes(id)) {
+         history.replace('/');
+      }
+   }, [allCategories, history, id, pathname]);
+
    // Checking if searched products is empty
-   if (id === 'search' && searchedProducts.length < 1) {
+   if (pathname.startsWith('/search') && searchedProducts.length < 1) {
       return (
          <>
             {loading && <ProgressBar />}

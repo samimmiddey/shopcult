@@ -19,7 +19,7 @@ import ProgressButton from './ProgressButton';
 
 const HomeCategoryCard = ({ item, index, path }) => {
    const wishlistItems = useSelector(state => state.wishlist.wishlistItems);
-   const buttonLoading = useSelector(state => state.ui.buttonProgress);
+   const buttonLoading = useSelector(state => state.ui.categoryButtonProgress);
    const currentProduct = useSelector(state => state.ui.currentProduct);
    const dispatch = useDispatch();
 
@@ -93,10 +93,16 @@ const HomeCategoryCard = ({ item, index, path }) => {
                </Box>
             </Card>
          </Link>
-         <Button size="small" variant='contained' disableElevation
+         <Button
+            size="small"
+            variant='contained'
+            disableElevation
+            // disabled={buttonLoading && currentProduct === item.id}
             onClick={() => {
-               !buttonLoading && dispatch(addToCart(item.id, 1));
-               !buttonLoading && dispatch(uiActions.setCurrentProduct(item.id));
+               if (!buttonLoading) {
+                  dispatch(addToCart(item.id, 1, 'category-product-card'));
+                  dispatch(uiActions.setCurrentProduct(item.id));
+               }
             }}
             sx={theme => ({
                position: 'absolute',
@@ -109,10 +115,9 @@ const HomeCategoryCard = ({ item, index, path }) => {
                minWidth: 0,
                height: lgWidth ? '31px' : '36px',
                width: lgWidth ? '44px' : '54px',
-               // padding: `${lgWidth ? '5px 12px' : '6px 15px'}`,
-               backgroundColor: 'rgb(90, 57, 161)',
+               backgroundColor: currentProduct === item.id && buttonLoading ? '#bdbdbd' : 'rgb(90, 57, 161)',
                '&:hover': {
-                  backgroundColor: 'rgb(63, 40, 113)'
+                  backgroundColor: currentProduct === item.id && buttonLoading ? '#bdbdbd' : 'rgb(63, 40, 113)'
                },
                [theme.breakpoints.down(450)]: {
                   width: 'calc(100% - 24px)',

@@ -5,7 +5,6 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
-import SearchBar from '../UI/SearchBar';
 import Box from '@mui/material/Box';
 import SideDrawer from './Drawer';
 import Badge from '@mui/material/Badge';
@@ -13,13 +12,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../store/ui-slice';
 import { styled } from '@mui/system';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import AuthButtons from '../UI/AuthButtons';
-import { ListItemButton, Tooltip, useTheme } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
+import AuthButtons from './AuthButtons';
+import { Backdrop, ListItemButton, Tooltip } from '@mui/material';
 import { NavLink, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import WishList from '../UI/WishList';
 import { useLocation } from 'react-router-dom';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import SearchIcon from '../../assets/search-icon.png';
+import SearchComponents from './SearchBar/SearchComponents';
 
 const menuItems = ['Home', 'About', 'Shop', 'Brands', 'Help'];
 
@@ -51,7 +51,7 @@ const Menu = styled('div')(({ theme }) => ({
       width: '100%',
    },
    [theme.breakpoints.down('lg')]: {
-      columnGap: '1rem'
+      columnGap: '1.5rem'
    },
    [theme.breakpoints.down('sm')]: {
       columnGap: 0
@@ -61,9 +61,9 @@ const Menu = styled('div')(({ theme }) => ({
 const MenuList = styled('div')(({ theme }) => ({
    display: 'flex',
    alignItems: 'center',
-   columnGap: '2.5rem',
+   columnGap: '1.5rem',
    [theme.breakpoints.down('xl')]: {
-      columnGap: '1.5rem'
+      columnGap: '1rem'
    },
    [theme.breakpoints.down('sm')]: {
       columnGap: '10px',
@@ -73,9 +73,10 @@ const MenuList = styled('div')(({ theme }) => ({
 const List = styled('div')(({ theme }) => ({
    display: 'flex',
    alignItems: 'center',
-   columnGap: '2rem',
+   columnGap: '2.5rem',
+   marginLeft: '8px',
    [theme.breakpoints.down('xl')]: {
-      columnGap: '1rem'
+      columnGap: '1.25rem'
    },
    [theme.breakpoints.down(1300)]: {
       display: 'none'
@@ -85,36 +86,46 @@ const List = styled('div')(({ theme }) => ({
 const NavButtons = styled('div')(({ theme }) => ({
    display: 'flex',
    alignItems: 'center',
-   columnGap: '2.5rem',
+   columnGap: '2rem',
    [theme.breakpoints.down('xl')]: {
       columnGap: '1.5rem'
    },
-   [theme.breakpoints.down(1300)]: {
-      columnGap: '1.5rem'
+   [theme.breakpoints.down('lg')]: {
+      columnGap: '1.25rem'
+   },
+   [theme.breakpoints.down('md')]: {
+      columnGap: '1rem'
    },
    [theme.breakpoints.down('sm')]: {
-      columnGap: '10px',
-      marginLeft: '10px',
+      columnGap: '0.5rem'
    }
 }));
 
 const CartButtons = styled('div')(({ theme }) => ({
    display: 'flex',
    alignItems: 'center',
-   columnGap: '16px',
+   columnGap: '20px',
+   [theme.breakpoints.down('lg')]: {
+      columnGap: '16px'
+   },
+   [theme.breakpoints.down('md')]: {
+      columnGap: '10px'
+   },
+   [theme.breakpoints.down('sm')]: {
+      columnGap: '2px'
+   }
 }));
 
 const Navbar = () => {
    const [scrolled, setScrolled] = useState(false);
+   const inputFocus = useSelector(state => state.ui.inputFocus);
    const totalItems = useSelector(state => state.cart.totalAmount);
+   const wishlistItemsAmount = useSelector(state => state.wishlist.totalAmount);
    const dispatch = useDispatch();
    const { id } = useParams();
 
    const { pathname } = useLocation();
    const route = pathname === '/signup' || pathname === '/login';
-
-   const theme = useTheme();
-   const mdWidth = useMediaQuery(theme.breakpoints.down('md'));
 
    const toggleDrawer = (event) => {
       if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -169,21 +180,30 @@ const Navbar = () => {
                      </IconButton>
                      <MenuItems>
                         <Link to='/'>
-                           <Box sx={theme => ({
-                              display: 'flex',
-                              alignItems: 'center',
-                              columnGap: '5px',
-                              [theme.breakpoints.down('sm')]: {
-                                 display: 'none'
-                              }
-                           })}>
-                              <ShoppingBagOutlinedIcon sx={{ color: 'rgb(132, 76, 196)' }} />
+                           <Box
+                              sx={theme => ({
+                                 display: 'flex',
+                                 alignItems: 'center',
+                                 columnGap: '5px',
+                                 [theme.breakpoints.down(350)]: {
+                                    display: 'none'
+                                 }
+                              })}
+                           >
+                              <ShoppingBagOutlinedIcon
+                                 sx={theme => ({
+                                    color: 'rgb(132, 76, 196)',
+                                    [theme.breakpoints.down('sm')]: {
+                                       display: 'none'
+                                    }
+                                 })}
+                              />
                               <Typography variant='h6' sx={{ fontWeight: 700 }}><span style={{ color: 'rgb(132, 76, 196)' }}>shop</span><span style={{ color: 'rgb(90, 57, 161)' }}>cult</span></Typography>
                            </Box>
                         </Link>
                         {/* Search Bar & Menu List */}
                         <Menu>
-                           <SearchBar />
+                           <SearchComponents />
                            <MenuList>
                               <List>
                                  {menuItems.map((item, index) => (
@@ -211,6 +231,7 @@ const Navbar = () => {
                                              disableRipple
                                              sx={{
                                                 borderRadius: '5px',
+                                                padding: '6px 10px',
                                                 '&:hover': {
                                                    backgroundColor: 'transparent'
                                                 },
@@ -234,18 +255,60 @@ const Navbar = () => {
                               {/* Cart & Buttons */}
                               <NavButtons>
                                  <CartButtons>
-                                    <WishList />
-                                    <Link to='/cart'>
-                                       <Tooltip title="Cart" arrow>
-                                          <IconButton color='inherit'>
-                                             <Badge color='secondary' badgeContent={totalItems} showZero={true}>
-                                                <ShoppingCartOutlinedIcon sx={{ color: 'text.secondary' }} />
-                                             </Badge>
-                                          </IconButton>
-                                       </Tooltip>
-                                    </Link>
+                                    <Tooltip
+                                       title='Search'
+                                       arrow
+                                       sx={theme => ({
+                                          [theme.breakpoints.up('md')]: {
+                                             display: 'none'
+                                          }
+                                       })}
+                                    >
+                                       <IconButton
+                                          color='inherit'
+                                          onClick={() => dispatch(uiActions.setActiveSearch(true))}
+                                       >
+                                          <img
+                                             src={SearchIcon} alt='Search'
+                                             style={{
+                                                height: '24px',
+                                                width: '24px'
+                                             }}
+                                          />
+                                       </IconButton>
+                                    </Tooltip>
+                                    {
+                                       [
+                                          {
+                                             path: '/wishlist',
+                                             tooltipText: 'Wishlist',
+                                             badgeContentAmount: wishlistItemsAmount,
+                                             icon: <FavoriteBorderOutlinedIcon sx={{ color: 'text.secondary' }} />
+                                          },
+                                          {
+                                             path: '/cart',
+                                             tooltipText: 'Cart',
+                                             badgeContentAmount: totalItems,
+                                             icon: <ShoppingCartOutlinedIcon sx={{ color: 'text.secondary' }} />
+                                          }
+                                       ].map((item, index) => (
+                                          <Link to={item.path} key={index}>
+                                             <Tooltip title={item.tooltipText} arrow>
+                                                <IconButton color='inherit'>
+                                                   <Badge
+                                                      color='secondary'
+                                                      badgeContent={item.badgeContentAmount}
+                                                   // showZero={true}
+                                                   >
+                                                      {item.icon}
+                                                   </Badge>
+                                                </IconButton>
+                                             </Tooltip>
+                                          </Link>
+                                       ))
+                                    }
                                  </CartButtons>
-                                 {!mdWidth && <AuthButtons />}
+                                 <AuthButtons />
                               </NavButtons>
                            </MenuList>
                         </Menu>
@@ -255,6 +318,10 @@ const Navbar = () => {
                <SideDrawer menuItems={menuItems} />
             </>
          }
+         <Backdrop
+            open={inputFocus}
+            sx={{ zIndex: 1001 }}
+         />
       </>
    );
 }

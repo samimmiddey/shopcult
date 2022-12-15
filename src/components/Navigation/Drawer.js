@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { styled, IconButton, Box, Drawer, List, ListItemIcon, ListItemText, ListItemButton, Divider } from '@mui/material';
+import { styled, IconButton, Box, Drawer, List, ListItemIcon, ListItemText, ListItemButton } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { uiActions } from '../../store/ui-slice';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -10,9 +10,8 @@ import ShopOutlinedIcon from '@mui/icons-material/ShopOutlined';
 import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import AuthButtons from '../UI/AuthButtons';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { NavLink, useParams } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 
@@ -54,19 +53,24 @@ const SideDrawer = ({ menuItems }) => {
                open={showMenu}
                onClose={() => dispatch(uiActions.toggleMenu())}
             >
-               <DrawerHeader>
-                  <div style={{
-                     display: 'flex',
-                     alignItems: 'center',
-                     columnGap: '5px',
-                  }}>
-                     <ShoppingBagOutlinedIcon sx={{ color: 'rgb(132, 76, 196)' }} />
-                     <Typography variant='h6' sx={{ fontWeight: 700 }}><span style={{ color: 'rgb(132, 76, 196)' }}>shop</span><span style={{ color: 'rgb(90, 57, 161)' }}>cult</span></Typography>
-                  </div>
-                  <IconButton onClick={() => dispatch(uiActions.toggleMenu())}>
-                     <ChevronLeftIcon />
-                  </IconButton>
-               </DrawerHeader>
+               <Link
+                  to='/'
+                  onClick={() => dispatch(uiActions.toggleMenu())}
+               >
+                  <DrawerHeader>
+                     <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        columnGap: '5px',
+                     }}>
+                        <ShoppingBagOutlinedIcon sx={{ color: 'rgb(132, 76, 196)' }} />
+                        <Typography variant='h6' sx={{ fontWeight: 700 }}><span style={{ color: 'rgb(132, 76, 196)' }}>shop</span><span style={{ color: 'rgb(90, 57, 161)' }}>cult</span></Typography>
+                     </div>
+                     <IconButton onClick={() => dispatch(uiActions.toggleMenu())}>
+                        <ChevronLeftIcon />
+                     </IconButton>
+                  </DrawerHeader>
+               </Link>
                <Box
                   sx={{ width: 250, marginTop: '1rem' }}
                   role="presentation"
@@ -146,8 +150,6 @@ const SideDrawer = ({ menuItems }) => {
                            </Fragment>
                         )
                      })}
-                     {mdWidth && <Divider />}
-                     {mdWidth && <AuthButtons />}
                   </List>
                </Box>
             </Drawer>

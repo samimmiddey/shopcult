@@ -234,8 +234,6 @@ li {
 }
 
 /* Wishlist Dropdown Menu Description Text Wrapping For 1 Line */
-.wishlist-text-wrap,
-.searchbody-text-wrap,
 .cart-text-wrap,
 .dp-text-wrap {
   overflow: hidden;
@@ -246,6 +244,15 @@ li {
   -webkit-line-clamp: 0;
   /* display: -webkit-box;
   -webkit-box-orient: vertical; */
+}
+
+.wishlist-text-wrap,
+.profile-text-wrap,
+.search-text-wrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
 }
 
 /* Scale Product Details Image on Hover */

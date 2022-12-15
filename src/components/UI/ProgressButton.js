@@ -13,7 +13,7 @@ const ProgressButton = ({ loading, type }) => {
             <CircularProgress
                variant={loading ? 'indeterminate' : 'determinate'}
                sx={{ position: 'absolute' }}
-               size={smWidth ? '22px' : '28px'}
+               size={smWidth ? '20px' : '25px'}
                color="inherit"
             />
          }

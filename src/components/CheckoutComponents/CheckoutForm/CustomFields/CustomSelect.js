@@ -18,23 +18,25 @@ const CustomSelect = ({ title, name, value, items, register, errors }) => {
             label={`Shipping ${title}`}
             fullWidth
             name={name}
-            {...register(name)}
-            error={errors[name] ? true : false}
-            onChange={e => {
-               switch (title) {
-                  case 'Country':
-                     dispatch(checkoutActions.setShippingCountry(e.target.value));
-                     break;
-                  case 'Subdivision':
-                     dispatch(checkoutActions.setShippingSubdivision(e.target.value));
-                     break;
-                  case 'Option':
-                     dispatch(checkoutActions.setShippingOption(e.target.value));
-                     break;
-                  default:
-                     console.log('Hello World');
+            {...register(name, {
+               required: true,
+               onChange: e => {
+                  switch (title) {
+                     case 'Country':
+                        dispatch(checkoutActions.setShippingCountry(e.target.value));
+                        break;
+                     case 'Subdivision':
+                        dispatch(checkoutActions.setShippingSubdivision(e.target.value));
+                        break;
+                     case 'Option':
+                        dispatch(checkoutActions.setShippingOption(e.target.value));
+                        break;
+                     default:
+                        console.log('Hello World');
+                  }
                }
-            }}
+            })}
+            error={errors[name] ? true : false}
             MenuProps={{ PaperProps: { sx: { maxHeight: mdWidth ? '300px' : '500px' } } }}
          >
             {items.map((country, index) => (

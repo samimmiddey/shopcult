@@ -1,12 +1,12 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import ProductCard from '../../UI/ProductCard';
 import { useTheme, useMediaQuery } from '@mui/material';
 import CustomPagination from '../../UI/CustomPagination';
 import { Link } from 'react-router-dom';
 import wishlist from '../../../assets/emptywishlist.svg';
 import ProgressBar from '../../UI/ProgressBar';
+import WishlistItems from '../../UI/WishListItems';
 
 const WishlistProducts = () => {
    const loading = useSelector(state => state.ui.navbarProgress);
@@ -15,7 +15,6 @@ const WishlistProducts = () => {
    const wishlistProducts = products.filter(product => wishlistItems.includes(product.id));
 
    const theme = useTheme();
-   const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
    const xlUpWidth = useMediaQuery(theme.breakpoints.up('xl'));
 
    // Pagination Logic
@@ -41,24 +40,34 @@ const WishlistProducts = () => {
       <Box sx={{ marginTop: '2rem' }}>
          {
             currentProducts.length >= 1 &&
-            <>
-               <Grid spacing={smWidth ? 1 : 2} container>
+            <Box
+               sx={{
+                  maxWidth: '1024px',
+                  margin: '0 auto',
+               }}
+            >
+               <Box
+                  sx={{
+                     width: '100%',
+                     display: 'flex',
+                     flexDirection: 'column',
+                     rowGap: '1rem'
+                  }}
+               >
                   {currentProducts.map((product, index) => (
-                     <Grid key={index} item xs={12} xm={6} sm={6} md={4} lg={3}>
-                        <ProductCard
-                           product={product}
-                           index={index}
-                           path={`/home/${product.id}`}
-                        />
-                     </Grid>
+                     <WishlistItems
+                        key={index}
+                        product={product}
+                        path={`/home/${product.id}`}
+                     />
                   ))}
-               </Grid>
+               </Box>
                <CustomPagination
                   pageNumbers={pageNumbers}
                   paginate={paginate}
                   currPage={currentPage}
                />
-            </>
+            </Box>
          }
          {currentProducts.length < 1 &&
             <>

@@ -9,8 +9,6 @@ import AddressForm from './AddressForm/AddressForm';
 import PaymentForm from './PaymentForm/PaymentForm';
 import { fetchGenerateToken } from '../../../store/fetch-products';
 import { useSelector, useDispatch } from 'react-redux';
-import { placeOrder } from '../../../store/send-data';
-import { useHistory } from 'react-router-dom';
 
 const steps = ['Shipping Address', 'Payment Details'];
 const formTitle = ['Checkout Form', 'Payment'];
@@ -20,7 +18,6 @@ const CheckoutForm = () => {
    const [shippingData, setShippingData] = useState({});
    const cart = useSelector(state => state.cart.cart);
    const dispatch = useDispatch();
-   const history = useHistory();
 
    // Generate Checkout Token
    useEffect(() => {
@@ -37,12 +34,6 @@ const CheckoutForm = () => {
       nextStep();
    }
 
-   // Submit Order
-   const handleSubmitOrder = async (checkoutTokenID, newOrder, allOrderedItems, UID) => {
-      await dispatch(placeOrder(checkoutTokenID, newOrder, allOrderedItems, UID));
-      history.replace('/confirmation');
-   }
-
    const Form = () => activeStep === 0 ?
       <AddressForm
          next={next}
@@ -50,7 +41,6 @@ const CheckoutForm = () => {
       <PaymentForm
          backStep={backStep}
          shippingData={shippingData}
-         handleSubmitOrder={handleSubmitOrder}
       />;
 
    return (

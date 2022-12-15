@@ -73,8 +73,11 @@ export const fetchGenerateToken = (cartID, type) => {
    return async (dispatch) => {
       const fetchToken = async () => {
          dispatch(checkoutActions.setCheckoutProgress(true));
+
          const token = await commerce.checkout.generateToken(cartID, type);
          dispatch(checkoutActions.setCheckoutToken(token));
+
+         dispatch(checkoutActions.setCheckoutProgress(false));
       }
 
       try {
@@ -90,16 +93,20 @@ export const fetchGenerateToken = (cartID, type) => {
 export const fetchCountries = (checkoutTokenID) => {
    return async (dispatch) => {
       const fetchShippingCountries = async () => {
+         dispatch(checkoutActions.setCheckoutCountryProgress(true));
+
          const { countries } = await commerce.services.localeListShippingCountries(checkoutTokenID);
          const shippingCountries = Object.entries(countries).map(([code, name]) => ({ id: code, label: name }));
          dispatch(checkoutActions.setShippingCountries(shippingCountries));
          dispatch(checkoutActions.setShippingCountry(shippingCountries[0].id));
+
+         dispatch(checkoutActions.setCheckoutCountryProgress(false));
       }
 
       try {
          await fetchShippingCountries();
       } catch (error) {
-         dispatch(checkoutActions.setCheckoutProgress(false));
+         dispatch(checkoutActions.setCheckoutCountryProgress(false));
          dispatch(errorActions.setCheckoutError(error.data.error.message));
       }
    }
@@ -110,17 +117,18 @@ export const fetchSubdivisions = (countryCode) => {
    return async (dispatch) => {
       const fetchShippingSubdivisions = async () => {
          dispatch(checkoutActions.setCheckoutSubdivisionProgress(true));
+
          const { subdivisions } = await commerce.services.localeListSubdivisions(countryCode);
          const shippingSubdivisions = Object.entries(subdivisions).map(([code, name]) => ({ id: code, label: name }));
          dispatch(checkoutActions.setShippingSubdivisions(shippingSubdivisions));
          dispatch(checkoutActions.setShippingSubdivision(shippingSubdivisions[0].id));
+
          dispatch(checkoutActions.setCheckoutSubdivisionProgress(false));
       }
 
       try {
          fetchShippingSubdivisions();
       } catch (error) {
-         dispatch(checkoutActions.setCheckoutProgress(false));
          dispatch(checkoutActions.setCheckoutSubdivisionProgress(false));
          dispatch(errorActions.setCheckoutError(error.data.error.message));
       }
@@ -132,17 +140,17 @@ export const fetchOptions = (checkoutTokenID, country, region = null) => {
    return async (dispatch) => {
       const fetchShippingOptions = async () => {
          dispatch(checkoutActions.setCheckoutOptionProgress(true));
+
          const options = await commerce.checkout.getShippingOptions(checkoutTokenID, { country, region });
          dispatch(checkoutActions.setShippingOptions(options));
          dispatch(checkoutActions.setShippingOption(options[0].id));
+
          dispatch(checkoutActions.setCheckoutOptionProgress(false));
-         dispatch(checkoutActions.setCheckoutProgress(false));
       }
 
       try {
          await fetchShippingOptions();
       } catch (error) {
-         dispatch(checkoutActions.setCheckoutProgress(false));
          dispatch(checkoutActions.setCheckoutOptionProgress(false));
          dispatch(errorActions.setCheckoutError(error.data.error.message));
       }

@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const category = localStorage.getItem('category');
 const brandWise = localStorage.getItem('brandWise');
 const selectedItems = JSON.parse(localStorage.getItem('selectedItems'));
-const searchedProducts = JSON.parse(localStorage.getItem('searchedProducts'));
 
 const initialState = {
    showMenu: false,
@@ -19,9 +18,13 @@ const initialState = {
    progressBar: true,
    navbarProgress: true,
    buttonProgress: false,
+   categoryButtonProgress: false,
+   productDetailsProgress: false,
+   cartProgress: false,
    currentProduct: '',
-   activeSearchBar: false,
-   searchedProducts: searchedProducts || []
+   inputFocus: false,
+   activeSearch: false,
+   searchedProducts: []
 };
 
 const uiSlice = createSlice({
@@ -73,11 +76,23 @@ const uiSlice = createSlice({
       setButtonProgress(state, action) {
          state.buttonProgress = action.payload;
       },
+      setCategoryButtonProgress(state, action) {
+         state.categoryButtonProgress = action.payload;
+      },
+      setProductDetailsProgress(state, action) {
+         state.productDetailsProgress = action.payload;
+      },
+      setCartProgress(state, action) {
+         state.cartProgress = action.payload;
+      },
       setCurrentProduct(state, action) {
          state.currentProduct = action.payload;
       },
-      setActiveSearchBar(state, action) {
-         state.activeSearchBar = action.payload;
+      setInputFocus(state, action) {
+         state.inputFocus = action.payload;
+      },
+      setActiveSearch(state, action) {
+         state.activeSearch = action.payload;
       },
       setSearchedProducts(state, action) {
          state.searchedProducts = action.payload;

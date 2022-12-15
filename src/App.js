@@ -136,9 +136,13 @@ const App = () => {
 								<Route path='/about' exact>
 									<About />
 								</Route>
-								<Route path='/shop/:id' exact>
-									<Shop />
-								</Route>
+								{
+									['/shop/:id', '/search/:id'].map((path, index) => (
+										<Route path={path} key={index} exact>
+											<Shop />
+										</Route>
+									))
+								}
 								<Route path='/brands' exact>
 									<Brands />
 								</Route>

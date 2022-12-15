@@ -6,6 +6,12 @@ import { Box, Divider, Typography } from '@mui/material';
 import { Button, styled } from '@mui/material';
 import { useSelector } from 'react-redux';
 import ProgressButton from '../../../UI/ProgressButton';
+import { checkoutActions } from '../../../../store/checkout-slice';
+import { useDispatch } from 'react-redux';
+import { cartActions } from '../../../../store/cart-slice';
+import { commerce } from '../../../../lib/commerce';
+import { addOrder } from '../../../../store/send-data';
+import { useHistory } from 'react-router-dom';
 
 const ActionButton = styled(Button)({
    minHeight: 0,
@@ -19,9 +25,13 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_API_KEY);
 
 const PaymentForm = ({ backStep, shippingData, handleSubmitOrder }) => {
    const [error, setError] = useState(null);
+   const [loading, setLoading] = useState(false);
    const checkoutToken = useSelector(state => state.checkout.checkoutToken);
-   const buttonProgress = useSelector(state => state.ui.buttonProgress);
    const user = JSON.parse(useSelector(state => state.auth.authUser));
+
+   const dispatch = useDispatch();
+
+   const history = useHistory();
 
    const handleSubmit = async (e, elements, stripe) => {
       e.preventDefault();
@@ -31,56 +41,71 @@ const PaymentForm = ({ backStep, shippingData, handleSubmitOrder }) => {
          return;
       }
 
-      const cardElement = elements.getElement(CardElement);
-      const { error } = await stripe.createPaymentMethod({ type: 'card', card: cardElement });
+      try {
+         setLoading(true);
 
-      if (error) {
-         setError(error.message);
-      } else {
-         const orderData = {
-            line_items: checkoutToken.live.line_items,
-            customer: {
-               firstname: shippingData.firstName,
-               lastname: shippingData.lastName,
-               email: shippingData.email
-            },
-            shipping: {
-               name: 'Primary',
-               street: shippingData.address,
-               town_city: shippingData.city,
-               county_state: shippingData.selectSubdivision,
-               postal_zip_code: shippingData.zip,
-               country: shippingData.selectCountry
-            },
-            fulfillment: {
-               shipping_method: shippingData.selectOption
-            },
-            payment: {
-               gateway: 'test_gateway',
-               card: {
-                  number: '4242 4242 4242 4242',
-                  expiry_month: '01',
-                  expiry_year: '2023',
-                  cvc: '123',
-                  postal_zip_code: '94103',
+         const cardElement = elements.getElement(CardElement);
+         const { error } = await stripe.createPaymentMethod({ type: 'card', card: cardElement });
+
+         if (error) {
+            setError(error.message);
+         } else {
+            const orderData = {
+               line_items: checkoutToken.live.line_items,
+               customer: {
+                  firstname: shippingData.firstName,
+                  lastname: shippingData.lastName,
+                  email: shippingData.email
                },
+               shipping: {
+                  name: 'Primary',
+                  street: shippingData.address,
+                  town_city: shippingData.city,
+                  county_state: shippingData.selectSubdivision,
+                  postal_zip_code: shippingData.zip,
+                  country: shippingData.selectCountry
+               },
+               fulfillment: {
+                  shipping_method: shippingData.selectOption
+               },
+               payment: {
+                  gateway: 'test_gateway',
+                  card: {
+                     number: '4242 4242 4242 4242',
+                     expiry_month: '01',
+                     expiry_year: '2023',
+                     cvc: '123',
+                     postal_zip_code: '94103',
+                  },
+               }
             }
+
+            let allOrderedItems = [];
+            for (let product in checkoutToken.live.line_items) {
+               allOrderedItems.push({
+                  id: checkoutToken.live.line_items[product].id,
+                  name: checkoutToken.live.line_items[product].name,
+                  quantity: checkoutToken.live.line_items[product].quantity,
+                  img: checkoutToken.live.line_items[product].image.url,
+                  price: checkoutToken.live.line_items[product].price.formatted_with_symbol,
+                  totalPrice: checkoutToken.live.line_items[product].line_total.formatted_with_symbol
+               });
+            }
+
+            const incomingOrder = await commerce.checkout.capture(checkoutToken.id, orderData);
+            dispatch(checkoutActions.setIncomingOrder(incomingOrder));
+            const newCart = await commerce.cart.refresh();
+            dispatch(cartActions.addItemsToCart(newCart));
+
+            history.replace('/confirmation');
+            setLoading(false);
+
+            dispatch(addOrder(allOrderedItems, user.uid));
+
          }
-
-         let allOrderedItems = [];
-         for (let product in checkoutToken.live.line_items) {
-            allOrderedItems.push({
-               id: checkoutToken.live.line_items[product].id,
-               name: checkoutToken.live.line_items[product].name,
-               quantity: checkoutToken.live.line_items[product].quantity,
-               img: checkoutToken.live.line_items[product].image.url,
-               price: checkoutToken.live.line_items[product].price.formatted_with_symbol,
-               totalPrice: checkoutToken.live.line_items[product].line_total.formatted_with_symbol
-            });
-         }
-
-         handleSubmitOrder(checkoutToken.id, orderData, allOrderedItems, user.uid);
-
+      } catch (error) {
+         setLoading(false);
+         dispatch(checkoutActions.setOrderError(error.data.error.message));
       }
    }
 
@@ -122,6 +147,7 @@ const PaymentForm = ({ backStep, shippingData, handleSubmitOrder }) => {
                            variant='contained'
                            type='button'
                            onClick={backStep}
+                           disabled={loading}
                         >
                            Back
                         </ActionButton>
@@ -130,9 +156,9 @@ const PaymentForm = ({ backStep, shippingData, handleSubmitOrder }) => {
                            type='submit'
                            variant='contained'
                            color='primary'
-                           disabled={!stripe}
+                           disabled={!stripe || loading}
                         >
-                           {buttonProgress ? <ProgressButton loading={buttonProgress} /> : 'Pay'}
+                           {loading ? <ProgressButton loading={loading} /> : 'Pay'}
                         </ActionButton>
                      </Box>
                   </form>

@@ -2,17 +2,31 @@ import { projectFirestore, timestamp } from "../Firebase/config";
 import { commerce } from "../lib/commerce";
 import { authActions } from "./auth-slice";
 import { cartActions } from "./cart-slice";
-import { checkoutActions } from "./checkout-slice";
 import { uiActions } from "./ui-slice";
 
 // Add items to the cart
-export const addToCart = (productID, quantity) => {
+export const addToCart = (productID, quantity, card) => {
    return async (dispatch) => {
       const handleAddToCart = async () => {
-         dispatch(uiActions.setButtonProgress(true));
+         if (card === 'product-card') {
+            dispatch(uiActions.setButtonProgress(true));
+         } else if (card === 'category-product-card') {
+            dispatch(uiActions.setCategoryButtonProgress(true));
+         } else {
+            dispatch(uiActions.setProductDetailsProgress(true));
+         }
+
          const cart = await commerce.cart.add(productID, quantity);
          dispatch(cartActions.addItemsToCart(cart.cart));
-         dispatch(uiActions.setButtonProgress(false));
+
+         if (card === 'product-card') {
+            dispatch(uiActions.setButtonProgress(false));
+         } else if (card === 'category-product-card') {
+            dispatch(uiActions.setCategoryButtonProgress(false));
+         } else {
+            dispatch(uiActions.setProductDetailsProgress(false));
+         }
+
          dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully Added!' }));
          dispatch(uiActions.setSnackbarToggle());
       }
@@ -21,6 +35,8 @@ export const addToCart = (productID, quantity) => {
          await handleAddToCart();
       } catch (error) {
          dispatch(uiActions.setButtonProgress(false));
+         dispatch(uiActions.setCategoryButtonProgress(false));
+         dispatch(uiActions.setProductDetailsProgress(false));
          dispatch(uiActions.setShowSnackbar({ value: true, text: error.data.error.message }));
       }
    }
@@ -30,8 +46,10 @@ export const addToCart = (productID, quantity) => {
 export const removeItemFromCart = (productID) => {
    return async (dispatch) => {
       const handleRemoveFromCart = async () => {
+         dispatch(uiActions.setCartProgress(true));
          const cart = await commerce.cart.remove(productID);
          dispatch(cartActions.addItemsToCart(cart.cart));
+         dispatch(uiActions.setCartProgress(false));
          dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully Removed!' }));
          dispatch(uiActions.setSnackbarToggle());
       }
@@ -39,6 +57,7 @@ export const removeItemFromCart = (productID) => {
       try {
          await handleRemoveFromCart();
       } catch (error) {
+         dispatch(uiActions.setCartProgress(false));
          dispatch(uiActions.setShowSnackbar({ value: true, text: error.data.error.message }));
       }
    }
@@ -48,8 +67,10 @@ export const removeItemFromCart = (productID) => {
 export const updateCartItems = (productID, quantity) => {
    return async (dispatch) => {
       const handleUpdateCartItems = async () => {
+         dispatch(uiActions.setCartProgress(true));
          const cart = await commerce.cart.update(productID, quantity);
          dispatch(cartActions.addItemsToCart(cart.cart));
+         dispatch(uiActions.setCartProgress(false));
          dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully Updated!' }));
          dispatch(uiActions.setSnackbarToggle());
       }
@@ -57,6 +78,7 @@ export const updateCartItems = (productID, quantity) => {
       try {
          await handleUpdateCartItems();
       } catch (error) {
+         dispatch(uiActions.setCartProgress(false));
          dispatch(uiActions.setShowSnackbar({ value: true, text: error.data.error.message }));
       }
    }
@@ -66,8 +88,10 @@ export const updateCartItems = (productID, quantity) => {
 export const emptyCart = () => {
    return async (dispatch) => {
       const handleEmptyCart = async () => {
+         dispatch(uiActions.setCartProgress(true));
          const cart = await commerce.cart.empty();
          dispatch(cartActions.addItemsToCart(cart.cart));
+         dispatch(uiActions.setCartProgress(false));
          dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully Emptied!' }));
          dispatch(uiActions.setSnackbarToggle());
       }
@@ -75,29 +99,8 @@ export const emptyCart = () => {
       try {
          await handleEmptyCart();
       } catch (error) {
+         dispatch(uiActions.setCartProgress(false));
          dispatch(uiActions.setShowSnackbar({ value: true, text: error.data.error.message }));
-      }
-   }
-}
-
-// Send Order
-export const placeOrder = (checkoutTokenID, newOrder, data, UID) => {
-   return async (dispatch) => {
-      const fetchOrderData = async () => {
-         dispatch(uiActions.setButtonProgress(true));
-         const incomingOrder = await commerce.checkout.capture(checkoutTokenID, newOrder);
-         dispatch(checkoutActions.setIncomingOrder(incomingOrder));
-         await dispatch(addOrder(data, UID));
-         const newCart = await commerce.cart.refresh();
-         dispatch(cartActions.addItemsToCart(newCart));
-         dispatch(uiActions.setButtonProgress(false));
-      }
-
-      try {
-         await fetchOrderData();
-      } catch (error) {
-         dispatch(uiActions.setButtonProgress(false));
-         dispatch(checkoutActions.setOrderError(error.data.error.message));
       }
    }
 }

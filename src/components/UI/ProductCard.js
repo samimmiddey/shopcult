@@ -103,10 +103,16 @@ const ProductCard = ({ product, index, path }) => {
                </CardContent>
             </Card>
          </Link>
-         <Button size="small" variant='contained' disableElevation
+         <Button
+            size="small"
+            variant='contained'
+            disableElevation
+            disabled={buttonLoading && product.id === currentProduct}
             onClick={() => {
-               !buttonLoading && dispatch(addToCart(product.id, 1));
-               !buttonLoading && dispatch(uiActions.setCurrentProduct(product.id));
+               if (!buttonLoading) {
+                  dispatch(addToCart(product.id, 1, 'product-card'));
+                  dispatch(uiActions.setCurrentProduct(product.id));
+               }
             }}
             sx={theme => ({
                position: 'absolute',
@@ -119,7 +125,6 @@ const ProductCard = ({ product, index, path }) => {
                textAlign: 'center',
                height: lgWidth ? '31px' : '36px',
                width: lgWidth ? '44px' : '54px',
-               // padding: `${lgWidth ? '5px 12px' : '6px 15px'}`,
                backgroundColor: 'rgb(90, 57, 161)',
                '&:hover': {
                   backgroundColor: 'rgb(63, 40, 113)'

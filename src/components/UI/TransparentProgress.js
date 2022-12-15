@@ -6,7 +6,10 @@ const TransparentProgress = ({ open }) => {
    return (
       <div>
          <Backdrop
-            sx={{ color: 'rgb(90, 57, 161)', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            sx={{
+               color: '#fff',
+               zIndex: (theme) => theme.zIndex.drawer + 1
+            }}
             open={open}
          >
             <CircularProgress color="inherit" />

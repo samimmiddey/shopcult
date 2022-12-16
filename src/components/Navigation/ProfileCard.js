@@ -8,9 +8,10 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PersonIcon from '@mui/icons-material/Person';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import { logout } from '../../store/auth-thunk';
+import { logout } from '../../store/auth-thunks';
 import { useSelector } from 'react-redux';
 import ProgressButton from '../UI/ProgressButton';
+import avatar from '../../assets/avatar.png';
 
 export const userProfileData = [
    {
@@ -127,7 +128,7 @@ const UserProfile = ({ anchorEl, open, userData, handleClose }) => {
                   objectFit: 'cover',
                   borderRadius: '50%'
                }}
-               src={userData.img || ''}
+               src={userData.img || avatar}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                <Typography

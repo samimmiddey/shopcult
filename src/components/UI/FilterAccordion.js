@@ -18,7 +18,7 @@ const FilterAccordion = ({ title, products }) => {
    const history = useHistory();
 
    const handleChange = (event) => {
-      if(id === 'search') {
+      if (id === 'search') {
          history.push('/shop/all');
       }
       dispatch(uiActions.setSelectedItems({
@@ -44,22 +44,17 @@ const FilterAccordion = ({ title, products }) => {
    };
 
    return (
-      <div
-         style={{
-            width: '100%',
-            borderBottom: '1px solid #eceff1'
-         }}
-      >
+      <div style={{ width: '100%', borderBottom: '1px solid #eceff1' }}>
          <Accordion
             defaultExpanded={true}
             elevation={0}
+            disableGutters
             sx={{
                width: '100%',
-               background: 'none',
-            }}>
-            <AccordionSummary
-               expandIcon={<ExpandMoreIcon sx={{ color: 'text.secondary' }} />}
-            >
+               background: 'none'
+            }}
+         >
+            <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: 'text.secondary' }} />}>
                <Typography
                   sx={{
                      fontWeight: 600,
@@ -84,7 +79,6 @@ const FilterAccordion = ({ title, products }) => {
                      control={
                         <Checkbox
                            size='small'
-                           onClick={() => localStorage.setItem('currentPage', 1)}
                            onChange={handleChange}
                            name={product.name}
                            checked={
@@ -95,11 +89,21 @@ const FilterAccordion = ({ title, products }) => {
                            sx={{
                               '&.Mui-checked': {
                                  color: 'rgb(90, 57, 161)',
-                              },
+                              }
                            }}
                         />
                      }
-                     label={product.name}
+                     label={
+                        <Typography
+                           sx={{
+                              color: 'text.primary',
+                              fontSize: '15px',
+                              fontWeight: 500
+                           }}
+                        >
+                           {product.name}
+                        </Typography>
+                     }
                   />
                ))}
             </AccordionDetails>

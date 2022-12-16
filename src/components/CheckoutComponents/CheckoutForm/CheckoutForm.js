@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { Card } from '@mui/material';
 import AddressForm from './AddressForm/AddressForm';
 import PaymentForm from './PaymentForm/PaymentForm';
-import { fetchGenerateToken } from '../../../store/fetch-products';
+import { fetchGenerateToken } from '../../../store/product-thunks';
 import { useSelector, useDispatch } from 'react-redux';
 
 const steps = ['Shipping Address', 'Payment Details'];

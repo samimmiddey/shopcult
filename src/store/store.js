@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import uiSlice from "./ui-slice";
-import productSlice from "./products-slice";
+import productSlice from "./product-slice";
 import wishlistSlice from "./wishlist-slice";
 import cartSlice from "./cart-slice";
 import checkoutSlice from "./checkout-slice";

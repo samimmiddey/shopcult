@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import React, { useRef, useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -12,6 +12,7 @@ import { useTheme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import TestimonialCard from '../../UI/TestimonialCard';
 import TestimonialData from '../../../data/TestimonialData';
+import CustomHeaderText from '../../UI/CustomHeaderText';
 
 const HomeTestimonial = () => {
    const [swiper, setSwiper] = useState();
@@ -21,7 +22,6 @@ const HomeTestimonial = () => {
    const theme = useTheme();
    const mdWidth = useMediaQuery(theme.breakpoints.down('md'));
    const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
-   const xsWidth = useMediaQuery(theme.breakpoints.down(450));
 
    useEffect(() => {
       if (swiper) {
@@ -49,26 +49,7 @@ const HomeTestimonial = () => {
                marginTop: '3.5rem'
             }
          })}>
-         <Box>
-            <Typography variant='h4'
-               sx={theme => ({
-                  fontWeight: 700,
-                  [theme.breakpoints.down('lg')]: {
-                     fontSize: '2rem'
-                  },
-                  [theme.breakpoints.down('md')]: {
-                     fontSize: '1.5rem'
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                     fontSize: '1.3rem'
-                  },
-                  [theme.breakpoints.down(400)]: {
-                     fontSize: '1.2rem'
-                  }
-               })}>
-               <span style={{ color: 'rgb(132, 76, 196)' }}>What Our</span>{xsWidth && <br />} <span style={{ color: 'rgb(90, 57, 161)' }}>Customers Say</span>
-            </Typography>
-         </Box>
+         <CustomHeaderText text='What Our Customers Say' />
          <Box className='card-swiper'
             sx={theme => ({
                marginTop: '1.5rem',

@@ -1,4 +1,4 @@
-import { productActions } from "./products-slice";
+import { productActions } from "./product-slice";
 import { cartActions } from "./cart-slice";
 import { commerce } from '../lib/commerce';
 import { uiActions } from "./ui-slice";
@@ -9,18 +9,18 @@ import { errorActions } from "./error-slice";
 export const fetchProducts = () => {
    return async (dispatch) => {
       const fetchData = async () => {
-         dispatch(uiActions.setProgressBar(true));
+         dispatch(productActions.setProductProgress(true));
+
          const { data } = await commerce.products.list({ limit: 50 });
          dispatch(productActions.setProducts(data));
-         dispatch(uiActions.setProgressBar(false));
-         dispatch(uiActions.setNavbarProgress(false));
+
+         dispatch(productActions.setProductProgress(false));
       }
 
       try {
          await fetchData();
       } catch (error) {
-         dispatch(uiActions.setProgressBar(false));
-         dispatch(uiActions.setNavbarProgress(false));
+         dispatch(productActions.setProductProgress(false));
          dispatch(errorActions.setError((error.data.error.message)));
       }
    }
@@ -30,18 +30,16 @@ export const fetchProducts = () => {
 export const fetchCategories = () => {
    return async (dispatch) => {
       const fetchCategories = async () => {
-         dispatch(uiActions.setProgressBar(true));
+         dispatch(productActions.setCategoryProgress(true));
          const { data } = await commerce.categories.list();
          dispatch(productActions.setCategories(data));
-         dispatch(uiActions.setProgressBar(false));
-         dispatch(uiActions.setNavbarProgress(false));
+         dispatch(productActions.setCategoryProgress(false));
       }
 
       try {
          await fetchCategories();
       } catch (error) {
-         dispatch(uiActions.setProgressBar(false));
-         dispatch(uiActions.setNavbarProgress(false));
+         dispatch(productActions.setCategoryProgress(false));
          dispatch(errorActions.setError((error.data.error.message)));
       }
    }
@@ -51,18 +49,16 @@ export const fetchCategories = () => {
 export const fetchCart = () => {
    return async (dispatch) => {
       const fetchCartData = async () => {
-         dispatch(cartActions.setProgressBar(true));
+         dispatch(cartActions.setCartProgress(true));
          const cart = await commerce.cart.retrieve();
          dispatch(cartActions.addItemsToCart(cart));
-         dispatch(cartActions.setProgressBar(false));
-         dispatch(uiActions.setNavbarProgress(false));
+         dispatch(cartActions.setCartProgress(false));
       }
 
       try {
          await fetchCartData();
       } catch (error) {
-         dispatch(uiActions.setProgressBar(false));
-         dispatch(uiActions.setNavbarProgress(false));
+         dispatch(uiActions.setCartProgress(false));
          dispatch(errorActions.setError((error.data.error.message)));
       }
    }
@@ -173,6 +169,27 @@ export const applyDiscount = (totkenID, code) => {
       } catch (error) {
          dispatch(checkoutActions.setDiscountProgress(false));
          dispatch(errorActions.setCheckoutError(error.data.error.message));
+      }
+   }
+}
+
+// Search data
+export const searchProducts = ({ query }) => {
+   return async (dispatch) => {
+      const fetchData = async () => {
+         dispatch(uiActions.setSearchLoading(true));
+
+         const { data } = await commerce.products.list({ query: query });
+
+         dispatch(uiActions.setSearchedProducts(data));
+         dispatch(uiActions.setSearchLoading(false));
+      }
+
+      try {
+         await fetchData();
+      } catch (error) {
+         dispatch(uiActions.setSearchLoading(false));
+         dispatch(errorActions.setError((error.data.error.message)));
       }
    }
 }

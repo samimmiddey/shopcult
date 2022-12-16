@@ -209,7 +209,6 @@ const Navbar = () => {
                                  {menuItems.map((item, index) => (
                                     <Fragment key={index}>
                                        <NavLink
-                                          onClick={() => localStorage.setItem('currentPage', 1)}
                                           activeClassName='active-nav'
                                           exact={item === 'Home' ? true : false}
                                           to={

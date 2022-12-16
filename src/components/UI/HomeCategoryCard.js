@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { wishlistActions } from '../../store/wishlist-slice';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { uiActions } from '../../store/ui-slice';
-import { addToCart } from '../../store/send-data';
+import { addToCart } from '../../store/cart-thunks';
 import ProgressButton from './ProgressButton';
 
 const HomeCategoryCard = ({ item, index, path }) => {

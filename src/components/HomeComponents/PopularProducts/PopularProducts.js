@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import React, { useRef, useState, useEffect } from 'react';
 import ProductCard from '../../UI/ProductCard';
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -11,6 +11,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import '../../../cardswiper.css';
 import { useTheme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
+import CustomHeaderText from '../../UI/CustomHeaderText';
 
 const PopularProducts = ({ bestsellers }) => {
    const [swiper, setSwiper] = useState();
@@ -31,7 +32,8 @@ const PopularProducts = ({ bestsellers }) => {
    }, [swiper]);
 
    return (
-      <Box className='product-swiper-container'
+      <Box
+         className='product-swiper-container'
          sx={theme => ({
             marginTop: '8rem',
             [theme.breakpoints.down('xl')]: {
@@ -46,27 +48,9 @@ const PopularProducts = ({ bestsellers }) => {
             [theme.breakpoints.down('sm')]: {
                marginTop: '3.5rem'
             }
-         })}>
-         <Box>
-            <Typography variant='h4'
-               sx={theme => ({
-                  fontWeight: 700,
-                  [theme.breakpoints.down('lg')]: {
-                     fontSize: '2rem'
-                  },
-                  [theme.breakpoints.down('md')]: {
-                     fontSize: '1.5rem'
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                     fontSize: '1.3rem'
-                  },
-                  [theme.breakpoints.down(400)]: {
-                     fontSize: '1.2rem'
-                  }
-               })}>
-               <span style={{ color: 'rgb(132, 76, 196)' }}>Popular</span> <span style={{ color: 'rgb(90, 57, 161)' }}>Products</span>
-            </Typography>
-         </Box>
+         })}
+      >
+         <CustomHeaderText text='Popular Products' />
          <Box className='card-swiper'
             sx={theme => ({
                marginTop: '1.5rem',

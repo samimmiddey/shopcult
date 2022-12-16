@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { styled } from '@mui/material/styles';
@@ -9,8 +9,7 @@ import Sunglasses from './Sunglasses/Sunglasses';
 import Watches from './Watches/Watches';
 import { useTheme } from '@mui/system';
 import { useMediaQuery } from '@mui/material';
-
-// const tabs = [<Shoes />, <Watches />, <Sunglasses />, <Headphones />];
+import CustomHeaderText from '../../UI/CustomHeaderText';
 
 const StyledTabs = styled((props) => (
    <Tabs
@@ -27,27 +26,23 @@ const StyledTabs = styled((props) => (
       maxWidth: '40%',
       width: '100%',
       backgroundColor: 'rgb(90, 57, 161)'
-   },
+   }
 });
 
 const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
    ({ theme }) => ({
       textTransform: 'none',
-      fontSize: '16px',
-      fontWeight: 600,
-      margin: '0 1.5rem',
+      margin: '0 1rem',
       '&.Mui-selected': {
          color: 'rgb(132, 76, 196)',
       },
       [theme.breakpoints.down('md')]: {
-         margin: '0 1rem',
-         fontSize: '15px'
+         margin: '0 0.5rem'
       },
       [theme.breakpoints.down('sm')]: {
-         margin: '0',
-         fontSize: '14px'
+         margin: '0'
       }
-   }),
+   })
 );
 
 const HomeCategories = ({ headphones, shoes, sunglasses, watches }) => {
@@ -86,35 +81,22 @@ const HomeCategories = ({ headphones, shoes, sunglasses, watches }) => {
          })}
       >
          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant='h4'
-               sx={theme => ({
-                  fontWeight: 700,
-                  [theme.breakpoints.down('lg')]: {
-                     fontSize: '2rem'
-                  },
-                  [theme.breakpoints.down('md')]: {
-                     fontSize: '1.5rem'
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                     fontSize: '1.3rem'
-                  },
-                  [theme.breakpoints.down(400)]: {
-                     fontSize: '1.2rem'
-                  }
-               })}>
-               <span style={{ color: 'rgb(132, 76, 196)' }}>Shop By</span> <span style={{ color: 'rgb(90, 57, 161)' }}>Categories</span>
-            </Typography>
+            <CustomHeaderText text='Shop by Categories' />
          </Box>
          <Box
             sx={theme => ({
-               marginTop: '2rem',
+               marginTop: '1.5rem',
+               [theme.breakpoints.down('lg')]: {
+                  marginTop: '1.25rem'
+               },
                [theme.breakpoints.down('md')]: {
                   marginTop: '1rem'
                },
                [theme.breakpoints.down('sm')]: {
-                  marginTop: '0.6rem'
+                  marginTop: '0.5rem'
                }
-            })}>
+            })}
+         >
             <StyledTabs
                centered={smallWidth ? false : true}
                value={value}
@@ -123,15 +105,27 @@ const HomeCategories = ({ headphones, shoes, sunglasses, watches }) => {
                scrollButtons={smallWidth ? true : false}
                allowScrollButtonsMobile={smallWidth ? true : false}
             >
-               <StyledTab sx={{ color: 'text.secondary' }} label="Shoes" />
-               <StyledTab sx={{ color: 'text.secondary' }} label="Watches" />
-               <StyledTab sx={{ color: 'text.secondary' }} label="Sunglasses" />
-               <StyledTab sx={{ color: 'text.secondary' }} label="Headphones" />
+               {
+                  ['Shoes', 'Watches', 'Sunglasses', 'Headphones'].map((label, index) => (
+                     <StyledTab
+                        key={index}
+                        sx={{
+                           color: 'text.secondary',
+                           fontSize: '15px',
+                           fontWeight: 700
+                        }}
+                        label={label}
+                     />
+                  ))
+               }
             </StyledTabs>
          </Box>
          <Box
             sx={theme => ({
-               marginTop: '2.5rem',
+               marginTop: '2rem',
+               [theme.breakpoints.down('lg')]: {
+                  marginTop: '1.75rem'
+               },
                [theme.breakpoints.down('md')]: {
                   marginTop: '1.5rem'
                },

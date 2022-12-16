@@ -3,11 +3,11 @@ import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import { Avatar, Button, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { wishlistActions } from '../../store/wishlist-slice';
+import { wishlistActions } from '../../../store/wishlist-slice';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { Link } from 'react-router-dom';
-import { uiActions } from '../../store/ui-slice';
-import { addToCart } from '../../store/send-data';
+import { uiActions } from '../../../store/ui-slice';
+import { addToCart } from '../../../store/cart-thunks';
 
 const WishlistItems = ({ product, path }) => {
    const dispatch = useDispatch();

@@ -5,7 +5,7 @@ import CustomInput from '../../CheckoutComponents/CheckoutForm/CustomFields/Cust
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'react-router-dom';
-import { signup } from '../../../store/auth-thunk';
+import { signup } from '../../../store/auth-thunks';
 import { useSelector, useDispatch } from 'react-redux';
 import ProgressButton from '../../UI/ProgressButton';
 import { useHistory } from 'react-router-dom';
@@ -34,7 +34,7 @@ const defaultValues = {
 }
 
 const Signup = () => {
-   const authUser = useSelector(state => state.auth.authUser);
+   const userData = useSelector(state => state.auth.userData);
    const authProgress = useSelector(state => state.auth.authProgress);
    const dispatch = useDispatch();
    const history = useHistory();
@@ -80,24 +80,22 @@ const Signup = () => {
    });
 
    // Handle Signup
-   const handleSignup = async (data) => {
-      await dispatch(signup(data));
-   }
+   const handleSignup = (data) => {
+      dispatch(signup(data));
+   };
 
    // Redirecting after successfully signing up
    useEffect(() => {
-      if (authUser) {
+      if (userData) {
          reset({ ...defaultValues });
          history.replace('/');
       }
-   }, [authUser, history, reset]);
+   }, [userData, history, reset]);
 
    return (
-      <Box sx={{
-         maxWidth: '600px',
-         width: '100%'
-      }}>
-         <Typography variant='h4'
+      <Box sx={{ maxWidth: '600px', width: '100%' }}>
+         <Typography
+            variant='h4'
             sx={theme => ({
                fontWeight: 700,
                marginBottom: '1rem',

@@ -6,7 +6,7 @@ import CustomInput from '../CustomFields/CustomInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchCountries, fetchSubdivisions, fetchOptions } from '../../../../store/fetch-products';
+import { fetchCountries, fetchSubdivisions, fetchOptions } from '../../../../store/product-thunks';
 import CustomSelect from '../CustomFields/CustomSelect';
 import { checkoutActions } from '../../../../store/checkout-slice';
 import TransparentProgress from '../../../UI/TransparentProgress';

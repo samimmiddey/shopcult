@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { uiActions } from '../../../store/ui-slice';
 import { useTheme, useMediaQuery } from '@mui/material';
 
-const ShopProducts = ({ shopProducts }) => {
+const ShopProducts = ({ shopProducts, xs, xm, sm, md, lg, xl }) => {
    const category = useSelector(state => state.ui.categoryWise);
    const selectedItems = useSelector(state => state.ui.selectedItems);
    const dispatch = useDispatch();
@@ -29,7 +29,14 @@ const ShopProducts = ({ shopProducts }) => {
                      }
                   }}
                   key={index}
-                  item xs={12} xm={6} sm={6} md={6} lg={4} xl={3}>
+                  item
+                  xs={xs}
+                  xm={xm}
+                  sm={sm}
+                  md={md}
+                  lg={lg}
+                  xl={xl}
+               >
                   <ProductCard
                      product={product}
                      index={index}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, Divider, TextField, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTheme, useMediaQuery } from '@mui/material';
-import { applyDiscount } from '../../../../../store/fetch-products';
+import { applyDiscount } from '../../../../../store/product-thunks';
 import ProgressButton from '../../../../UI/ProgressButton';
 
 const ReviewProducts = () => {

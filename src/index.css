@@ -26,6 +26,18 @@ li {
   padding: 0 1rem;
 }
 
+.small-container {
+  max-width: 1498px;
+  padding: 80px 24px 0 24px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 600px) {
+  .small-container {
+    padding: 80px 16px 0 16px;
+  }
+}
+
 /* New Primary Button */
 .primary-button {
   background-image: linear-gradient(to right, rgb(132, 76, 196) 0%, rgb(90, 57, 161) 51%, rgb(132, 76, 196) 100%);
@@ -183,12 +195,6 @@ li {
   height: 100%;
   width: 100%;
   object-fit: contain;
-}
-
-.active-category {
-  background-color: rgb(236, 228, 255);
-  border-radius: 10px;
-  color: rgb(132, 76, 196);
 }
 
 /* Text Wrapping for 2 lines */

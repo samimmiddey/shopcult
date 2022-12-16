@@ -5,7 +5,7 @@ import CustomInput from '../../CheckoutComponents/CheckoutForm/CustomFields/Cust
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'react-router-dom';
-import { login } from '../../../store/auth-thunk';
+import { login } from '../../../store/auth-thunks';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -32,7 +32,7 @@ const defaultValues = {
 }
 
 const Login = () => {
-   const authUser = useSelector(state => state.auth.authUser);
+   const userData = useSelector(state => state.auth.userData);
    const authProgress = useSelector(state => state.auth.authProgress);
    const dispatch = useDispatch();
    const history = useHistory();
@@ -62,24 +62,22 @@ const Login = () => {
    });
 
    // Handle Login
-   const handleLogin = async (data) => {
-      await dispatch(login(data.email, data.password));
-   }
+   const handleLogin = (data) => {
+      dispatch(login(data.email, data.password));
+   };
 
    // Resetting form & redirect after successfully logged in
    useEffect(() => {
-      if (authUser) {
+      if (userData) {
          reset({ ...defaultValues });
          history.replace('/');
       }
-   }, [authUser, history, reset]);
+   }, [userData, history, reset]);
 
    return (
-      <Box sx={{
-         maxWidth: '600px',
-         width: '100%'
-      }}>
-         <Typography variant='h4'
+      <Box sx={{ maxWidth: '600px', width: '100%' }}>
+         <Typography
+            variant='h4'
             sx={theme => ({
                fontWeight: 700,
                marginBottom: '1rem',

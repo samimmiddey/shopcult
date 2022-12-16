@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { wishlistActions } from '../../store/wishlist-slice';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { addToCart } from '../../store/send-data';
+import { addToCart } from '../../store/cart-thunks';
 import { uiActions } from '../../store/ui-slice';
 import ProgressButton from './ProgressButton';
 

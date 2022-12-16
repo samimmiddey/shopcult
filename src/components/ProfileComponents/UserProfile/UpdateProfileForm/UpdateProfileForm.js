@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Box, Button, styled } from '@mui/material';
-import { updateEmail, updateName, updatePassword } from '../../../../store/auth-thunk';
+import { updateEmail, updateName, updatePassword } from '../../../../store/auth-thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import ProgressButton from '../../../UI/ProgressButton';
 import { projectAuth } from '../../../../Firebase/config';
@@ -26,7 +26,7 @@ const ActionButton = styled(Button)(({ theme }) => ({
 
 const UpdateProfileForm = ({ setEditMode, field }) => {
    const [loading, setIsLoading] = useState(false);
-   const user = JSON.parse(useSelector(state => state.auth.authUser));
+   const userData = useSelector(state => state.auth.userData);
    const currentUser = projectAuth.currentUser;
 
    const dispatch = useDispatch();
@@ -96,15 +96,15 @@ const UpdateProfileForm = ({ setEditMode, field }) => {
       defaultValues: defaultValues
    });
 
-   const handleChange = async (data) => {
+   const handleChange = (data) => {
       setIsLoading(true);
 
       if (field === 'email') {
-         await dispatch(updateEmail(currentUser, data, user.uid));
+         dispatch(updateEmail(currentUser, data, userData.id));
       } else if (field === 'password') {
-         await dispatch(updatePassword(currentUser, data, user.uid));
+         dispatch(updatePassword(currentUser, data, userData.id));
       } else {
-         await dispatch(updateName(data, user.uid));
+         dispatch(updateName(data, userData.id));
       }
 
       reset({ ...defaultValues });

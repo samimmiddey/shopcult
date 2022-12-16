@@ -1,9 +1,9 @@
-import { Box, ListItemButton, Typography, IconButton } from '@mui/material';
 import React, { Fragment, useEffect } from 'react';
+import { Box, ListItemButton, Typography, IconButton } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import FilterAccordion from '../../UI/FilterAccordion';
 import { uiActions } from '../../../store/ui-slice';
-import { NavLink, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useTheme, useMediaQuery } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Brands } from '../../../data/BrandsData';
@@ -22,9 +22,10 @@ const ShopFilter = () => {
    const showFilter = useSelector(state => state.ui.showFilter);
    const dispatch = useDispatch();
 
-   // Setting Category on Local Storage
+   const categoryArray = categories.map(item => item.slug);
+   categoryArray.unshift('all');
+
    const { id } = useParams();
-   localStorage.setItem('category', id);
 
    useEffect(() => {
       dispatch(uiActions.setCategoryWise(id));
@@ -37,13 +38,8 @@ const ShopFilter = () => {
       return null;
    }
 
-   const newCategories = categories.map(category => category.name);
-   newCategories.unshift('All');
-
    const filter = (
-      <Box sx={{
-         marginTop: '-1rem'
-      }}>
+      <Box sx={{ marginTop: '-1rem' }}>
          {/* Categories */}
          <Box sx={{ flex: 1 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -73,25 +69,27 @@ const ShopFilter = () => {
                   rowGap: '5px'
                }}
             >
-               {newCategories.map((category, index) => (
+               {categoryArray.map((category, index) => (
                   <Fragment key={index}>
-                     <NavLink activeClassName='active-category' to={`/shop/${category.toLowerCase()}`}>
+                     <Link to={`/shop/${category.toLowerCase()}`}>
                         <ListItemButton
+                           disableRipple
                            onClick={() => {
                               dispatch(uiActions.resetSelectedItems());
-                              localStorage.setItem('currentPage', 1);
                            }}
                            sx={{
-                              fontWeight: 500,
+                              fontWeight: 600,
                               borderRadius: '5px',
+                              color: category === id ? 'secondary.main' : 'text.primary',
+                              backgroundColor: category === id ? '#5a39a125' : '',
                               '&:hover': {
-                                 backgroundColor: 'rgb(236, 228, 255)'
+                                 backgroundColor: category === id ? '#5a39a125' : '',
                               }
                            }}
                         >
-                           {category}
+                           {category.charAt(0).toUpperCase() + category.slice(1)}
                         </ListItemButton>
-                     </NavLink>
+                     </Link>
                   </Fragment>
                ))}
             </Box>

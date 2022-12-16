@@ -5,7 +5,7 @@ const initialState = {
    totalAmount: 0,
    totalPrice: 0,
    cartItems: [],
-   progressBar: true
+   cartProgress: true
 };
 
 const cartSlice = createSlice({
@@ -18,8 +18,8 @@ const cartSlice = createSlice({
          state.totalPrice = action.payload.subtotal.formatted_with_symbol;
          state.cartItems = action.payload.line_items;
       },
-      setProgressBar(state, action) {
-         state.progressBar = action.payload;
+      setCartProgress(state, action) {
+         state.cartProgress = action.payload;
       }
    }
 });

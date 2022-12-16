@@ -18,8 +18,7 @@ const GoogleMapComponent = () => {
          center={center}
          mapContainerClassName='map-container'
       >
-         <Marker position={center}
-         />
+         <Marker position={center} />
       </GoogleMap>
    );
 };

@@ -7,21 +7,16 @@ export const signup = (data) => {
    return async (dispatch) => {
       const requestSignup = async () => {
          dispatch(authActions.setAuthProgress(true));
+
          const response = await projectAuth.createUserWithEmailAndPassword(data.email, data.password);
          await projectFirestore.collection('users').doc(response.user.uid).set({
             firstName: data.firstName,
             lastName: data.lastName,
-            email: data.email
+            email: data.email,
+            id: response.user.uid
          });
          await dispatch(userData(response.user.uid));
 
-         if (!response) {
-            throw new Error('Something went wrong!');
-         }
-
-         localStorage.setItem('isLoggedIn', true);
-         dispatch(authActions.setAuthUser(JSON.stringify(response.user)));
-         dispatch(authActions.setIsLoggedIn(true));
          dispatch(authActions.setAuthProgress(false));
          dispatch(dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully logged in!' })));
       }
@@ -48,16 +43,10 @@ export const login = (email, password) => {
    return async (dispatch) => {
       const requestLogin = async () => {
          dispatch(authActions.setAuthProgress(true));
+
          const response = await projectAuth.signInWithEmailAndPassword(email, password);
          await dispatch(userData(response.user.uid));
 
-         if (!response) {
-            throw new Error('Something went wrong!');
-         }
-
-         localStorage.setItem('isLoggedIn', true);
-         dispatch(authActions.setAuthUser(JSON.stringify(response.user)));
-         dispatch(authActions.setIsLoggedIn(true));
          dispatch(authActions.setAuthProgress(false));
          dispatch(dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully logged in!' })));
       }
@@ -78,12 +67,11 @@ export const logout = () => {
    return async (dispatch) => {
       const requestLogout = async () => {
          dispatch(authActions.setAuthProgress(true));
-         await projectAuth.signOut();
 
-         localStorage.removeItem('isLoggedIn');
-         dispatch(authActions.setAuthUser(null));
+         await projectAuth.signOut();
+         dispatch(authActions.setUserData(null));
+
          dispatch(authActions.setAuthProgress(false));
-         dispatch(authActions.setIsLoggedIn(false));
          dispatch(dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully logged out!' })));
       }
 
@@ -102,14 +90,19 @@ export const logout = () => {
 export const userData = (uid) => {
    return async (dispatch) => {
       const fetchUserData = async () => {
-         await projectFirestore.collection('users').doc(uid).onSnapshot(doc => {
-            dispatch(authActions.setUserData(doc.data()));
-         });
+         dispatch(authActions.setUserDataProgress(true));
+
+         const docRef = projectFirestore.collection('users').doc(uid);
+         const res = await docRef.get();
+         dispatch(authActions.setUserData(res.data()));
+
+         dispatch(authActions.setUserDataProgress(false));
       }
 
       try {
          await fetchUserData();
       } catch (error) {
+         dispatch(authActions.setUserDataProgress(false));
          dispatch(authActions.setAuthError(error));
          dispatch(authActions.setAuthErrorModal(true));
       }

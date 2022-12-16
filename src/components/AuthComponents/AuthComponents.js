@@ -12,13 +12,9 @@ const AuthComponents = () => {
    const history = useHistory();
 
    return (
-      <Box
-         sx={{
-            postion: 'relative'
-         }}
-      >
+      <Box sx={{ postion: 'relative' }}>
          <IconButton
-         onClick={history.goBack}
+            onClick={history.goBack}
             sx={theme => ({
                position: 'absolute',
                top: '5%',

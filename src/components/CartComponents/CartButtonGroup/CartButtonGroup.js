@@ -4,7 +4,7 @@ import { IconButton, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useDispatch } from 'react-redux';
-import { updateCartItems } from '../../store/send-data';
+import { updateCartItems } from '../../../store/cart-thunks';
 
 const CartButtonGroup = ({ quantity, update_id }) => {
    const dispatch = useDispatch();

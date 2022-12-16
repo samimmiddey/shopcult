@@ -5,11 +5,11 @@ import { useSelector } from 'react-redux';
 import UserMenu from './UserMenu';
 
 const AuthButtons = () => {
-   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+   const userData = useSelector(state => state.auth.userData);
 
    return (
       <Box>
-         {!isLoggedIn &&
+         {!userData &&
             <>
                <Link to='/login'>
                   <Button
@@ -38,7 +38,8 @@ const AuthButtons = () => {
                </Link>
             </>
          }
-         {isLoggedIn &&
+         {
+            userData &&
             <UserMenu />
          }
       </Box >

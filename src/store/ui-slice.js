@@ -16,7 +16,6 @@ const initialState = {
    snackbarText: '',
    snackbarToggle: false,
    progressBar: true,
-   navbarProgress: true,
    buttonProgress: false,
    categoryButtonProgress: false,
    productDetailsProgress: false,
@@ -24,6 +23,7 @@ const initialState = {
    currentProduct: '',
    inputFocus: false,
    activeSearch: false,
+   searchLoading: false,
    searchedProducts: []
 };
 
@@ -70,9 +70,6 @@ const uiSlice = createSlice({
       setProgressBar(state, action) {
          state.progressBar = action.payload;
       },
-      setNavbarProgress(state, action) {
-         state.navbarProgress = action.payload;
-      },
       setButtonProgress(state, action) {
          state.buttonProgress = action.payload;
       },
@@ -93,6 +90,9 @@ const uiSlice = createSlice({
       },
       setActiveSearch(state, action) {
          state.activeSearch = action.payload;
+      },
+      setSearchLoading(state, action) {
+         state.searchLoading = action.payload;
       },
       setSearchedProducts(state, action) {
          state.searchedProducts = action.payload;

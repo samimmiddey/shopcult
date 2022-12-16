@@ -1,12 +1,13 @@
-import { Box, Button, Card, Divider, Typography } from '@mui/material';
 import React from 'react';
+import { Box, Button, Card, Divider, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import cart from '../../../assets/emptycart.svg';
-import CartButtonGroup from '../../UI/CartButtonGroup';
+import CartButtonGroup from '../CartButtonGroup/CartButtonGroup';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-import { removeItemFromCart, emptyCart } from '../../../store/send-data';
+import { removeItemFromCart, emptyCart } from '../../../store/cart-thunks';
 import { useTheme, useMediaQuery } from '@mui/material';
+import EmptyTemplate from '../../UI/EmptyTemplate';
 
 const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
    const dispatch = useDispatch();
@@ -498,46 +499,12 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
          }
          {
             totalItems < 1 &&
-            <Box
-               sx={{
-                  textAlign: 'center',
-                  margin: '3rem 0',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-               }}
-            >
-               <Box
-                  sx={theme => ({
-                     height: '200px',
-                     width: '100%',
-                     marginBottom: '2.5rem',
-                     [theme.breakpoints.down('sm')]: {
-                        height: '100px'
-                     }
-                  })}
-               >
-                  <img className='image' src={cart} alt="wishlist" />
-               </Box>
-               <Typography
-                  variant='h6'
-                  sx={theme => ({
-                     fontWeight: 600,
-                     color: 'text.primary',
-                     [theme.breakpoints.down('sm')]: {
-                        fontSize: '1rem'
-                     }
-                  })}
-               >
-                  Your cart is empty!
-               </Typography>
-               <Typography sx={{ fontSize: '14px' }} mb={2}>Add items to the cart</Typography>
-               <Link
-                  to='/shop/all'
-               >
-                  <Button sx={{ textTransform: 'none' }} variant='outlined'>Shop Now</Button>
-               </Link>
-            </Box>
+            <EmptyTemplate
+               img={cart}
+               text='Your cart is empty!'
+               button={true}
+               subtext={<Typography sx={{ fontSize: '14px' }} mb={2}>Add items to the cart</Typography>}
+            />
          }
       </Box >
    );

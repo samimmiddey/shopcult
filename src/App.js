@@ -2,12 +2,12 @@ import React, { useEffect, Suspense } from 'react';
 import './index.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts, fetchCategories, fetchCart } from './store/fetch-products';
+import { fetchProducts, fetchCategories, fetchCart } from './store/product-thunks';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import { projectAuth } from './Firebase/config';
 import { authActions } from './store/auth-slice';
-import { userData } from './store/auth-thunk';
+import { userData } from './store/auth-thunks';
 import Navbar from './components/Navigation/Navbar';
 import Home from './pages/Home';
 import Footer from './components/Footer/Footer';
@@ -15,6 +15,7 @@ import BackToTop from './components/UI/BackToTop';
 import ScrollToTop from './components/UI/ScrollToTopOnChange';
 import SuccessSnackbar from './components/UI/SuccessSnackbar';
 import ProgressBar from './components/UI/ProgressBar';
+import Search from './pages/Search';
 
 const About = React.lazy(() => import('./pages/About'));
 const Shop = React.lazy(() => import('./pages/Shop'));
@@ -74,14 +75,15 @@ const theme = createTheme({
 });
 
 const App = () => {
-	const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-	const retrievedData = useSelector(state => state.auth.userData);
+	const user = useSelector(state => state.auth.userData);
 	const category = useSelector(state => state.ui.categoryWise);
 	const brand = useSelector(state => state.ui.brandWise);
-	const loading = useSelector(state => state.ui.navbarProgress);
-	const dispatch = useDispatch();
+	const productLoading = useSelector(state => state.products.productPorgress);
+	const categoryLoading = useSelector(state => state.products.categoryProgress);
+	const cartLoading = useSelector(state => state.cart.cartProgress);
+	const userLoading = useSelector(state => state.auth.userDataProgress);
 
-	const loggedInValue = localStorage.getItem('isLoggedIn');
+	const dispatch = useDispatch();
 
 	const productDetailsPageRoutes = [
 		'/home/:productID',
@@ -97,7 +99,6 @@ const App = () => {
 	useEffect(() => {
 		const unsub = projectAuth.onAuthStateChanged((user) => {
 			if (user) {
-				dispatch(authActions.setAuthUser(JSON.stringify(user)));
 				dispatch(authActions.setIsLoggedIn(true));
 				dispatch(userData(user.uid));
 			}
@@ -112,80 +113,77 @@ const App = () => {
 		dispatch(fetchCart());
 	}, [dispatch]);
 
+	if (productLoading || categoryLoading || cartLoading || userLoading) {
+		return <ProgressBar />;
+	};
+
 	return (
 		<BrowserRouter>
 			<ThemeProvider theme={theme}>
 				<Suspense fallback={<ProgressBar />}>
-					{(loggedInValue ? !retrievedData : isLoggedIn) && <ProgressBar />}
-					{
-						(loggedInValue ? retrievedData : !isLoggedIn) &&
-						<>
-							<SuccessSnackbar />
-							<ScrollToTop />
-							{!loading && <Navbar />}
-							<Switch>
-								<Route path='/' exact>
-									<Home />
-								</Route>
-								{authRoutes.map((route, index) => (
-									<Route key={index} path={route} exact>
-										{!isLoggedIn && <Authentication />}
-										{isLoggedIn && <Redirect to='/' />}
-									</Route>
-								))}
-								<Route path='/about' exact>
-									<About />
-								</Route>
-								{
-									['/shop/:id', '/search/:id'].map((path, index) => (
-										<Route path={path} key={index} exact>
-											<Shop />
-										</Route>
-									))
-								}
-								<Route path='/brands' exact>
-									<Brands />
-								</Route>
-								<Route path='/brands/:id' exact>
-									<BrandedProducts />
-								</Route>
-								<Route path='/help' exact>
-									<Help />
-								</Route>
-								<Route path='/wishlist' exact>
-									<Wishlist />
-								</Route>
-								<Route path='/cart' exact>
-									<Cart />
-								</Route>
-								<Route path='/cart/checkout' exact>
-									{isLoggedIn && <Checkout />}
-									{!isLoggedIn && <Redirect to='/signup' />}
-								</Route>
-								<Route path='/confirmation' exact>
-									<OrderConfirmationPage />
-								</Route>
-								<Route path='/orderhistory' exact>
-									{isLoggedIn && !loading && <OrderHistory />}
-									{!isLoggedIn && <Redirect to='/signup' />}
-								</Route>
-								<Route path='/profile' exact>
-									{isLoggedIn && <Profile />}
-									{!isLoggedIn && <Redirect to='/signup' />}
-								</Route>
-								{productDetailsPageRoutes.map((route, index) => (
-									<Route key={index} path={route} exact>
-										<ProductDetailsPage />
-									</Route>
-								))}
-								<Route path='*'>
-									<Redirect to='/' />
-								</Route>
-							</Switch>
-							{!loading && <Footer />}
-							<BackToTop />
-						</>
-					}
+					<SuccessSnackbar />
+					<ScrollToTop />
+					<Navbar />
+					<Switch>
+						<Route path='/' exact>
+							<Home />
+						</Route>
+						{authRoutes.map((route, index) => (
+							<Route key={index} path={route} exact>
+								{!user && <Authentication />}
+								{user && <Redirect to='/' />}
+							</Route>
+						))}
+						<Route path='/about' exact>
+							<About />
+						</Route>
+						<Route path='/shop/:id' exact>
+							<Shop />
+						</Route>
+						<Route path='/search/:id' exact>
+							<Search />
+						</Route>
+						<Route path='/brands' exact>
+							<Brands />
+						</Route>
+						<Route path='/brands/:id' exact>
+							<BrandedProducts />
+						</Route>
+						<Route path='/help' exact>
+							<Help />
+						</Route>
+						<Route path='/wishlist' exact>
+							<Wishlist />
+						</Route>
+						<Route path='/cart' exact>
+							<Cart />
+						</Route>
+						<Route path='/cart/checkout' exact>
+							{user && <Checkout />}
+							{!user && <Redirect to='/login' />}
+						</Route>
+						<Route path='/confirmation' exact>
+							<OrderConfirmationPage />
+						</Route>
+						<Route path='/orderhistory' exact>
+							{user && <OrderHistory />}
+							{!user && <Redirect to='/login' />}
+						</Route>
+						<Route path='/profile' exact>
+							{user && <Profile />}
+							{!user && <Redirect to='/login' />}
+						</Route>
+						{productDetailsPageRoutes.map((route, index) => (
+							<Route key={index} path={route} exact>
+								<ProductDetailsPage />
+							</Route>
+						))}
+						<Route path='*'>
+							<Redirect to='/' />
+						</Route>
+					</Switch>
+					<Footer />
+					<BackToTop />
 				</Suspense>
 			</ThemeProvider>
 		</BrowserRouter>

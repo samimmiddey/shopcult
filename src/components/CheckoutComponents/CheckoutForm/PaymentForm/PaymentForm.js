@@ -10,7 +10,7 @@ import { checkoutActions } from '../../../../store/checkout-slice';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../../../../store/cart-slice';
 import { commerce } from '../../../../lib/commerce';
-import { addOrder } from '../../../../store/send-data';
+import { addOrder } from '../../../../store/cart-thunks';
 import { useHistory } from 'react-router-dom';
 
 const ActionButton = styled(Button)({
@@ -27,7 +27,7 @@ const PaymentForm = ({ backStep, shippingData, handleSubmitOrder }) => {
    const [error, setError] = useState(null);
    const [loading, setLoading] = useState(false);
    const checkoutToken = useSelector(state => state.checkout.checkoutToken);
-   const user = JSON.parse(useSelector(state => state.auth.authUser));
+   const userData = JSON.parse(useSelector(state => state.auth.userData));
 
    const dispatch = useDispatch();
 
@@ -100,7 +100,7 @@ const PaymentForm = ({ backStep, shippingData, handleSubmitOrder }) => {
             history.replace('/confirmation');
             setLoading(false);
 
-            dispatch(addOrder(allOrderedItems, user.uid));
+            dispatch(addOrder(allOrderedItems, userData.id));
 
          }
       } catch (error) {

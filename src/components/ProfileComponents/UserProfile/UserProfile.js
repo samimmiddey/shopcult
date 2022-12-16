@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import UpdateProfileForm from './UpdateProfileForm/UpdateProfileForm';
-import { uploadPicture } from '../../../store/auth-thunk';
+import { uploadPicture } from '../../../store/auth-thunks';
 import { projectAuth } from '../../../Firebase/config';
 import ProgressButton from '../../UI/ProgressButton';
 

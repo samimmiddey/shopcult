@@ -101,7 +101,6 @@ const RelatedProducts = ({ product }) => {
                   <SwiperSlide key={index}>
                      <ProductCard
                         product={product}
-                        index={index}
                         path={`/related/${product.id}`}
                      />
                   </SwiperSlide>

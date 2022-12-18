@@ -19,24 +19,24 @@ const AboutPoints = () => {
          <Box
             sx={theme => ({
                maxWidth: '1450px',
-               padding: '8rem 1rem',
+               padding: '7rem 1rem',
                margin: '8rem auto 0 auto',
                color: 'rgb(196, 174, 243)',
                [theme.breakpoints.down('xl')]: {
                   marginTop: '6rem',
-                  padding: '6rem 1rem'
+                  padding: '5rem 1rem'
                },
                [theme.breakpoints.down('lg')]: {
                   marginTop: '5rem',
-                  padding: '5rem 1rem'
+                  padding: '4rem 1rem'
                },
                [theme.breakpoints.down('md')]: {
                   marginTop: '4rem',
-                  padding: '4rem 1rem'
+                  padding: '3.5rem 1rem'
                },
                [theme.breakpoints.down('sm')]: {
                   marginTop: '3.5rem',
-                  padding: '3.5rem 1rem'
+                  padding: '3rem 1rem'
                }
             })}
          >

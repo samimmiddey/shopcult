@@ -1,27 +1,17 @@
-import { Box, Grid } from '@mui/material';
 import React from 'react';
+import { Box, Grid } from '@mui/material';
 import ProductCard from '../../UI/ProductCard';
-import { useSelector, useDispatch } from 'react-redux';
-import { uiActions } from '../../../store/ui-slice';
 import { useTheme, useMediaQuery } from '@mui/material';
 
-const ShopProducts = ({ shopProducts, xs, xm, sm, md, lg, xl }) => {
-   const category = useSelector(state => state.ui.categoryWise);
-   const selectedItems = useSelector(state => state.ui.selectedItems);
-   const dispatch = useDispatch();
-
+const ShopProducts = ({ shopProducts, xs, xm, sm, md, lg, xl, path }) => {
    const theme = useTheme();
    const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
 
    return (
       <Box>
-         <Grid spacing={smWidth ? 1 : 2} container>
+         <Grid spacing={smWidth ? 1.5 : 2} container>
             {shopProducts.map((product, index) => (
                <Grid
-                  onClick={() => {
-                     dispatch(uiActions.setBrandWise(product.name.toLowerCase().split(' ')[0]));
-                     localStorage.setItem('brandWise', product.name.toLowerCase().split(' ')[0]);
-                  }}
                   sx={{
                      transition: "transform 0.15s ease-in-out",
                      "&:hover": {
@@ -39,12 +29,7 @@ const ShopProducts = ({ shopProducts, xs, xm, sm, md, lg, xl }) => {
                >
                   <ProductCard
                      product={product}
-                     index={index}
-                     path={
-                        selectedItems.length ?
-                           `/shop/${product.name.toLowerCase().split(' ')[0]}/${product.id}` :
-                           `/shop/${category.toLowerCase()}/${product.id}`
-                     }
+                     path={`${path}/${product.id}`}
                   />
                </Grid>
             ))}

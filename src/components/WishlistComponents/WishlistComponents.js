@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
-import WishlistHeader from './WishlistHeader/WishlistHeader';
 import WishlistProducts from './WishlistProducts/WishlistProducts';
 import { useSelector } from 'react-redux';
+import CustomHeader from '../UI/CustomHeader';
 
 const WishlistComponents = () => {
    const [currentPage, setCurrentPage] = useState(1);
 
+   const totalItems = useSelector(state => state.wishlist.totalAmount);
    const wishlistItems = useSelector(state => state.wishlist.wishlistItems);
    const products = useSelector(state => state.products.products);
    const wishlistProducts = products.filter(product => wishlistItems.includes(product.id));
 
    const theme = useTheme();
+   const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
    const xlUpWidth = useMediaQuery(theme.breakpoints.up('xl'));
 
    // Pagination Logic
@@ -28,17 +30,14 @@ const WishlistComponents = () => {
    const paginate = (page) => setCurrentPage(page);
 
    return (
-      <Box
-         className='container'
-         sx={theme => ({
-            padding: '80px 32px 0 32px',
-            [theme.breakpoints.down('sm')]: {
-               paddingLeft: '16px',
-               paddingRight: '16px'
-            }
-         })}
-      >
-         <WishlistHeader />
+      <Box className='small-container'>
+         <CustomHeader
+            text={`My Wishlist (${totalItems})`}
+            filter={false}
+            selectMenu={false}
+            fontSize={smWidth ? '1rem' : '1.25rem'}
+            variant='h6'
+         />
          <WishlistProducts
             currentProducts={currentProducts}
             pageNumbers={pageNumbers}

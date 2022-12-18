@@ -7,7 +7,7 @@ import EmptyTemplate from '../../UI/EmptyTemplate';
 
 const WishlistProducts = ({ currentProducts, pageNumbers, paginate, currentPage }) => {
    return (
-      <Box sx={{ marginTop: '2rem' }}>
+      <Box>
          <Box sx={{ maxWidth: '1024px', margin: '0 auto' }}>
             {
                currentProducts.length >= 1 &&
@@ -24,7 +24,7 @@ const WishlistProducts = ({ currentProducts, pageNumbers, paginate, currentPage 
                         <WishlistItems
                            key={index}
                            product={product}
-                           path={`/home/${product.id}`}
+                           path={`/product/${product.id}`}
                         />
                      ))
                   }

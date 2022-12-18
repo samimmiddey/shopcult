@@ -1,104 +1,38 @@
-import { Typography, Box, Divider } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import React from 'react';
 import img from '../../../assets/abouthero2.jpg';
 import PrimaryButton from '../../UI/PrimaryButton';
+import StylishHeader from '../../UI/StylishHeader';
+
+const subtext = <>We Eat, Sleep & Breath<br />eCommerce.</>;
 
 const AboutHero = () => {
    return (
       <Box>
          {/* First Section */}
-         <Box
-            sx={theme => ({
-               height: '500px',
-               display: 'flex',
-               flexDirection: 'column',
-               alignItems: 'flex-start',
-               justifyContent: 'center',
-               margin: '0 auto',
-               maxWidth: '1450px',
-               rowGap: '2rem',
-               padding: '0 5rem',
-               [theme.breakpoints.down('xl')]: {
-                  height: '450px'
-               },
-               [theme.breakpoints.down('lg')]: {
-                  height: '400px',
-                  padding: '0 4rem',
-               },
-               [theme.breakpoints.down('md')]: {
-                  height: '350px',
-                  rowGap: '1rem'
-               },
-               [theme.breakpoints.down('sm')]: {
-                  padding: '0 0.5rem',
-                  height: '250px'
-               },
-            })}
-         >
-            <Box
-               sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  columnGap: '1rem'
-               }}
-            >
-               <Divider sx={{ width: '40px', borderBottom: '2px solid black' }} />
-               <Typography
-                  sx={theme => ({
-                     fontSize: '16px',
-                     fontWeight: 600,
-                     [theme.breakpoints.down('md')]: {
-                        fontSize: '15px'
-                     },
-                     [theme.breakpoints.down('md')]: {
-                        fontSize: '14px'
-                     }
-                  })}>
-                  AWARD WINNING ECOMMERCE
-               </Typography>
-            </Box>
-            <Typography
-               variant='h3'
-               sx={theme => ({
-                  fontWeight: 400,
-                  fontSize: '4rem',
-                  lineHeight: '1.4',
-                  [theme.breakpoints.down('xl')]: {
-                     fontSize: '3.5rem',
-                  },
-                  [theme.breakpoints.down('lg')]: {
-                     fontSize: '3rem',
-                  },
-                  [theme.breakpoints.down('md')]: {
-                     fontSize: '2.5rem',
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                     fontSize: '1.75rem'
-                  }
-               })}
-            >
-               We Eat, Sleep &amp; Breath<br />eCommerce.
-            </Typography>
-         </Box>
+         <StylishHeader
+            text='AWARD WINNING ECOMMERCE'
+            subtext={subtext}
+         />
          {/* Second Section */}
          <Box
             sx={theme => ({
-               height: '800px',
+               height: '750px',
                borderRadius: '30px',
                position: 'relative',
                background: `url(${img}) no-repeat center center/cover`,
                [theme.breakpoints.down('xl')]: {
-                  height: '700px'
+                  height: '650px'
                },
                [theme.breakpoints.down('lg')]: {
-                  height: '600px',
+                  height: '550px',
                   borderRadius: '20px'
                },
                [theme.breakpoints.down('md')]: {
-                  height: '500px'
+                  height: '450px'
                },
                [theme.breakpoints.down('sm')]: {
-                  height: '400px',
+                  height: '350px',
                   borderRadius: '10px'
                }
             })}
@@ -182,10 +116,13 @@ const AboutHero = () => {
                   color: 'text.secondary',
                   [theme.breakpoints.down('lg')]: {
                      lineHeight: 1.6,
-                     fontSize: '18px',
+                     fontSize: '18px'
                   },
                   [theme.breakpoints.down('md')]: {
-                     fontSize: '16px',
+                     fontSize: '16px'
+                  },
+                  [theme.breakpoints.down('sm')]: {
+                     fontSize: '16px'
                   }
                })}
             >

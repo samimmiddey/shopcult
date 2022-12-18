@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 const category = localStorage.getItem('category');
-const brandWise = localStorage.getItem('brandWise');
 const selectedItems = JSON.parse(localStorage.getItem('selectedItems'));
 
 const initialState = {
@@ -9,7 +8,6 @@ const initialState = {
    showModalFilter: false,
    sortProducts: '',
    categoryWise: category || 'All',
-   brandWise: brandWise,
    categoryClick: false,
    selectedItems: selectedItems || [],
    showSnackbar: false,
@@ -22,9 +20,7 @@ const initialState = {
    cartProgress: false,
    currentProduct: '',
    inputFocus: false,
-   activeSearch: false,
-   searchLoading: false,
-   searchedProducts: []
+   activeSearch: false
 };
 
 const uiSlice = createSlice({
@@ -46,9 +42,6 @@ const uiSlice = createSlice({
       setCategoryWise(state, action) {
          state.categoryWise = action.payload;
          state.categoryClick = true;
-      },
-      setBrandWise(state, action) {
-         state.brandWise = action.payload;
       },
       setSelectedItems(state, action) {
          if (action.payload.type === true) {
@@ -90,12 +83,6 @@ const uiSlice = createSlice({
       },
       setActiveSearch(state, action) {
          state.activeSearch = action.payload;
-      },
-      setSearchLoading(state, action) {
-         state.searchLoading = action.payload;
-      },
-      setSearchedProducts(state, action) {
-         state.searchedProducts = action.payload;
       }
    }
 });

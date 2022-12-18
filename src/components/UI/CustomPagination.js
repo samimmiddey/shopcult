@@ -10,7 +10,6 @@ const CustomPagination = ({ pageNumbers, paginate, currentPage }) => {
                paginate(page);
             }}
             count={pageNumbers}
-            variant='outlined'
             shape='rounded'
             color='primary'
          />

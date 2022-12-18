@@ -5,7 +5,6 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import ProductCardData from '../../data/ProductCardData';
 import { Box } from '@mui/system';
 import { useTheme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
@@ -85,8 +84,17 @@ const HomeCategoryCard = ({ item, index, path }) => {
                         >
                            {item.price.formatted_with_symbol}
                         </Typography>
-                        <Typography sx={{ fontSize: '14px', textDecoration: 'line-through' }}>
-                           {ProductCardData[index].discount}
+                        <Typography
+                           sx={theme => ({
+                              fontSize: '13px',
+                              fontWeight: 600,
+                              color: '#00b3b3',
+                              [theme.breakpoints.down('sm')]: {
+                                 fontSize: '12px'
+                              }
+                           })}
+                        >
+                           {Math.floor((Math.random() * 50) + 1) + '%'} off
                         </Typography>
                      </div>
                   </CardContent>

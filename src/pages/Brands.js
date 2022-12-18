@@ -1,10 +1,10 @@
 import React from 'react';
-import BrandComponents from '../components/BrandsComponents/BrandComponents';
+import AllBrands from '../components/BrandsComponents/AllBrands/AllBrands';
 
 const Brands = () => {
    return (
       <>
-         <BrandComponents />
+         <AllBrands />
       </>
    );
 };

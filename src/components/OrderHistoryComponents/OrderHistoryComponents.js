@@ -1,13 +1,16 @@
-import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { useSelector } from 'react-redux';
-import OrderHistoryHeader from './OrderHistoryHeader/OrderHistoryHeader';
 import OrderHistoryUI from './OrderHistoryUI/OrderHistoryUI';
 import order from '../../assets/order.svg';
-import { Link } from 'react-router-dom';
+import EmptyTemplate from '../UI/EmptyTemplate';
+import CustomHeader from '../UI/CustomHeader';
 
 const OrderHistoryComponents = () => {
    const userData = useSelector(state => state.auth.userData);
+
+   const theme = useTheme();
+   const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
 
    let sortedArray = [];
    if (userData.order) {
@@ -32,7 +35,13 @@ const OrderHistoryComponents = () => {
             }
          })}
       >
-         <OrderHistoryHeader />
+         <CustomHeader
+            text='Recent Orders'
+            filter={false}
+            selectMenu={false}
+            fontSize={smWidth ? '1rem' : '1.25rem'}
+            variant='h6'
+         />
          {userData.order &&
             <Box
                sx={theme => ({
@@ -54,46 +63,11 @@ const OrderHistoryComponents = () => {
             </Box>
          }
          {!userData.order &&
-            <Box
-               sx={{
-                  textAlign: 'center',
-                  margin: '3rem 0',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-               }}
-            >
-               <Box
-                  sx={theme => ({
-                     height: '200px',
-                     width: '100%',
-                     marginBottom: '2.5rem',
-                     [theme.breakpoints.down('sm')]: {
-                        height: '100px'
-                     }
-                  })}
-               >
-                  <img className='image' src={order} alt="order" />
-               </Box>
-               <Typography
-                  mb={2}
-                  variant='h6'
-                  sx={theme => ({
-                     fontWeight: 600,
-                     color: 'text.primary',
-                     [theme.breakpoints.down('sm')]: {
-                        fontSize: '1rem'
-                     }
-                  })}
-               >
-                  No recent orders!
-               </Typography>
-               <Link
-                  to='/shop/all'
-               >
-                  <Button sx={{ textTransform: 'none' }} variant='outlined'>Shop Now</Button>
-               </Link>
-            </Box>
+            <EmptyTemplate
+               img={order}
+               text='No recent orders!'
+               button={true}
+            />
          }
       </Box>
    );

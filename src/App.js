@@ -3,7 +3,7 @@ import './index.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, fetchCategories, fetchCart } from './store/product-thunks';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import { projectAuth } from './Firebase/config';
 import { authActions } from './store/auth-slice';
@@ -35,7 +35,7 @@ const theme = createTheme({
 	breakpoints: {
 		values: {
 			xs: 0,
-			xm: 375,
+			xm: 450,
 			sm: 600,
 			md: 900,
 			lg: 1200,
@@ -48,6 +48,11 @@ const theme = createTheme({
 		},
 		secondary: {
 			main: 'rgb(132, 76, 196)',
+		},
+		text: {
+			primary: '#333',
+			secondary: '#868395',
+			disabled: '#a19fad',
 		},
 	},
 	typography: {
@@ -66,8 +71,9 @@ const theme = createTheme({
 		MuiCard: {
 			styleOverrides: {
 				root: {
-					border: '1px solid #eceff1',
-					borderRadius: '10px'
+					border: 'none',
+					borderRadius: '10px',
+					boxShadow: 'rgb(90 114 123 / 11%) 0px 7px 30px 0px'
 				}
 			}
 		},
@@ -76,21 +82,20 @@ const theme = createTheme({
 
 const App = () => {
 	const user = useSelector(state => state.auth.userData);
-	const category = useSelector(state => state.ui.categoryWise);
-	const brand = useSelector(state => state.ui.brandWise);
 	const productLoading = useSelector(state => state.products.productPorgress);
 	const categoryLoading = useSelector(state => state.products.categoryProgress);
 	const cartLoading = useSelector(state => state.cart.cartProgress);
 	const userLoading = useSelector(state => state.auth.userDataProgress);
 
 	const dispatch = useDispatch();
+	const { pathname } = useLocation();
 
 	const productDetailsPageRoutes = [
-		'/home/:productID',
+		'/product/:productID',
 		'/related/:productID',
-		`/shop/${category.toLowerCase()}/:productID`,
-		`/shop/${brand}/:productID`,
-		`/brands/${brand}/:productID`,
+		'/shop/product/:productID',
+		'/brands/:brandID/:productID',
+		'/search/:keyID/:productID'
 	];
 
 	const authRoutes = ['/signup', '/login'];
@@ -118,75 +123,81 @@ const App = () => {
 	};
 
 	return (
-		<BrowserRouter>
-			<ThemeProvider theme={theme}>
-				<Suspense fallback={<ProgressBar />}>
-					<SuccessSnackbar />
-					<ScrollToTop />
-					<Navbar />
-					<Switch>
-						<Route path='/' exact>
-							<Home />
+		<ThemeProvider theme={theme}>
+			<Suspense fallback={<ProgressBar />}>
+				<SuccessSnackbar />
+				<ScrollToTop />
+				<Navbar />
+				<Switch>
+					<Route path='/' exact>
+						<Home />
+					</Route>
+					{authRoutes.map((route, index) => (
+						<Route key={index} path={route} exact>
+							{!user && <Authentication />}
+							{user && <Redirect to='/' />}
 						</Route>
-						{authRoutes.map((route, index) => (
-							<Route key={index} path={route} exact>
-								{!user && <Authentication />}
-								{user && <Redirect to='/' />}
-							</Route>
-						))}
-						<Route path='/about' exact>
-							<About />
+					))}
+					<Route path='/about' exact>
+						<About />
+					</Route>
+					<Route path='/shop/:id' exact>
+						<Shop />
+					</Route>
+					<Route path='/search/:id' exact>
+						<Search />
+					</Route>
+					<Route path='/brands' exact>
+						<Brands />
+					</Route>
+					<Route path='/brands/:id' exact>
+						<BrandedProducts />
+					</Route>
+					<Route path='/help' exact>
+						<Help />
+					</Route>
+					<Route path='/wishlist' exact>
+						<Wishlist />
+					</Route>
+					<Route path='/cart' exact>
+						<Cart />
+					</Route>
+					<Route path='/cart/checkout' exact>
+						{user && <Checkout />}
+						{!user && <Redirect to='/login' />}
+					</Route>
+					<Route path='/confirmation' exact>
+						<OrderConfirmationPage />
+					</Route>
+					<Route path='/orderhistory' exact>
+						{user && <OrderHistory />}
+						{!user && <Redirect to='/login' />}
+					</Route>
+					<Route path='/profile' exact>
+						{user && <Profile />}
+						{!user && <Redirect to='/login' />}
+					</Route>
+					{productDetailsPageRoutes.map((route, index) => (
+						<Route key={index} path={route} exact>
+							<ProductDetailsPage />
 						</Route>
-						<Route path='/shop/:id' exact>
-							<Shop />
-						</Route>
-						<Route path='/search/:id' exact>
-							<Search />
-						</Route>
-						<Route path='/brands' exact>
-							<Brands />
-						</Route>
-						<Route path='/brands/:id' exact>
-							<BrandedProducts />
-						</Route>
-						<Route path='/help' exact>
-							<Help />
-						</Route>
-						<Route path='/wishlist' exact>
-							<Wishlist />
-						</Route>
-						<Route path='/cart' exact>
-							<Cart />
-						</Route>
-						<Route path='/cart/checkout' exact>
-							{user && <Checkout />}
-							{!user && <Redirect to='/login' />}
-						</Route>
-						<Route path='/confirmation' exact>
-							<OrderConfirmationPage />
-						</Route>
-						<Route path='/orderhistory' exact>
-							{user && <OrderHistory />}
-							{!user && <Redirect to='/login' />}
-						</Route>
-						<Route path='/profile' exact>
-							{user && <Profile />}
-							{!user && <Redirect to='/login' />}
-						</Route>
-						{productDetailsPageRoutes.map((route, index) => (
-							<Route key={index} path={route} exact>
-								<ProductDetailsPage />
-							</Route>
-						))}
-						<Route path='*'>
-							<Redirect to='/' />
-						</Route>
-					</Switch>
+					))}
+					<Route path='*'>
+						<Redirect to='/' />
+					</Route>
+				</Switch>
+				{
+					!(
+						(pathname.startsWith('/brands') && pathname.length > 7) ||
+						(pathname.startsWith('/search') && pathname.length > 7) ||
+						(pathname.startsWith('/shop/product')) ||
+						(pathname.startsWith('/product'))
+					) &&
 					<Footer />
-					<BackToTop />
-				</Suspense>
-			</ThemeProvider>
-		</BrowserRouter>
+				}
+				<BackToTop />
+			</Suspense>
+		</ThemeProvider>
 	);
 };
 

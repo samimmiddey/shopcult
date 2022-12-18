@@ -31,20 +31,20 @@ const HelpBody = () => {
                      display: 'flex',
                      flexDirection: 'column',
                      rowGap: '4rem',
-                     padding: '8rem',
+                     padding: '7rem',
                      [theme.breakpoints.down('xl')]: {
                         rowGap: '3rem',
-                        padding: '6rem 4rem'
+                        padding: '5rem 4rem'
                      },
                      [theme.breakpoints.down('lg')]: {
                         rowGap: '2.5rem',
-                        padding: '5rem 3rem'
+                        padding: '4rem 3rem'
                      },
                      [theme.breakpoints.down('md')]: {
-                        padding: '4rem 2rem'
+                        padding: '3.5rem 2rem'
                      },
                      [theme.breakpoints.down('sm')]: {
-                        padding: '3.5rem 1rem'
+                        padding: '3rem 1rem'
                      }
                   })}
                >

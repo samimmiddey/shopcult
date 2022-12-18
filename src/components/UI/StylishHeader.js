@@ -1,7 +1,7 @@
-import { Box, Typography, Divider } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import React from 'react';
 
-const HelpHeader = () => {
+const StylishHeader = ({ text, subtext }) => {
    return (
       <Box
          sx={theme => ({
@@ -13,17 +13,19 @@ const HelpHeader = () => {
             margin: '0 auto',
             maxWidth: '1450px',
             rowGap: '2rem',
-            padding: '0 5rem',
+            padding: '0 7rem',
             [theme.breakpoints.down('xl')]: {
-               height: '450px'
+               height: '450px',
+               padding: '0 6rem'
             },
             [theme.breakpoints.down('lg')]: {
                height: '400px',
-               padding: '0 4rem',
+               padding: '0 5rem'
             },
             [theme.breakpoints.down('md')]: {
                height: '350px',
-               rowGap: '1rem'
+               rowGap: '1rem',
+               padding: '0 4rem'
             },
             [theme.breakpoints.down('sm')]: {
                padding: '0 0.5rem',
@@ -50,7 +52,7 @@ const HelpHeader = () => {
                      fontSize: '14px'
                   }
                })}>
-               GET IN TOUCH WITH US
+               {text}
             </Typography>
          </Box>
          <Typography
@@ -73,10 +75,10 @@ const HelpHeader = () => {
                }
             })}
          >
-            We Are Setting a New Standard For Customer Care Service.
+            {subtext}
          </Typography>
       </Box>
    );
 };
 
-export default HelpHeader;
+export default StylishHeader;

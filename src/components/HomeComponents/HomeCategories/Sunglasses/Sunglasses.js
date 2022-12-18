@@ -81,7 +81,7 @@ const Sunglasses = ({ sunglasses }) => {
                      <HomeCategoryCard
                         item={item}
                         index={index}
-                        path={`/home/${item.id}`}
+                        path={`/product/${item.id}`}
                      />
                   </SwiperSlide>
                ))}

@@ -16,7 +16,7 @@ const SearchBarBody = React.forwardRef(({ setValue, submitted, setSubmitted, ter
             top: '10px',
             left: 0,
             right: 0,
-            minHeight: '376px',
+            minHeight: '400px',
             zIndex: 9999,
             backgroundColor: '#fff',
             marginTop: '41px',
@@ -36,7 +36,17 @@ const SearchBarBody = React.forwardRef(({ setValue, submitted, setSubmitted, ter
             }
          })}
       >
-         <Box sx={{ margin: '0.5rem 0' }}>
+         <Typography
+            sx={{
+               fontSize: '14px',
+               fontWeight: 500,
+               color: 'text.disabled',
+               margin: '6px 1.5rem 0 1.5rem'
+            }}
+         >
+            Recent searches
+         </Typography>
+         <Box sx={{ margin: '5px 0 0.5rem 0' }}>
             {
                terms.map((term, index) => (
                   <Box

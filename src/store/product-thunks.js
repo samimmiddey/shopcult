@@ -174,21 +174,66 @@ export const applyDiscount = (totkenID, code) => {
 }
 
 // Search data
-export const searchProducts = ({ query }) => {
+export const searchProducts = (query) => {
    return async (dispatch) => {
       const fetchData = async () => {
-         dispatch(uiActions.setSearchLoading(true));
+         dispatch(productActions.setSearchLoading(true));
 
          const { data } = await commerce.products.list({ query: query });
+         const retrievedData = data ? data : [];
 
-         dispatch(uiActions.setSearchedProducts(data));
-         dispatch(uiActions.setSearchLoading(false));
+         dispatch(productActions.setSearchedProducts(retrievedData));
+         dispatch(productActions.setSearchLoading(false));
       }
 
       try {
          await fetchData();
       } catch (error) {
-         dispatch(uiActions.setSearchLoading(false));
+         dispatch(productActions.setSearchLoading(false));
+         dispatch(errorActions.setError((error.data.error.message)));
+      }
+   }
+}
+
+// Get branded products
+export const getBranedProducts = (brand) => {
+   return async (dispatch) => {
+      const fetchData = async () => {
+         dispatch(productActions.setProgress(true));
+
+         const { data } = await commerce.products.list({ query: brand });
+         const retrievedData = data ? data : [];
+
+         dispatch(productActions.setBrandedProducts(retrievedData));
+         dispatch(productActions.setProgress(false));
+      }
+
+      try {
+         await fetchData();
+      } catch (error) {
+         dispatch(productActions.setProgress(false));
+         dispatch(errorActions.setError((error.data.error.message)));
+      }
+   }
+}
+
+// Get a single product
+export const getSingleProduct = (id) => {
+   return async (dispatch) => {
+      const fetchProduct = async () => {
+         dispatch(productActions.setProgress(true));
+
+         const data = await commerce.products.retrieve(id);
+         const product = data ? data : null;
+
+         dispatch(productActions.setSingleProduct(product));
+         dispatch(productActions.setProgress(false));
+      }
+
+      try {
+         await fetchProduct();
+      } catch (error) {
+         dispatch(productActions.setProgress(false));
          dispatch(errorActions.setError((error.data.error.message)));
       }
    }

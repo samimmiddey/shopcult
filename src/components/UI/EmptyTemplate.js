@@ -18,8 +18,14 @@ const EmptyTemplate = ({ img, text, button, subtext }) => {
                height: '200px',
                width: '100%',
                marginBottom: '2.5rem',
+               [theme.breakpoints.down('lg')]: {
+                  height: '175px'
+               },
                [theme.breakpoints.down('sm')]: {
-                  height: '100px'
+                  height: '150px'
+               },
+               [theme.breakpoints.down(350)]: {
+                  height: '125px'
                }
             })}
          >

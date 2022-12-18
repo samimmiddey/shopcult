@@ -19,7 +19,7 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
    const xsWidth = useMediaQuery(theme.breakpoints.down(350));
 
    return (
-      <Box sx={{ marginTop: '2rem' }}>
+      <Box>
          {
             totalItems >= 1 &&
             <Card

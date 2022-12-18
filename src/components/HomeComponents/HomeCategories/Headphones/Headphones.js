@@ -82,7 +82,7 @@ const Headphones = ({ headphones }) => {
                      <HomeCategoryCard
                         item={item}
                         index={index}
-                        path={`/home/${item.id}`}
+                        path={`/product/${item.id}`}
                      />
                   </SwiperSlide>
                ))}

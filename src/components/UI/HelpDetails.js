@@ -1,7 +1,10 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 const HelpDetails = ({ img, title, subtitle, subtext }) => {
+   const theme = useTheme();
+   const mdWidth = useMediaQuery(theme.breakpoints.down('md'));
+
    return (
       <Box
          sx={theme => ({
@@ -14,7 +17,14 @@ const HelpDetails = ({ img, title, subtitle, subtext }) => {
             }
          })}
       >
-         <img src={img} alt="Call Us" />
+         <img
+            src={img}
+            alt="Call Us"
+            style={{
+               height: mdWidth ? '36px' : '48px',
+               width: mdWidth ? '36px' : '48px'
+            }}
+         />
          <Box
             sx={{
                display: 'flex',
@@ -44,9 +54,7 @@ const HelpDetails = ({ img, title, subtitle, subtext }) => {
                {title}
             </Typography>
             <Typography
-               variant='h6'
                sx={theme => ({
-                  fontWeight: 300,
                   fontSize: '1.25rem',
                   [theme.breakpoints.down('lg')]: {
                      fontSize: '1rem'

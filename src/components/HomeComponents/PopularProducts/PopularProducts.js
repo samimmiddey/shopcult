@@ -106,8 +106,7 @@ const PopularProducts = ({ bestsellers }) => {
                   <SwiperSlide key={index}>
                      <ProductCard
                         product={product}
-                        index={index}
-                        path={`/home/${product.id}`}
+                        path={`/product/${product.id}`}
                      />
                   </SwiperSlide>
                ))}

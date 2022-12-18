@@ -66,12 +66,11 @@ const HelpForm = () => {
                Contact Us
             </Typography>
             <Typography
-               variant='h6'
                sx={theme => ({
-                  fontWeight: 300,
                   fontSize: '1.25rem',
                   marginTop: '1rem',
                   textAlign: 'center',
+                  color: 'text.secondary',
                   [theme.breakpoints.down('lg')]: {
                      fontSize: '1rem',
                      marginTop: '0.8rem',

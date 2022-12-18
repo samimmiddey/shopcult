@@ -9,13 +9,16 @@ import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
 import ShopProducts from '../ShopComponents/ShopProducts/ShopProducts';
 import CustomHeader from '../UI/CustomHeader';
 import CustomPagination from '../UI/CustomPagination';
+import Footer from '../Footer/Footer';
+import { productActions } from '../../store/product-slice';
 
 const SearchComponent = () => {
    const [currentPage, setCurrentPage] = useState(1);
 
-   const searchedProducts = useSelector(state => state.ui.searchedProducts);
+   const searchedProducts = useSelector(state => state.products.searchedProducts);
    const sortProducts = useSelector(state => state.ui.sortProducts);
-   const loading = useSelector(state => state.ui.searchLoading);
+   const loading = useSelector(state => state.products.searchLoading);
+   const searchKey = useSelector(state => state.products.searchKey);
 
    const theme = useTheme();
    const xlUpWidth = useMediaQuery(theme.breakpoints.up('xl'));
@@ -54,8 +57,11 @@ const SearchComponent = () => {
    const paginate = (page) => setCurrentPage(page);
 
    useEffect(() => {
-      dispatch(searchProducts(id));
-   }, [dispatch, id]);
+      if (searchKey !== id) {
+         dispatch(searchProducts(id));
+         dispatch(productActions.setSearchKey(id));
+      }
+   }, [dispatch, id, searchKey]);
 
    // Loading state
    if (loading) {
@@ -63,22 +69,23 @@ const SearchComponent = () => {
    };
 
    return (
-      <Box className='small-container'>
-         <CustomHeader
-            text={
-               <>
-                  <span>Search result for</span> <span style={{ color: 'rgb(90, 57, 161)' }}>{id}</span>
-               </>
-            }
-            filter={false}
-            selectMenu={true}
-            fontSize='1.25rem'
-         />
-         <Grid spacing={1} container>
-            <Grid item xs={12}>
-               {
-                  searchedProducts.length === 0 ?
-                     <EmptyTemplate img={search} text='No product found!' /> :
+      <>
+         <Box className='small-container'>
+            <CustomHeader
+               text={
+                  <>
+                     <span>Search result for</span> <span style={{ color: 'rgb(90, 57, 161)' }}>{id}</span>
+                  </>
+               }
+               filter={false}
+               selectMenu={true}
+               fontSize='1.25rem'
+            />
+            {searchedProducts.length === 0 && <EmptyTemplate img={search} text='No product found!' />}
+            {
+               searchedProducts.length &&
+               <Grid spacing={1} container>
+                  <Grid item xs={12}>
                      <ShopProducts
                         shopProducts={currentProducts}
                         xs={12}
@@ -87,16 +94,19 @@ const SearchComponent = () => {
                         md={4}
                         lg={3}
                         xl={3}
+                        path={`/search/${id}`}
                      />
-               }
-               <CustomPagination
-                  pageNumbers={pageNumbers}
-                  paginate={paginate}
-                  currentPage={currentPage}
-               />
-            </Grid>
-         </Grid>
-      </Box>
+                     <CustomPagination
+                        pageNumbers={pageNumbers}
+                        paginate={paginate}
+                        currentPage={currentPage}
+                     />
+                  </Grid>
+               </Grid>
+            }
+         </Box>
+         <Footer />
+      </>
    );
 };
 

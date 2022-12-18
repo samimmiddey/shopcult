@@ -1,10 +1,10 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-const CustomHeaderText = ({ text, fontSize }) => {
+const CustomHeaderText = ({ text, fontSize, variant }) => {
    return (
       <Typography
-         variant='h4'
+         variant={variant ? variant : 'h4'}
          sx={theme => ({
             fontWeight: 700,
             fontSize: fontSize ? fontSize : '2rem',
@@ -17,7 +17,7 @@ const CustomHeaderText = ({ text, fontSize }) => {
             [theme.breakpoints.down('sm')]: {
                fontSize: fontSize ? fontSize : '1.35rem'
             },
-            [theme.breakpoints.down('xm')]: {
+            [theme.breakpoints.down(375)]: {
                fontSize: fontSize ? fontSize : '1.25rem'
             }
          })}

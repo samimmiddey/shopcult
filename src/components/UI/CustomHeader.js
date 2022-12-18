@@ -7,7 +7,7 @@ import { uiActions } from '../../store/ui-slice';
 import SelectMenu from './SelectMenu';
 import CustomHeaderText from './CustomHeaderText';
 
-const CustomHeader = ({ text, filter, selectMenu, fontSize }) => {
+const CustomHeader = ({ text, filter, selectMenu, fontSize, variant }) => {
    const dispatch = useDispatch();
    const showFilter = useSelector(state => state.ui.showFilter);
 
@@ -45,7 +45,11 @@ const CustomHeader = ({ text, filter, selectMenu, fontSize }) => {
             }
          })}
       >
-         <CustomHeaderText text={text} fontSize={fontSize} />
+         <CustomHeaderText
+            text={text}
+            fontSize={fontSize}
+            variant={variant}
+         />
          <Box
             sx={theme => ({
                display: 'flex',

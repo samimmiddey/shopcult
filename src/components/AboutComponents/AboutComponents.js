@@ -6,7 +6,7 @@ import AboutForm from './AboutForm/AboutForm';
 
 const AboutComponents = () => {
    return (
-      <div className='container' style={{ paddingTop: '80px' }}>
+      <div className='small-container' style={{ paddingTop: '80px' }}>
          <AboutHero />
          <AboutPoints />
          <AboutForm />

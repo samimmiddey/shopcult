@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Rating from '../UI/Rating';
-import ProductCardData from '../../data/ProductCardData';
 import { Box, useTheme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -17,7 +16,7 @@ import { addToCart } from '../../store/cart-thunks';
 import { uiActions } from '../../store/ui-slice';
 import ProgressButton from './ProgressButton';
 
-const ProductCard = ({ product, index, path }) => {
+const ProductCard = ({ product, path }) => {
    const wishlistItems = useSelector(state => state.wishlist.wishlistItems);
    const buttonLoading = useSelector(state => state.ui.buttonProgress);
    const currentProduct = useSelector(state => state.ui.currentProduct);
@@ -25,83 +24,120 @@ const ProductCard = ({ product, index, path }) => {
 
    const theme = useTheme();
    const lgWidth = useMediaQuery(theme.breakpoints.down(1200));
-   const mdWidth = useMediaQuery(theme.breakpoints.down(900));
    const smWidth = useMediaQuery(theme.breakpoints.down(600));
-   const xsWidth = useMediaQuery(theme.breakpoints.down(450));
+
+   const floatNum = (Math.random() * (5.00 - 1.00) + 1.00).toFixed(1);
+   const rating = Math.round(floatNum);
 
    return (
-      <Box sx={{ position: 'relative' }}>
+      <Card
+         elevation={0}
+         sx={{
+            maxWidth: 415,
+            position: 'relative',
+            borderRadius: '10px'
+         }}
+      >
          <Link to={path}>
-            <Card sx={{ maxWidth: 400 }} elevation={0} >
-               <CardMedia
-                  component="img"
-                  alt="Image"
-                  height={mdWidth && !smWidth ? '150' : mdWidth && smWidth ? '125' : '200'}
-                  image={product.image.url}
-               />
-               <CardContent
-                  sx={theme => ({
-                     paddingBottom: 0,
-                     [theme.breakpoints.down(450)]: {
-                        paddingLeft: '10px',
-                        paddingRight: '10px'
-                     }
-                  })}
+            <CardMedia
+               component="img"
+               alt="Image"
+               height={smWidth ? '175' : '200'}
+               image={product.image.url}
+            />
+            <CardContent sx={{ paddingBottom: 0 }}>
+               <Typography
+                  gutterBottom
+                  variant="h6"
+                  sx={{
+                     color: 'text.primary',
+                     fontWeight: 600,
+                     padding: smWidth ? '3px 0' : '6px 0',
+                     fontSize: smWidth ? '16px' : '18px'
+                  }}
                >
-                  <Typography gutterBottom variant="h6"
-                     sx={{
-                        color: 'text.secondary',
-                        fontWeight: 700,
-                        padding: `${smWidth ? '0' : '6px 0'}`,
-                        fontSize: `${lgWidth && !lgWidth && !xsWidth ? '16px' : lgWidth && mdWidth && !xsWidth ? '15px' : lgWidth && mdWidth && xsWidth ? '14px' : '18px'}`
-                     }}>
-                     {product.name}
-                  </Typography>
-                  {!mdWidth &&
-                     <Typography className='text-wrap' variant="body2" color="text.secondary" >
-                        {product.description.replace(/[<p></p>]/g, '')}
-                     </Typography>}
-               </CardContent>
-               {!mdWidth && <CardContent
+                  {product.name}
+               </Typography>
+               <Typography
+                  className='text-wrap'
+                  variant="body2"
+                  color="text.secondary"
+               >
+                  {product.description.replace(/[<p></p>]/g, '')}
+               </Typography>
+            </CardContent>
+            <CardContent
+               sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  columnGap: '10px',
+                  padding: '10px 16px'
+               }}
+            >
+               <Rating value={rating} />
+               <Typography
+                  variant='h6'
+                  sx={{
+                     fontSize: '12px',
+                     color: '#fff',
+                     padding: '0 6px',
+                     borderRadius: '3px',
+                     backgroundColor: '#00b3b3'
+                  }}
+               >
+                  {floatNum}
+               </Typography>
+            </CardContent>
+            <CardContent
+               sx={theme => ({
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '4px 16px 24px 16px',
+                  [theme.breakpoints.down('sm')]: {
+                     padding: '4px 16px 20px 16px'
+                  }
+               })}
+            >
+               <Box
                   sx={{
                      display: 'flex',
                      alignItems: 'center',
-                     columnGap: '10px',
-                     padding: `${lgWidth ? '0px 16px' : '10px 16px'}`
-                  }}>
-                  <Rating />
-                  <Typography variant='h6' sx={{ fontSize: '14px', color: 'text.disabled' }}>
-                     {ProductCardData[index].rating}
-                  </Typography>
-               </CardContent>}
-               <CardContent
-                  sx={theme => ({
-                     display: 'flex',
                      justifyContent: 'space-between',
-                     alignItems: 'center',
-                     padding: '15px 16px 28px 16px',
-                     [theme.breakpoints.down(450)]: {
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'flex-start',
-                        rowGap: '6px',
-                        padding: '0 10px',
-                        marginBottom: '2.5rem',
-                        "&:last-child": {
-                           paddingBottom: '12px'
-                        }
-                     }
-                  })}>
-                  <div style={{ display: 'flex', alignItems: 'center', columnGap: '8px', paddingBottom: '4px' }}>
-                     <Typography sx={{ fontSize: `${lgWidth && !lgWidth ? '16px' : lgWidth && mdWidth ? '15px' : '18px'}`, fontWeight: 700, color: 'text.secondary' }}>
+                     height: '35px',
+                     width: '100%'
+                  }}
+               >
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        columnGap: '8px'
+                     }}
+                  >
+                     <Typography
+                        sx={{
+                           fontSize: smWidth ? '15px' : '18px',
+                           fontWeight: 600,
+                           color: 'text.disabled'
+                        }}>
                         {product.price.formatted_with_symbol}
                      </Typography>
-                     <Typography sx={{ color: 'text.disabled', fontSize: '14px', textDecoration: 'line-through' }}>
-                        {ProductCardData[index].discount}
+                     <Typography
+                        sx={theme => ({
+                           fontSize: '13px',
+                           fontWeight: 600,
+                           color: '#00b3b3',
+                           [theme.breakpoints.down('sm')]: {
+                              fontSize: '12px'
+                           }
+                        })}
+                     >
+                        {Math.floor((Math.random() * 50) + 1) + '%'} off
                      </Typography>
-                  </div>
-               </CardContent>
-            </Card>
+                  </Box>
+               </Box>
+            </CardContent>
          </Link>
          <Button
             size="small"
@@ -114,52 +150,31 @@ const ProductCard = ({ product, index, path }) => {
                   dispatch(uiActions.setCurrentProduct(product.id));
                }
             }}
-            sx={theme => ({
+            sx={{
                position: 'absolute',
-               bottom: 0,
-               right: 0,
-               margin: '0 17px 25px 0',
+               right: '16px',
+               bottom: '24px',
                textTransform: 'none',
                minHeight: 0,
                minWidth: 0,
                textAlign: 'center',
-               height: lgWidth ? '31px' : '36px',
-               width: lgWidth ? '44px' : '54px',
+               height: smWidth ? '30px' : '35px',
+               width: smWidth ? '40px' : '50px',
+               color: '#fff',
                backgroundColor: 'rgb(90, 57, 161)',
                '&:hover': {
                   backgroundColor: 'rgb(63, 40, 113)'
-               },
-               [theme.breakpoints.down(450)]: {
-                  width: 'calc(100% - 24px)',
-                  margin: '11px auto',
-                  left: 0,
-                  right: 0
                }
-            })}
+            }}
          >
             {
-               xsWidth &&
-               (
-                  product.id === currentProduct ?
-                     (buttonLoading && <ProgressButton loading={buttonLoading} />) ||
-                     (!buttonLoading && <p style={{ fontSize: '12px' }}>Add To Cart</p>) :
-                     <p style={{ fontSize: '12px' }}>Add To Cart</p>
-               )
-            }
-            {
-               !xsWidth &&
-               (
-                  product.id === currentProduct ?
-                     (buttonLoading && <ProgressButton loading={buttonLoading} />) ||
-                     (!buttonLoading && <AddShoppingCartIcon sx={{
+               product.id === currentProduct && buttonLoading ?
+                  <ProgressButton loading={buttonLoading} /> :
+                  <AddShoppingCartIcon
+                     sx={{
                         fontSize: `${lgWidth ? '1.3rem' : '1.5rem'}`
-                     }} />) :
-                     <AddShoppingCartIcon
-                        sx={{
-                           fontSize: `${lgWidth ? '1.3rem' : '1.5rem'}`
-                        }}
-                     />
-               )
+                     }}
+                  />
             }
          </Button>
          <Button
@@ -183,10 +198,11 @@ const ProductCard = ({ product, index, path }) => {
                minWidth: 0,
                padding: '4px',
                position: 'absolute',
-               top: 0,
-               right: 0,
-               margin: '15px 17px 0',
-               [theme.breakpoints.down('md')]: {
+               top: '15px',
+               right: '17px',
+               [theme.breakpoints.down('sm')]: {
+                  top: '13px',
+                  right: '13px',
                   padding: '3px'
                },
                '&:hover': {
@@ -196,13 +212,14 @@ const ProductCard = ({ product, index, path }) => {
          >
             <FavoriteIcon
                sx={theme => ({
-                  [theme.breakpoints.down('md')]: {
-                     fontSize: '1.25rem'
+                  fontSize: '1.5rem',
+                  [theme.breakpoints.down('sm')]: {
+                     fontSize: '1.35rem'
                   }
                })}
             />
          </Button>
-      </Box >
+      </Card>
    );
 };
 

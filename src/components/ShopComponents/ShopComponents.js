@@ -5,9 +5,11 @@ import { Box, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
 import FilterBottomModal from '../UI/FilterBottomModal';
 import { useTheme, useMediaQuery } from '@mui/material';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import CustomPagination from '../UI/CustomPagination';
 import CustomHeader from '../UI/CustomHeader';
+import EmptyTemplate from '../UI/EmptyTemplate';
+import nocategory from '../../assets/nocategory.svg';
 
 const ShopComponents = () => {
    const [currentPage, setCurrentPage] = useState(1);
@@ -16,15 +18,13 @@ const ShopComponents = () => {
    const products = useSelector(state => state.products.products);
    const sortProducts = useSelector(state => state.ui.sortProducts);
    const selectedItems = useSelector(state => state.ui.selectedItems);
-   const allCategories = useSelector(state => state.products.categories);
+   const categories = useSelector(state => state.products.categories);
 
    const theme = useTheme();
    const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
    const mdWidth = useMediaQuery(theme.breakpoints.down('md'));
    const xlUpWidth = useMediaQuery(theme.breakpoints.up('xl'));
 
-   const history = useHistory();
-   const { pathname } = useLocation();
    const { id } = useParams();
 
    // Category
@@ -87,69 +87,79 @@ const ShopComponents = () => {
       paginate(1);
    }, [id]);
 
-   // Redirect if category is invalid
-   useEffect(() => {
-      if (allCategories.length) {
-         const categoriesArray = allCategories.map(item => item.slug);
-         categoriesArray.unshift('all');
-         if (pathname.startsWith('/shop') && !categoriesArray.includes(id)) {
-            history.replace('/');
-         }
-      }
-   }, [allCategories, history, id, pathname]);
+   // Check if category exists or not
+   const allCategories = categories.map(category => category.slug);
+   const categoryExists = ['all', ...allCategories].includes(id);
 
    return (
       <Box
-         className='container'
+         className='small-container'
          sx={{ padding: smWidth ? '80px 16px 0 16px' : '80px 32px 0 32px' }}
       >
          <CustomHeader
             text='Products'
-            filter={true}
-            selectMenu={true}
+            filter={categoryExists ? true : false}
+            selectMenu={categoryExists ? true : false}
          />
-         {mdWidth && <FilterBottomModal />}
+         {
+            mdWidth && categoryExists && <FilterBottomModal />
+         }
          <Grid spacing={1} container>
-            {!mdWidth && (
-               <Grid
-                  className='shop-filter'
-                  sx={
-                     showFilter ? {
-                        height: '98.5vh',
-                        overflow: 'auto',
-                        paddingRight: '8px',
-                        marginTop: '0.25rem'
-                     } : {}
-                  }
-                  item md={3} lg={2.5} xl={2}
-               >
-                  <ShopFilter />
-               </Grid>
-            )}
-            <Grid
-               item
-               xs={12}
-               sm={12}
-               md={showFilter ? 9 : 12}
-               lg={showFilter ? 9.5 : 12}
-               xl={showFilter ? 10 : 12}
-            >
-               <ShopProducts
-                  shopProducts={currentProducts}
-                  xs={12}
-                  xm={6}
-                  sm={6}
-                  md={6}
-                  lg={4}
-                  xl={3}
-               />
-               <CustomPagination
-                  pageNumbers={pageNumbers}
-                  paginate={paginate}
-                  currentPage={currentPage}
-               />
-            </Grid>
+            {
+               !mdWidth && categoryExists && (
+                  <Grid
+                     className='shop-filter'
+                     sx={
+                        showFilter ? {
+                           height: '98.5vh',
+                           overflow: 'auto',
+                           paddingRight: '8px',
+                           marginTop: '0.25rem'
+                        } : {}
+                     }
+                     item md={3} lg={2.5} xl={2}
+                  >
+                     <ShopFilter />
+                  </Grid>
+               )
+            }
+            {
+               categoryExists &&
+               (
+                  <Grid
+                     item
+                     xs={12}
+                     sm={12}
+                     md={showFilter ? 9 : 12}
+                     lg={showFilter ? 9.5 : 12}
+                     xl={showFilter ? 10 : 12}
+                  >
+                     <ShopProducts
+                        shopProducts={currentProducts}
+                        xs={12}
+                        xm={6}
+                        sm={6}
+                        md={showFilter ? 6 : 4}
+                        lg={showFilter ? 4 : 3}
+                        xl={3}
+                        path='/shop/product'
+                     />
+                     <CustomPagination
+                        pageNumbers={pageNumbers}
+                        paginate={paginate}
+                        currentPage={currentPage}
+                     />
+                  </Grid>
+               )
+            }
          </Grid>
+         {
+            !categoryExists &&
+            <EmptyTemplate
+               img={nocategory}
+               text='This category does not exist!'
+            />
+         }
       </Box>
    );
 };

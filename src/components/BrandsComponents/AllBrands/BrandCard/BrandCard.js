@@ -1,13 +1,7 @@
 import React from 'react';
 import { Card, CardMedia, Typography, Box } from '@mui/material';
-import { useTheme } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
 
-const BrandCard = ({ brand }) => {
-   const theme = useTheme();
-   const mdWidth = useMediaQuery(theme.breakpoints.down(900));
-   const smWidth = useMediaQuery(theme.breakpoints.down(600));
-
+const BrandCard = ({ brand, mdWidth, smWidth }) => {
    return (
       <Card
          className='brand-card'
@@ -25,7 +19,7 @@ const BrandCard = ({ brand }) => {
             className='brand-card-img'
             component="img"
             alt="Image"
-            height={mdWidth && !smWidth ? '300' : mdWidth && smWidth ? '250' : '350'}
+            height={mdWidth && !smWidth ? '275' : mdWidth && smWidth ? '225' : '325'}
             image={brand.img}
          />
          <Box className='brand-card-extra' />

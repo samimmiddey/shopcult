@@ -1,16 +1,19 @@
-import { Box } from '@mui/material';
 import React from 'react';
-import HelpHeader from './HelpHeader/HelpHeader';
+import { Box } from '@mui/material';
 import HelpForm from './HelpForm/HelpForm';
 import HelpBody from './HelpBody/HelpBody';
+import StylishHeader from '../UI/StylishHeader';
 
 const HelpComponents = () => {
    return (
       <Box
-         className='container'
+         className='small-container'
          sx={{ paddingTop: '80px' }}
       >
-         <HelpHeader />
+         <StylishHeader
+            text='GET IN TOUCH WITH US'
+            subtext='We Are Setting a New Standard For Customer Care Service.'
+         />
          <HelpBody />
          <HelpForm />
       </Box>

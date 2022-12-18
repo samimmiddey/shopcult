@@ -112,7 +112,7 @@ const HomeCategories = ({ headphones, shoes, sunglasses, watches }) => {
                         sx={{
                            color: 'text.secondary',
                            fontSize: '15px',
-                           fontWeight: 700
+                           fontWeight: 600
                         }}
                         label={label}
                      />

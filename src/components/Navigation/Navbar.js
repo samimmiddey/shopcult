@@ -164,7 +164,8 @@ const Navbar = () => {
                         maxWidth: '1700px',
                         margin: '0 auto',
                         width: '100%'
-                     }}>
+                     }}
+                  >
                      <IconButton
                         onClick={toggleDrawer}
                         size="large"
@@ -226,8 +227,6 @@ const Navbar = () => {
                                           }
                                        >
                                           <ListItemButton
-                                             // disableGutters
-                                             disableRipple
                                              sx={{
                                                 borderRadius: '5px',
                                                 padding: '6px 10px',

@@ -58,7 +58,6 @@ const AuthErrorModal = () => {
                   onClick={() => dispatch(authActions.setAuthErrorModal(false))}
                   color='primary'
                   variant='contained'
-                  disableElevation
                   sx={{
                      textTransform: 'none'
                   }}

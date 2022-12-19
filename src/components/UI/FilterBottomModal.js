@@ -58,7 +58,6 @@ const FilterBottomModal = () => {
                      fontSize: '14px',
                   }
                })}
-               disableElevation
                variant='outlined'
             >
                Clear
@@ -87,7 +86,6 @@ const FilterBottomModal = () => {
                   }
                })}
                className={selectedItems.length >= 1 || categoryClick ? 'primary-button' : ''}
-               disableElevation
                variant='contained'
                disabled={selectedItems.length >= 1 || categoryClick ? false : true}
             >

@@ -38,6 +38,34 @@ li {
   }
 }
 
+.section-margin {
+  margin-top: 7rem;
+}
+
+@media screen and (max-width: 1536px) {
+  .section-margin {
+    margin-top: 6rem;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .section-margin {
+    margin-top: 5rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .section-margin {
+    margin-top: 4rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .section-margin {
+    margin-top: 3.5rem;
+  }
+}
+
 /* New Primary Button */
 .primary-button {
   background-image: linear-gradient(to right, rgb(132, 76, 196) 0%, rgb(90, 57, 161) 51%, rgb(132, 76, 196) 100%);

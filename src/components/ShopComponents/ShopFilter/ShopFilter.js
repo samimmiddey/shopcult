@@ -45,9 +45,9 @@ const ShopFilter = () => {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                <Typography
                   variant='h6'
-                  color='text.disabled'
+                  color='text.secondary'
                   sx={{
-                     fontWeight: 700
+                     fontWeight: 600
                   }}
                >
                   Categories
@@ -73,7 +73,6 @@ const ShopFilter = () => {
                   <Fragment key={index}>
                      <Link to={`/shop/${category.toLowerCase()}`}>
                         <ListItemButton
-                           disableRipple
                            onClick={() => {
                               dispatch(uiActions.resetSelectedItems());
                            }}
@@ -101,16 +100,14 @@ const ShopFilter = () => {
          }}>
             <Typography
                variant='h6'
-               color='text.disabled'
+               color='text.secondary'
                sx={{
-                  fontWeight: 700
+                  fontWeight: 600
                }}
             >
                Brands
             </Typography>
-            <Box sx={{
-               marginTop: '1rem'
-            }}>
+            <Box sx={{ marginTop: '1rem' }}>
                {Brands.map((brand, index) => (
                   <Box key={index}
                      sx={theme => ({

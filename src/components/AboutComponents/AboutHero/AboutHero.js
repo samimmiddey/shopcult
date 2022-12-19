@@ -61,12 +61,12 @@ const AboutHero = () => {
                   variant='h2'
                   sx={theme => ({
                      fontWeight: 600,
-                     fontSize: '3.5rem',
+                     fontSize: '3rem',
                      padding: '0 1rem',
                      lineHeight: '1.4',
                      color: 'rgb(196, 174, 243)',
                      [theme.breakpoints.down('xl')]: {
-                        fontSize: '3rem',
+                        fontSize: '2.75rem',
                      },
                      [theme.breakpoints.down('lg')]: {
                         fontSize: '2.5rem',
@@ -85,7 +85,8 @@ const AboutHero = () => {
          </Box>
          {/* Third Section */}
          <Box
-            sx={theme => ({
+            className='section-margin'
+            sx={{
                maxWidth: '1450px',
                padding: '0 1rem',
                textAlign: 'center',
@@ -93,21 +94,8 @@ const AboutHero = () => {
                flexDirection: 'column',
                justifyContent: 'center',
                alignItems: 'center',
-               rowGap: '2rem',
-               margin: '8rem auto 0 auto',
-               [theme.breakpoints.down('xl')]: {
-                  marginTop: '6rem'
-               },
-               [theme.breakpoints.down('lg')]: {
-                  marginTop: '5rem'
-               },
-               [theme.breakpoints.down('md')]: {
-                  marginTop: '4rem'
-               },
-               [theme.breakpoints.down('sm')]: {
-                  marginTop: '3.5rem'
-               }
-            })}
+               rowGap: '2rem'
+            }}
          >
             <Typography
                sx={theme => ({

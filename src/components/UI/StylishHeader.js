@@ -5,7 +5,6 @@ const StylishHeader = ({ text, subtext }) => {
    return (
       <Box
          sx={theme => ({
-            height: '500px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
@@ -13,24 +12,20 @@ const StylishHeader = ({ text, subtext }) => {
             margin: '0 auto',
             maxWidth: '1450px',
             rowGap: '2rem',
-            padding: '0 7rem',
+            padding: '7rem',
             [theme.breakpoints.down('xl')]: {
-               height: '450px',
-               padding: '0 6rem'
+               padding: '6rem'
             },
             [theme.breakpoints.down('lg')]: {
-               height: '400px',
-               padding: '0 5rem'
+               padding: '5rem'
             },
             [theme.breakpoints.down('md')]: {
-               height: '350px',
                rowGap: '1rem',
-               padding: '0 4rem'
+               padding: '4rem'
             },
             [theme.breakpoints.down('sm')]: {
-               padding: '0 0.5rem',
-               height: '250px'
-            },
+               padding: '3rem 0.5rem'
+            }
          })}
       >
          <Box
@@ -56,13 +51,12 @@ const StylishHeader = ({ text, subtext }) => {
             </Typography>
          </Box>
          <Typography
-            variant='h3'
             sx={theme => ({
                fontWeight: 400,
-               fontSize: '4rem',
+               fontSize: '3.5rem',
                lineHeight: '1.4',
                [theme.breakpoints.down('xl')]: {
-                  fontSize: '3.5rem',
+                  fontSize: '3.25rem',
                },
                [theme.breakpoints.down('lg')]: {
                   fontSize: '3rem',
@@ -72,6 +66,9 @@ const StylishHeader = ({ text, subtext }) => {
                },
                [theme.breakpoints.down('sm')]: {
                   fontSize: '1.75rem'
+               },
+               [theme.breakpoints.down('xm')]: {
+                  fontSize: '1.5rem'
                }
             })}
          >

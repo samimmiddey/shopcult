@@ -51,7 +51,7 @@ const ProductCard = ({ product, path }) => {
                   variant="h6"
                   sx={{
                      color: 'text.primary',
-                     fontWeight: 600,
+                     fontWeight: 700,
                      padding: smWidth ? '3px 0' : '6px 0',
                      fontSize: smWidth ? '16px' : '18px'
                   }}
@@ -142,7 +142,6 @@ const ProductCard = ({ product, path }) => {
          <Button
             size="small"
             variant='contained'
-            disableElevation
             disabled={buttonLoading && product.id === currentProduct}
             onClick={() => {
                if (!buttonLoading) {
@@ -158,8 +157,8 @@ const ProductCard = ({ product, path }) => {
                minHeight: 0,
                minWidth: 0,
                textAlign: 'center',
-               height: smWidth ? '30px' : '35px',
-               width: smWidth ? '40px' : '50px',
+               height: smWidth ? '32px' : '35px',
+               width: smWidth ? '43px' : '50px',
                color: '#fff',
                backgroundColor: 'rgb(90, 57, 161)',
                '&:hover': {
@@ -179,7 +178,6 @@ const ProductCard = ({ product, path }) => {
          </Button>
          <Button
             variant='contained'
-            disableElevation
             onClick={() => {
                if (wishlistItems.includes(product.id)) {
                   dispatch(wishlistActions.removeItemFromWishList(product.id));
@@ -206,7 +204,7 @@ const ProductCard = ({ product, path }) => {
                   padding: '3px'
                },
                '&:hover': {
-                  backgroundColor: '#f1f1f1'
+                  backgroundColor: '#eceff1'
                }
             })}
          >
@@ -214,7 +212,7 @@ const ProductCard = ({ product, path }) => {
                sx={theme => ({
                   fontSize: '1.5rem',
                   [theme.breakpoints.down('sm')]: {
-                     fontSize: '1.35rem'
+                     fontSize: '1.4rem'
                   }
                })}
             />

@@ -1,5 +1,5 @@
-import { Button } from '@mui/material';
 import React from 'react';
+import { Button } from '@mui/material';
 
 const PrimaryButton = ({ text }) => {
    return (
@@ -29,7 +29,6 @@ const PrimaryButton = ({ text }) => {
             }
          })}
          className='primary-button'
-         disableElevation
          variant='contained'
       >
          {text}

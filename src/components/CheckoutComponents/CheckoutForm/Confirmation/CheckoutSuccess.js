@@ -106,7 +106,6 @@ const CheckoutSuccess = () => {
                <Button
                   onClick={() => history.replace('/shop/all')}
                   className='primary-button'
-                  disableElevation
                   variant='contained'
                   sx={theme => ({
                      marginTop: '2rem',

@@ -1,21 +1,32 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import { IconButton, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useDispatch } from 'react-redux';
 import { updateCartItems } from '../../../store/cart-thunks';
+
+const style = {
+   height: '30px',
+   width: '30px',
+   minHeight: 0,
+   minWidth: 0,
+   padding: 0,
+   borderRadius: '50%'
+};
 
 const CartButtonGroup = ({ quantity, update_id }) => {
    const dispatch = useDispatch();
 
    return (
       <Box sx={{ display: 'flex', alignItems: 'center', columnGap: '5px' }}>
-         <IconButton size='small' variant='text'
+         <Button
+            sx={style}
+            variant='text'
             onClick={() => dispatch(updateCartItems(update_id, { quantity: --quantity }))}
          >
             <RemoveIcon sx={{ fontSize: '1rem', color: 'text.primary' }} />
-         </IconButton>
+         </Button>
          <Typography
             sx={theme => ({
                fontWeight: 600,
@@ -37,11 +48,13 @@ const CartButtonGroup = ({ quantity, update_id }) => {
          >
             {quantity}
          </Typography>
-         <IconButton size='small' variant='text'
+         <Button
+            sx={style}
+            variant='text'
             onClick={() => dispatch(updateCartItems(update_id, { quantity: ++quantity }))}
          >
             <AddIcon sx={{ fontSize: '1rem', color: 'text.primary' }} />
-         </IconButton>
+         </Button>
       </Box>
    );
 }

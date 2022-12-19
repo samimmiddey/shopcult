@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { Box, Button } from '@mui/material';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -7,27 +7,24 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import HomeCategoryCard from '../../../UI/HomeCategoryCard';
+import CategoryCard from '../../../UI/CategoryCard';
 import { useTheme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
+import { useSelector } from 'react-redux';
 
-const Watches = ({ watches }) => {
-   const [swiper, setSwiper] = useState();
-   const prevRef = useRef();
-   const nextRef = useRef();
+const CategoryTab = ({ value }) => {
+   const products = useSelector(state => state.products.products);
+
+   const swiperRef = useRef();
 
    const theme = useTheme();
    const mdWidth = useMediaQuery(theme.breakpoints.down(900));
    const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
 
-   useEffect(() => {
-      if (swiper) {
-         swiper.params.navigation.prevEl = prevRef.current;
-         swiper.params.navigation.nextEl = nextRef.current;
-         swiper.navigation.init();
-         swiper.navigation.update();
-      }
-   }, [swiper]);
+   // Filtered Products
+   const filteredProducts = products.filter(product => {
+      return product.categories.some(category => category.name === value) === true;
+   });
 
    return (
       <Box className='category-swiper-container'>
@@ -35,13 +32,13 @@ const Watches = ({ watches }) => {
             <div className='swiper-button-container'>
                <Button
                   className={`${mdWidth ? 'swiper-button prev small-swiper-button' : 'swiper-button prev'}`}
-                  ref={prevRef}
+                  onClick={() => swiperRef.current?.slidePrev()}
                >
                   <ArrowBackIcon sx={{ fontSize: `${mdWidth ? '1.5rem' : '1.75rem'}` }} />
                </Button>
                <Button
                   className={`${mdWidth ? 'swiper-button next small-swiper-button' : 'swiper-button next'}`}
-                  ref={nextRef}
+                  onClick={() => swiperRef.current?.slideNext()}
                >
                   <ArrowForwardIcon sx={{ fontSize: `${mdWidth ? '1.5rem' : '1.75rem'}` }} />
                </Button>
@@ -51,24 +48,16 @@ const Watches = ({ watches }) => {
                spaceBetween={smWidth ? 8 : 16}
                slidesPerGroup={1}
                loop={true}
-               navigation={{
-                  prevEl: prevRef?.current,
-                  nextEl: nextRef?.current
-               }}
                modules={[Navigation]}
-               className="mySwiper"
-               updateOnWindowResize
-               observer
-               observeParents
-               onSwiper={setSwiper}
+               onBeforeInit={(swiper) => swiperRef.current = swiper}
                breakpoints={{
                   250: {
                      slidesPerView: 1,
                   },
-                  375: {
+                  450: {
                      slidesPerView: 2,
                   },
-                  650: {
+                  768: {
                      slidesPerView: 3,
                   },
                   1250: {
@@ -76,13 +65,31 @@ const Watches = ({ watches }) => {
                   }
                }}
             >
-               {watches.map((item, index) => (
+               {filteredProducts.map((item, index) => (
                   <SwiperSlide key={index}>
-                     <HomeCategoryCard
-                        item={item}
-                        index={index}
-                        path={`/product/${item.id}`}
-                     />
+                     <Box
+                        sx={theme => ({
+                           margin: '2rem 0 11.5rem 0',
+                           [theme.breakpoints.down('xl')]: {
+                              margin: '2rem 0 10.5rem 0'
+                           },
+                           [theme.breakpoints.down('lg')]: {
+                              margin: '2rem 0 9.5rem 0'
+                           },
+                           [theme.breakpoints.down('md')]: {
+                              margin: '2rem 0 8.5rem 0'
+                           },
+                           [theme.breakpoints.down('sm')]: {
+                              margin: '1.5rem 0 8rem 0'
+                           }
+                        })}
+                     >
+                        <CategoryCard
+                           item={item}
+                           index={index}
+                           path={`/product/${item.id}`}
+                        />
+                     </Box>
                   </SwiperSlide>
                ))}
             </Swiper>
@@ -91,4 +98,4 @@ const Watches = ({ watches }) => {
    )
 };
 
-export default Watches;
+export default CategoryTab;

@@ -5,30 +5,14 @@ import Brands from '../../HomeComponents/Brands/Brands';
 const AboutFeatured = () => {
    return (
       <Box>
-         <Box
-            sx={theme => ({
-               marginTop: '9rem',
-               [theme.breakpoints.down('xl')]: {
-                  marginTop: '8rem'
-               },
-               [theme.breakpoints.down('lg')]: {
-                  marginTop: '7rem',
-               },
-               [theme.breakpoints.down('md')]: {
-                  marginTop: '6rem',
-               },
-               [theme.breakpoints.down('sm')]: {
-                  marginTop: '5rem'
-               }
-            })}
-         >
+         <Box className='section-margin'>
             <Box
                sx={theme => ({
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  rowGap: '3rem',
+                  rowGap: '2.5rem',
                   [theme.breakpoints.down('md')]: {
                      rowGap: '2rem'
                   },
@@ -67,7 +51,7 @@ const AboutFeatured = () => {
                </Typography>
             </Box>
          </Box>
-         <Box sx={{ marginTop: '-2rem' }}>
+         <Box className='section-margin'>
             <Brands />
          </Box>
       </Box>

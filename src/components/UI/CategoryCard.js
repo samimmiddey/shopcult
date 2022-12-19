@@ -26,61 +26,88 @@ const HomeCategoryCard = ({ item, index, path }) => {
    const lgWidth = useMediaQuery(theme.breakpoints.down(1200));
    const mdWidth = useMediaQuery(theme.breakpoints.down(900));
    const smWidth = useMediaQuery(theme.breakpoints.down(600));
-   const xsWidth = useMediaQuery(theme.breakpoints.down(450));
 
    return (
-      <Box sx={{ position: 'relative' }}>
+      <Card
+         className='home-category-card'
+         sx={{
+            maxWidth: 415,
+            position: 'relative'
+         }}
+         elevation={0}
+      >
          <Link to={path}>
-            <Card className='home-category-card' sx={{ maxWidth: 400, position: 'relative' }} elevation={0} >
-               <CardMedia
-                  className='home-category-card-img'
-                  component="img"
-                  alt="Image"
-                  height={mdWidth && !smWidth ? '300' : mdWidth && smWidth ? '250' : '400'}
-                  image={item.image.url}
-               />
-               <Box sx={{ position: 'absolute', bottom: 0, color: '#fff', width: '100%', zIndex: 99 }}>
-                  <CardContent
-                     sx={theme => ({
-                        paddingBottom: 0,
-                        [theme.breakpoints.down(450)]: {
-                           paddingLeft: '10px',
-                           paddingRight: '10px'
-                        }
-                     })}
+            <CardMedia
+               className='home-category-card-img'
+               component="img"
+               alt="Image"
+               height={mdWidth && !smWidth ? '350' : mdWidth && smWidth ? '300' : '400'}
+               image={item.image.url}
+            />
+            <Box
+               sx={{
+                  position: 'absolute',
+                  bottom: 0,
+                  color: '#fff',
+                  width: '100%',
+                  zIndex: 99
+               }}
+            >
+               <CardContent
+                  sx={theme => ({
+                     paddingBottom: 0,
+                     [theme.breakpoints.down(450)]: {
+                        paddingLeft: '10px',
+                        paddingRight: '10px'
+                     }
+                  })}
+               >
+                  <Typography
+                     gutterBottom
+                     variant="h6"
+                     sx={{
+                        color: '#fff',
+                        fontWeight: 700,
+                        padding: smWidth ? '3px 0' : '6px 0',
+                        fontSize: smWidth ? '16px' : '18px'
+                     }}
                   >
-                     <Typography gutterBottom variant="h6"
+                     {item.name}
+                  </Typography>
+               </CardContent>
+               <CardContent
+                  sx={theme => ({
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     padding: '4px 16px 24px 16px',
+                     [theme.breakpoints.down('sm')]: {
+                        padding: '4px 16px 20px 16px'
+                     }
+                  })}
+               >
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        height: '35px',
+                        width: '100%'
+                     }}
+                  >
+                     <Box
                         sx={{
-                           fontWeight: 700,
-                           padding: `${smWidth ? '0' : '6px 0'}`,
-                           fontSize: `${lgWidth && !lgWidth && !xsWidth ? '16px' : lgWidth && mdWidth && !xsWidth ? '15px' : lgWidth && mdWidth && xsWidth ? '14px' : '18px'}`
+                           display: 'flex',
+                           alignItems: 'center',
+                           columnGap: '8px'
                         }}
                      >
-                        {item.name}
-                     </Typography>
-                  </CardContent>
-                  <CardContent
-                     sx={theme => ({
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        padding: '15px 16px 28px 16px',
-                        [theme.breakpoints.down(450)]: {
-                           flexDirection: 'column',
-                           justifyContent: 'center',
-                           alignItems: 'flex-start',
-                           rowGap: '6px',
-                           padding: '0 10px',
-                           marginBottom: '2.5rem',
-                           "&:last-child": {
-                              paddingBottom: '12px'
-                           }
-                        }
-                     })}
-                  >
-                     <div style={{ display: 'flex', alignItems: 'center', columnGap: '8px', paddingBottom: '4px' }}>
                         <Typography
-                           sx={{ fontSize: `${lgWidth && !lgWidth ? '16px' : lgWidth && mdWidth ? '15px' : '18px'}`, fontWeight: 700 }}
+                           sx={{
+                              fontSize: smWidth ? '15px' : '18px',
+                              fontWeight: 600,
+                              color: 'text.#fff'
+                           }}
                         >
                            {item.price.formatted_with_symbol}
                         </Typography>
@@ -96,73 +123,50 @@ const HomeCategoryCard = ({ item, index, path }) => {
                         >
                            {Math.floor((Math.random() * 50) + 1) + '%'} off
                         </Typography>
-                     </div>
-                  </CardContent>
-               </Box>
-            </Card>
+                     </Box>
+                  </Box>
+               </CardContent>
+            </Box>
          </Link>
          <Button
             size="small"
             variant='contained'
-            disableElevation
-            // disabled={buttonLoading && currentProduct === item.id}
             onClick={() => {
                if (!buttonLoading) {
                   dispatch(addToCart(item.id, 1, 'category-product-card'));
                   dispatch(uiActions.setCurrentProduct(item.id));
                }
             }}
-            sx={theme => ({
+            sx={{
                position: 'absolute',
-               zIndex: 999,
-               bottom: 0,
-               right: 0,
-               margin: '0 17px 25px 0',
+               right: '16px',
+               bottom: '24px',
                textTransform: 'none',
                minHeight: 0,
                minWidth: 0,
-               height: lgWidth ? '31px' : '36px',
-               width: lgWidth ? '44px' : '54px',
+               zIndex: 100,
+               textAlign: 'center',
+               height: smWidth ? '32px' : '35px',
+               width: smWidth ? '43px' : '50px',
+               color: '#fff',
                backgroundColor: currentProduct === item.id && buttonLoading ? '#bdbdbd' : 'rgb(90, 57, 161)',
                '&:hover': {
                   backgroundColor: currentProduct === item.id && buttonLoading ? '#bdbdbd' : 'rgb(63, 40, 113)'
-               },
-               [theme.breakpoints.down(450)]: {
-                  width: 'calc(100% - 24px)',
-                  margin: '11px auto',
-                  left: 0,
-                  right: 0
                }
-            })}
+            }}
          >
             {
-               xsWidth &&
-               (
-                  item.id === currentProduct ?
-                     (buttonLoading && <ProgressButton loading={buttonLoading} />) ||
-                     (!buttonLoading && <p style={{ fontSize: '12px' }}>Add To Cart</p>) :
-                     <p style={{ fontSize: '12px' }}>Add To Cart</p>
-               )
-            }
-            {
-               !xsWidth &&
-               (
-                  item.id === currentProduct ?
-                     (buttonLoading && <ProgressButton loading={buttonLoading} />) ||
-                     (!buttonLoading && <AddShoppingCartIcon sx={{
+               item.id === currentProduct && buttonLoading ?
+                  <ProgressButton loading={buttonLoading} /> :
+                  <AddShoppingCartIcon
+                     sx={{
                         fontSize: `${lgWidth ? '1.3rem' : '1.5rem'}`
-                     }} />) :
-                     <AddShoppingCartIcon
-                        sx={{
-                           fontSize: `${lgWidth ? '1.3rem' : '1.5rem'}`
-                        }}
-                     />
-               )
+                     }}
+                  />
             }
          </Button>
          <Button
             variant='contained'
-            disableElevation
             onClick={() => {
                if (wishlistItems.includes(item.id)) {
                   dispatch(wishlistActions.removeItemFromWishList(item.id));
@@ -179,12 +183,14 @@ const HomeCategoryCard = ({ item, index, path }) => {
                color: wishlistItems.includes(item.id) === true ? 'rgb(132, 76, 196)' : '#aaa',
                minHeight: 0,
                minWidth: 0,
+               zIndex: 100,
                padding: '4px',
                position: 'absolute',
-               top: 0,
-               right: 0,
-               margin: '15px 17px 0',
-               [theme.breakpoints.down('md')]: {
+               top: '15px',
+               right: '17px',
+               [theme.breakpoints.down('sm')]: {
+                  top: '13px',
+                  right: '13px',
                   padding: '3px'
                },
                '&:hover': {
@@ -194,13 +200,14 @@ const HomeCategoryCard = ({ item, index, path }) => {
          >
             <FavoriteIcon
                sx={theme => ({
-                  [theme.breakpoints.down('md')]: {
-                     fontSize: '1.25rem'
+                  fontSize: '1.5rem',
+                  [theme.breakpoints.down('sm')]: {
+                     fontSize: '1.4rem'
                   }
                })}
             />
          </Button>
-      </Box>
+      </Card>
    );
 };
 

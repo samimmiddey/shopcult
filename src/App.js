@@ -77,7 +77,17 @@ const theme = createTheme({
 				}
 			}
 		},
-	},
+		MuiButtonBase: {
+			defaultProps: {
+				disableRipple: true,
+			}
+		},
+		MuiButton: {
+			defaultProps: {
+				disableElevation: true,
+			}
+		}
+	}
 });
 
 const App = () => {

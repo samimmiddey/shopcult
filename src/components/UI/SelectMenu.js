@@ -67,7 +67,6 @@ const SelectMenu = () => {
             >
                {['None', 'Low-High', 'High-Low'].map((item, index) => (
                   <MenuItem
-                     disableRipple
                      sx={{
                         fontSize: '14px',
                         color: 'text.primary',

@@ -30,7 +30,6 @@ const AuthButtons = () => {
                         }
                      })}
                      className='primary-button'
-                     disableElevation
                      variant='contained'
                   >
                      Login

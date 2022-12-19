@@ -62,8 +62,6 @@ const SearchBarBody = React.forwardRef(({ setValue, submitted, setSubmitted, ter
                            setValue(term);
                            setSubmitted(true);
                         }}
-                        disableElevation
-                        disableRipple
                         type={submitted ? 'submit' : 'button'}
                         className='search-text-wrap'
                         sx={{

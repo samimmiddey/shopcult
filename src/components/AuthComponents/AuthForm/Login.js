@@ -127,7 +127,6 @@ const Login = () => {
                })}
             />
             <ActionButton
-               disableElevation
                type='submit'
                variant='contained'
                color='primary'

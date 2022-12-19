@@ -19,7 +19,7 @@ export default function VariantButtonGroup({ setItemAmount }) {
    }, [amount, setItemAmount]);
 
    return (
-      <ButtonGroup variant="outlined" size='small' color='primary'>
+      <ButtonGroup variant="outlined" size='small' color='primary' disableRipple disableElevation>
          <QuantityButton
             onClick={() => {
                amount > 1 && setAmount(amount => amount - 1)

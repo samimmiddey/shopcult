@@ -1,35 +1,26 @@
 import React from 'react';
 import { Box, TextField, Typography } from '@mui/material';
-import PrimaryButton from '../../UI/PrimaryButton';
 import { useTheme, useMediaQuery } from '@mui/material';
+import PrimaryButton from './PrimaryButton';
 
-const AboutForm = () => {
+const CustomForm = ({ list, title, subtitle }) => {
    const theme = useTheme();
    const lgWidth = useMediaQuery(theme.breakpoints.down('lg'));
 
    return (
       <Box
+         className='section-margin'
          sx={theme => ({
             maxWidth: '900px',
             marginLeft: 'auto',
             marginRight: 'auto',
             padding: '0 2rem',
-            marginTop: '9rem',
             textAlign: 'center',
             [theme.breakpoints.down('xl')]: {
-               marginTop: '6rem',
                padding: '0 1rem'
-            },
-            [theme.breakpoints.down('lg')]: {
-               marginTop: '5rem'
-            },
-            [theme.breakpoints.down('md')]: {
-               marginTop: '4rem'
-            },
-            [theme.breakpoints.down('sm')]: {
-               marginTop: '3.5rem'
             }
-         })}>
+         })}
+      >
          <Box>
             <Typography
                variant='h4'
@@ -43,20 +34,43 @@ const AboutForm = () => {
                   }
                })}
             >
-               Have Any Queries? Contact Us
+               {title}
             </Typography>
+            {
+               subtitle &&
+               <Typography
+                  sx={theme => ({
+                     marginTop: '1rem',
+                     textAlign: 'center',
+                     color: 'text.secondary',
+                     fontSize: '20px',
+                     [theme.breakpoints.down('lg')]: {
+                        fontSize: '18px',
+                        marginTop: '0.8rem'
+                     },
+                     [theme.breakpoints.down('md')]: {
+                        fontSize: '16px'
+                     },
+                     [theme.breakpoints.down('sm')]: {
+                        fontSize: '16px'
+                     }
+                  })}
+               >
+                  {subtitle}
+               </Typography>
+            }
             <form>
                <Box
                   sx={theme => ({
-                     margin: '3rem 0 4rem 0',
+                     margin: '2.5rem 0 3rem 0',
                      display: 'flex',
                      flexDirection: 'column',
-                     rowGap: '2.5rem',
+                     rowGap: '2rem',
                      [theme.breakpoints.down('xl')]: {
-                        margin: '2rem 0 3rem 0'
+                        margin: '2rem 0 2.75rem 0'
                      },
                      [theme.breakpoints.down('lg')]: {
-                        rowGap: '2rem'
+                        rowGap: '1.75rem'
                      },
                      [theme.breakpoints.down('md')]: {
                         rowGap: '1.5rem',
@@ -68,10 +82,16 @@ const AboutForm = () => {
                      }
                   })}
                >
-                  <TextField required label="Name" variant="standard" />
-                  <TextField required label="Email" variant="standard" />
-                  <TextField required label="Phone" variant="standard" />
-                  <TextField required multiline rows={lgWidth ? 4 : 5} label="Query" variant="standard" />
+                  {list.map((label, index, arr) => (
+                     <TextField
+                        key={index}
+                        required
+                        label={label}
+                        variant='standard'
+                        multiline={index === arr.length - 1 ? true : false}
+                        rows={index === arr.length - 1 && lgWidth ? 4 : 5}
+                     />
+                  ))}
                </Box>
                <PrimaryButton text='Submit Request' />
             </form>
@@ -80,4 +100,4 @@ const AboutForm = () => {
    );
 };
 
-export default AboutForm;
+export default CustomForm;

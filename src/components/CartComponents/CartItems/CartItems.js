@@ -91,15 +91,17 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                     }}
                                  >
                                     <Box>
-                                       <img style={{
-                                          height: mobWidth && !xsWidth ? '60px' : mobWidth && xsWidth ? '35px' : '80px',
-                                          width: mobWidth && !xsWidth ? '70px' : mobWidth && xsWidth ? '35px' : '100px',
-                                          objectFit: 'cover',
-                                          borderRadius: mobWidth && !xsWidth ? '5px' : mobWidth && xsWidth ? '50%' : '10px'
-                                       }}
-                                          src={product.image.url}
-                                          alt=""
-                                       />
+                                       <Link to={`/product/${product.product_id}`}>
+                                          <img style={{
+                                             height: mobWidth && !xsWidth ? '60px' : mobWidth && xsWidth ? '35px' : '80px',
+                                             width: mobWidth && !xsWidth ? '70px' : mobWidth && xsWidth ? '35px' : '100px',
+                                             objectFit: 'cover',
+                                             borderRadius: mobWidth && !xsWidth ? '5px' : mobWidth && xsWidth ? '50%' : '10px'
+                                          }}
+                                             src={product.image.url}
+                                             alt=""
+                                          />
+                                       </Link>
                                     </Box>
                                     <Box sx={{
                                        display: 'flex',
@@ -109,23 +111,25 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                        marginTop: mobWidth ? '-5px' : 0
                                     }}
                                     >
-                                       <Typography
-                                          className='cart-text-wrap'
-                                          gutterBottom
-                                          sx={theme => ({
-                                             fontWeight: 700,
-                                             fontSize: '14px',
-                                             maxWidth: '150px',
-                                             width: '100%',
-                                             [theme.breakpoints.down(350)]: {
-                                                fontSize: '12px',
-                                                maxWidth: '117px',
+                                       <Link to={`/product/${product.product_id}`}>
+                                          <Typography
+                                             className='cart-text-wrap'
+                                             gutterBottom
+                                             sx={theme => ({
+                                                fontWeight: 700,
+                                                fontSize: '14px',
+                                                maxWidth: '150px',
                                                 width: '100%',
-                                             }
-                                          })}
-                                       >
-                                          {product.name}
-                                       </Typography>
+                                                [theme.breakpoints.down(350)]: {
+                                                   fontSize: '12px',
+                                                   maxWidth: '117px',
+                                                   width: '100%',
+                                                }
+                                             })}
+                                          >
+                                             {product.name}
+                                          </Typography>
+                                       </Link>
                                        <Box>
                                           <Typography
                                              sx={theme => ({
@@ -235,15 +239,39 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                  }
                               })}
                            >
-                              <Typography sx={{ fontWeight: 600, color: 'text.secondary', fontSize: '12px', textTransform: 'uppercase' }}>Quantity</Typography>
-                              <Typography sx={{ fontWeight: 600, color: 'text.secondary', fontSize: '12px', textTransform: 'uppercase' }}>Price</Typography>
-                              <Typography sx={{ fontWeight: 600, color: 'text.secondary', fontSize: '12px', textTransform: 'uppercase' }}>Total</Typography>
+                              {['Quantity', 'Price', 'Total'].map((item, index) => (
+                                 <Typography
+                                    key={index}
+                                    sx={{
+                                       fontWeight: 600,
+                                       color: 'text.secondary',
+                                       fontSize: '12px',
+                                       textTransform: 'uppercase'
+                                    }}
+                                 >
+                                    {item}
+                                 </Typography>
+                              ))}
                            </Box>
                         </Box>
                         {/* Cart Products */}
-                        <Box mt={2} sx={{ display: 'flex', flexDirection: 'column', rowGap: '2rem', marginTop: '2rem' }}>
+                        <Box
+                           mt={2}
+                           sx={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              rowGap: '2rem',
+                              marginTop: '2rem'
+                           }}
+                        >
                            {cartProducts.map((product, index) => (
-                              <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                              <Box
+                                 key={index}
+                                 sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between'
+                                 }}
+                              >
                                  <Box sx={theme => ({
                                     display: 'flex',
                                     columnGap: '1rem',
@@ -253,16 +281,24 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                     }
                                  })}
                                  >
-                                    <img
+                                    <Link
+                                       to={`/product/${product.product_id}`}
                                        style={{
                                           height: mdWidth ? '40px' : '80px',
                                           width: mdWidth ? '40px' : '100px',
-                                          objectFit: 'cover',
-                                          borderRadius: mdWidth ? '50%' : '10px'
                                        }}
-                                       src={product.image.url}
-                                       alt="Product"
-                                    />
+                                    >
+                                       <img
+                                          style={{
+                                             height: '100%',
+                                             width: '100%',
+                                             objectFit: 'cover',
+                                             borderRadius: mdWidth ? '50%' : '10px'
+                                          }}
+                                          src={product.image.url}
+                                          alt="Product"
+                                       />
+                                    </Link>
                                     <Box
                                        sx={{
                                           display: 'flex',
@@ -271,16 +307,18 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                           justifyContent: 'space-between'
                                        }}
                                     >
-                                       <Typography
-                                          sx={theme => ({
-                                             fontWeight: 600,
-                                             [theme.breakpoints.down(1300)]: {
-                                                fontSize: '14px'
-                                             }
-                                          })}
-                                       >
-                                          {product.name}
-                                       </Typography>
+                                       <Link to={`/product/${product.product_id}`}>
+                                          <Typography
+                                             sx={theme => ({
+                                                fontWeight: 600,
+                                                [theme.breakpoints.down(1300)]: {
+                                                   fontSize: '14px'
+                                                }
+                                             })}
+                                          >
+                                             {product.name}
+                                          </Typography>
+                                       </Link>
                                        <Button
                                           onClick={() => dispatch(removeItemFromCart(product.id))}
                                           variant='text'
@@ -486,7 +524,6 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                               }}
                               variant='contained'
                               size='large'
-                              disableElevation
                               className='primary-button'
                            >
                               Checkout
@@ -503,10 +540,17 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                img={cart}
                text='Your cart is empty!'
                button={true}
-               subtext={<Typography sx={{ fontSize: '14px' }} mb={2}>Add items to the cart</Typography>}
+               subtext={
+                  <Typography
+                     sx={{ fontSize: '14px' }}
+                     mb={2}
+                  >
+                     Add items to the cart
+                  </Typography>
+               }
             />
          }
-      </Box >
+      </Box>
    );
 };
 

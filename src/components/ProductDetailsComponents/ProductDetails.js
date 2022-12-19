@@ -9,16 +9,16 @@ import Quantity from '../UI/Quantity';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Grid } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
-import ProductCardTabs from './ProductCardTabs';
+import ProductCardTabs from '../UI/ProductCardTabs';
 import { wishlistActions } from '../../store/wishlist-slice';
 import { uiActions } from '../../store/ui-slice';
 import { addToCart } from '../../store/cart-thunks';
-import ProgressButton from './ProgressButton';
+import ProgressButton from '../UI/ProgressButton';
 import BoltIcon from '@mui/icons-material/Bolt';
-import RelatedProducts from './RelatedProducts';
-import BodySpinner from './BodySpinner';
+import RelatedProducts from '../UI/RelatedProducts';
+import BodySpinner from '../UI/BodySpinner';
 import { getSingleProduct } from '../../store/product-thunks';
-import EmptyTemplate from './EmptyTemplate';
+import EmptyTemplate from '../UI/EmptyTemplate';
 import productnotfound from '../../assets/productempty.svg';
 import Footer from '../Footer/Footer';
 import { productActions } from '../../store/product-slice';
@@ -318,7 +318,7 @@ const ProductDetails = () => {
                                  <Divider sx={{ margin: '1rem' }} />
                                  <ResponsiveActions>
                                     <ActionButton
-                                       disabled={cartButton && buttonLoading && currentProduct === product.id}
+                                       disabled={buttonLoading && currentProduct === product.id}
                                        onClick={() => {
                                           if (!buttonLoading) {
                                              setCartButton(true);
@@ -326,7 +326,6 @@ const ProductDetails = () => {
                                              dispatch(addToCart(product.id, itemAmount, 'product-details'));
                                           }
                                        }}
-                                       disableElevation
                                        color='secondary'
                                        variant='contained'
                                     >
@@ -335,7 +334,7 @@ const ProductDetails = () => {
                                        {!cartButton && 'Add To Cart'}
                                     </ActionButton>
                                     <ActionButton
-                                       disabled={buyButton && buttonLoading && currentProduct === product.id}
+                                       disabled={buttonLoading && currentProduct === product.id}
                                        onClick={async () => {
                                           if (!buttonLoading) {
                                              setBuyButton(true);
@@ -344,7 +343,6 @@ const ProductDetails = () => {
                                              history.push('/cart');
                                           }
                                        }}
-                                       disableElevation
                                        variant='contained'
                                     >
                                        {buyButton && <ProgressButton loading={buyButton} />}
@@ -390,7 +388,7 @@ const ProductDetails = () => {
                   )
             }
          </Box >
-         <Footer />
+         <Footer marginFalse={!product ? false : true} />
       </>
    );
 };

@@ -5,8 +5,11 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import DiscountCard from './DiscountCard';
 import PrimaryButton from '../../UI/PrimaryButton';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const HeroCard = ({ image }) => {
+   const user = useSelector(state => state.auth.userData);
+
    const theme = useTheme();
    const xlWidth = useMediaQuery(theme.breakpoints.down('xl'));
    const mdWidth = useMediaQuery(theme.breakpoints.down('md'));
@@ -15,53 +18,66 @@ const HeroCard = ({ image }) => {
    return (
       <div style={{ width: '100%' }}>
          {!mdWidth && <DiscountCard />}
-         <Card elevation={0} sx={theme => ({
-            height: '650px',
-            borderRadius: '30px',
-            position: 'relative',
-            background: `url(${image}) no-repeat center center/cover`,
-            [theme.breakpoints.down('xl')]: {
-               height: '550px',
-               borderRadius: '20px'
-            },
-            [theme.breakpoints.down('lg')]: {
-               height: '500px',
-            },
-            [theme.breakpoints.down('md')]: {
-               height: '400px'
-            },
-            [theme.breakpoints.down('sm')]: {
-               height: '300px',
-               borderRadius: '10px'
-            }
-         })}>
-            <Box sx={theme => ({
-               display: 'flex',
-               justifyContent: 'space-between',
-               alignItems: 'center',
-               height: '100%',
-               color: '#fff',
-               padding: '0 4rem',
-               background: 'rgba(28, 12, 61, 0.75)',
+         <Card
+            elevation={0}
+            sx={theme => ({
+               height: '600px',
+               borderRadius: '30px',
+               position: 'relative',
+               background: `url(${image}) no-repeat center center/cover`,
+               [theme.breakpoints.down('xl')]: {
+                  height: '500px',
+                  borderRadius: '20px'
+               },
+               [theme.breakpoints.down('lg')]: {
+                  height: '450px',
+                  borderRadius: 0
+               },
+               [theme.breakpoints.down('md')]: {
+                  height: '400px'
+               },
                [theme.breakpoints.down('sm')]: {
-                  padding: '0 3.5rem',
+                  height: '300px'
                }
-            })}>
-               {/* First Flex Box */}
-               <Box sx={theme => ({
-                  flex: 1, display: 'flex', flexDirection: 'column', rowGap: '1rem',
-                  [theme.breakpoints.down('lg')]: {
-                     rowGap: '10px',
-                     flex: 1.5
-                  },
-                  [theme.breakpoints.down('md')]: {
-                     flex: 3
+            })}
+         >
+            <Box
+               sx={theme => ({
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  height: '100%',
+                  color: '#fff',
+                  padding: '0 4rem',
+                  background: 'rgba(28, 12, 61, 0.75)',
+                  [theme.breakpoints.down('sm')]: {
+                     padding: '0 3rem'
                   }
-               })}>
+               })}
+            >
+               {/* First Flex Box */}
+               <Box
+                  sx={theme => ({
+                     flex: 1,
+                     display: 'flex',
+                     flexDirection: 'column',
+                     rowGap: '1rem',
+                     [theme.breakpoints.down('lg')]: {
+                        rowGap: '10px',
+                        flex: 1.5
+                     },
+                     [theme.breakpoints.down('md')]: {
+                        flex: 8
+                     },
+                     [theme.breakpoints.down('sm')]: {
+                        // flex: 10
+                     }
+                  })}
+               >
                   <Typography
                      sx={theme => ({
                         fontWeight: 600,
-                        fontSize: '3.5rem',
+                        fontSize: '3rem',
                         lineHeight: '1.4',
                         color: 'rgb(196, 174, 243)',
                         [theme.breakpoints.down('xl')]: {
@@ -76,17 +92,19 @@ const HeroCard = ({ image }) => {
                         },
                         [theme.breakpoints.down('sm')]: {
                            marginRight: 0,
+                           fontSize: '1.3rem',
+                        },
+                        [theme.breakpoints.down(350)]: {
+                           marginRight: 0,
                            fontSize: '1.15rem',
                         }
                      })}
-                     variant='h2'
                   >
                      Every Purchase Will Be Made With Pleasure
                   </Typography>
                   <Typography
                      sx={theme => ({
                         lineHeight: 1.7,
-                        fontWeight: 300,
                         color: 'rgb(187, 168, 228)',
                         marginRight: '4rem',
                         fontSize: '18px',
@@ -95,11 +113,11 @@ const HeroCard = ({ image }) => {
                            fontSize: '17px'
                         },
                         [theme.breakpoints.down('lg')]: {
+                           fontSize: '16px',
                            lineHeight: 1.5,
                            marginRight: '2rem'
                         },
                         [theme.breakpoints.down('md')]: {
-                           fontSize: '16px',
                            marginRight: 0
                         },
                         [theme.breakpoints.down('sm')]: {
@@ -108,7 +126,8 @@ const HeroCard = ({ image }) => {
                         [theme.breakpoints.down(350)]: {
                            display: 'none'
                         }
-                     })}>
+                     })}
+                  >
                      Buy with utmost confident and enjoy the best shopping experience
                      on the internet. <span style={{ display: `${smWidth ? 'none' : ''}` }}>Our main priority is to provide the best user
                         experince possible. Our customers are our idenity.</span>
@@ -138,6 +157,7 @@ const HeroCard = ({ image }) => {
                               borderRadius: '8px',
                               fontSize: '1rem',
                               background: 'none',
+                              display: user ? 'none' : 'block',
                               borderColor: 'rgb(155, 102, 216)',
                               color: 'rgb(213, 200, 240)',
                               "&:hover": {
@@ -158,16 +178,22 @@ const HeroCard = ({ image }) => {
                                  display: 'none'
                               }
                            })}
-                           disableElevation
                            variant='outlined'
                         >
                            Create Account
                         </Button>
                      </Link>
                   </CardActions>
-                  <Box sx={{
-                     display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-                  }}>
+                  <Box
+                     sx={theme => ({
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        [theme.breakpoints.down('sm')]: {
+                           display: 'none'
+                        }
+                     })}
+                  >
                      <Box sx={theme => ({
                         display: 'flex',
                         alignItems: 'center',
@@ -178,11 +204,9 @@ const HeroCard = ({ image }) => {
                         },
                         [theme.breakpoints.down('md')]: {
                            marginTop: '0.5rem',
-                        },
-                        [theme.breakpoints.down('sm')]: {
-                           display: 'none'
                         }
-                     })}>
+                     })}
+                     >
                         <EmojiEventsIcon sx={{ color: 'rgb(187, 168, 228)' }} />
                         <Divider orientation='vertical' sx={{ height: '30px', backgroundColor: 'rgb(187, 168, 228)' }} />
                         <Typography

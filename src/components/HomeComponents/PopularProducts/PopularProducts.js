@@ -1,5 +1,5 @@
+import React, { useRef } from 'react';
 import { Box, Button } from '@mui/material';
-import React, { useRef, useState, useEffect } from 'react';
 import ProductCard from '../../UI/ProductCard';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -12,89 +12,55 @@ import '../../../cardswiper.css';
 import { useTheme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import CustomHeaderText from '../../UI/CustomHeaderText';
+import { useSelector } from 'react-redux';
 
-const PopularProducts = ({ bestsellers }) => {
-   const [swiper, setSwiper] = useState();
-   const prevRef = useRef();
-   const nextRef = useRef();
+const PopularProducts = () => {
+   const products = useSelector(state => state.products.products);
+
+   const swiperRef = useRef();
 
    const theme = useTheme();
    const mdWidth = useMediaQuery(theme.breakpoints.down(900));
    const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
 
-   useEffect(() => {
-      if (swiper) {
-         swiper.params.navigation.prevEl = prevRef.current;
-         swiper.params.navigation.nextEl = nextRef.current;
-         swiper.navigation.init();
-         swiper.navigation.update();
-      }
-   }, [swiper]);
+   // Bestsellers
+   const bestsellers = products.filter(product => {
+      return product.categories.some(category => category.name === 'Bestsellers') === true;
+   });
 
    return (
-      <Box
-         className='product-swiper-container'
-         sx={theme => ({
-            marginTop: '8rem',
-            [theme.breakpoints.down('xl')]: {
-               marginTop: '6rem'
-            },
-            [theme.breakpoints.down('lg')]: {
-               marginTop: '5rem'
-            },
-            [theme.breakpoints.down('md')]: {
-               marginTop: '4rem'
-            },
-            [theme.breakpoints.down('sm')]: {
-               marginTop: '3.5rem'
-            }
-         })}
-      >
+      <Box className='product-swiper-container section-margin'>
          <CustomHeaderText text='Popular Products' />
-         <Box className='card-swiper'
-            sx={theme => ({
-               marginTop: '1.5rem',
-               [theme.breakpoints.down('sm')]: {
-                  marginTop: '2rem',
-               }
-            })}>
-            <div className='swiper-button-container'>
+         <Box className='card-swiper'>
+            <Box className='swiper-button-container'>
                <Button
                   className={`${mdWidth ? 'swiper-button prev small-swiper-button' : 'swiper-button prev'}`}
-                  ref={prevRef}
+                  onClick={() => swiperRef.current?.slidePrev()}
                >
                   <ArrowBackIcon sx={{ fontSize: `${mdWidth ? '1.5rem' : '1.75rem'}` }} />
                </Button>
                <Button
                   className={`${mdWidth ? 'swiper-button next small-swiper-button' : 'swiper-button next'}`}
-                  ref={nextRef}
+                  onClick={() => swiperRef.current?.slideNext()}
                >
                   <ArrowForwardIcon sx={{ fontSize: `${mdWidth ? '1.5rem' : '1.75rem'}` }} />
                </Button>
-            </div>
+            </Box>
             <Swiper
                slidesPerView={4}
                spaceBetween={smWidth ? 8 : 16}
                slidesPerGroup={1}
                loop={true}
-               navigation={{
-                  prevEl: prevRef?.current,
-                  nextEl: nextRef?.current
-               }}
                modules={[Navigation]}
-               className="mySwiper"
-               updateOnWindowResize
-               observer
-               observeParents
-               onSwiper={setSwiper}
+               onBeforeInit={(swiper) => swiperRef.current = swiper}
                breakpoints={{
                   250: {
                      slidesPerView: 1,
                   },
-                  375: {
+                  450: {
                      slidesPerView: 2,
                   },
-                  650: {
+                  768: {
                      slidesPerView: 3,
                   },
                   1250: {
@@ -104,10 +70,28 @@ const PopularProducts = ({ bestsellers }) => {
             >
                {bestsellers.map((product, index) => (
                   <SwiperSlide key={index}>
-                     <ProductCard
-                        product={product}
-                        path={`/product/${product.id}`}
-                     />
+                     <Box
+                        sx={theme => ({
+                           margin: '2rem 0 7rem 0',
+                           [theme.breakpoints.down('xl')]: {
+                              margin: '2rem 0 6rem 0'
+                           },
+                           [theme.breakpoints.down('lg')]: {
+                              margin: '2rem 0 5rem 0'
+                           },
+                           [theme.breakpoints.down('md')]: {
+                              margin: '2rem 0 4rem 0'
+                           },
+                           [theme.breakpoints.down('sm')]: {
+                              margin: '1.5rem 0 3.5rem 0'
+                           }
+                        })}
+                     >
+                        <ProductCard
+                           product={product}
+                           path={`/product/${product.id}`}
+                        />
+                     </Box>
                   </SwiperSlide>
                ))}
             </Swiper>

@@ -141,7 +141,6 @@ const UpdateProfileForm = ({ setEditMode, field }) => {
                      </>
                }
                <ActionButton
-                  disableElevation
                   type='submit'
                   variant='contained'
                   color='primary'

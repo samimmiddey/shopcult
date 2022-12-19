@@ -16,7 +16,7 @@
    width: 100%;
    display: flex;
    justify-content: space-between;
-   padding: 0 1px;
+   /* padding: 0 1px; */
 }
 
 .hero-swiper .hero-swiper-button {
@@ -39,4 +39,11 @@
 .hero-swiper .hero-small-swiper-button {
    width: 28px;
    height: 50px;
+}
+
+@media screen and (max-width: 600px) {
+   .hero-swiper .hero-small-swiper-button {
+      width: 25px;
+      height: 45px;
+   }
 }

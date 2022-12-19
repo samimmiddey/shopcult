@@ -1,5 +1,5 @@
-import { Box, Typography } from '@mui/material';
 import React from 'react';
+import { Box } from '@mui/material';
 import ProductCard from '../UI/ProductCard';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -10,6 +10,7 @@ import '../../cardswiper.css';
 import { useTheme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useSelector } from 'react-redux';
+import CustomHeaderText from './CustomHeaderText';
 
 const RelatedProducts = ({ product }) => {
    const allProducts = useSelector(state => state.products.products);
@@ -24,49 +25,11 @@ const RelatedProducts = ({ product }) => {
    const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
 
    return (
-      <Box className='product-swiper-container'
-         sx={theme => ({
-            marginTop: '7rem',
-            [theme.breakpoints.down('xl')]: {
-               marginTop: '6rem'
-            },
-            [theme.breakpoints.down('lg')]: {
-               marginTop: '5rem'
-            },
-            [theme.breakpoints.down('md')]: {
-               marginTop: '4rem'
-            },
-            [theme.breakpoints.down('sm')]: {
-               marginTop: '3.5rem'
-            }
-         })}>
+      <Box className='product-swiper-container section-margin'>
          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant='h4'
-               sx={theme => ({
-                  fontWeight: 700,
-                  [theme.breakpoints.down('lg')]: {
-                     fontSize: '2rem'
-                  },
-                  [theme.breakpoints.down('md')]: {
-                     fontSize: '1.5rem'
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                     fontSize: '1.3rem'
-                  },
-                  [theme.breakpoints.down(400)]: {
-                     fontSize: '1.2rem'
-                  }
-               })}>
-               <span style={{ color: 'rgb(132, 76, 196)' }}>Products</span> <span style={{ color: 'rgb(90, 57, 161)' }}>You May Like</span>
-            </Typography>
+            <CustomHeaderText text='Products You May Like' />
          </Box>
-         <Box className='card-swiper'
-            sx={theme => ({
-               marginTop: '3rem',
-               [theme.breakpoints.down('sm')]: {
-                  marginTop: '2rem',
-               }
-            })}>
+         <Box className='card-swiper'>
             <Swiper
                slidesPerView={4}
                spaceBetween={smWidth ? 8 : 16}
@@ -78,18 +41,14 @@ const RelatedProducts = ({ product }) => {
                   disableOnInteraction: false
                }}
                modules={[Autoplay]}
-               className="mySwiper"
-               updateOnWindowResize
-               observer
-               observeParents
                breakpoints={{
                   250: {
                      slidesPerView: 1,
                   },
-                  375: {
+                  450: {
                      slidesPerView: 2,
                   },
-                  650: {
+                  768: {
                      slidesPerView: 3,
                   },
                   1250: {
@@ -99,10 +58,28 @@ const RelatedProducts = ({ product }) => {
             >
                {relatedProducts.map((product, index) => (
                   <SwiperSlide key={index}>
-                     <ProductCard
-                        product={product}
-                        path={`/related/${product.id}`}
-                     />
+                     <Box
+                        sx={theme => ({
+                           margin: '2rem 0 8rem 0',
+                           [theme.breakpoints.down('xl')]: {
+                              margin: '2rem 0 7rem 0'
+                           },
+                           [theme.breakpoints.down('lg')]: {
+                              margin: '2rem 0 6rem 0'
+                           },
+                           [theme.breakpoints.down('md')]: {
+                              margin: '2rem 0 5rem 0'
+                           },
+                           [theme.breakpoints.down('sm')]: {
+                              margin: '1.5rem 0 4.5rem 0'
+                           }
+                        })}
+                     >
+                        <ProductCard
+                           product={product}
+                           path={`/related/${product.id}`}
+                        />
+                     </Box>
                   </SwiperSlide>
                ))}
             </Swiper>

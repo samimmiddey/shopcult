@@ -26,7 +26,7 @@ const OrderHistoryComponents = () => {
 
    return (
       <Box
-         className='container'
+         className='small-container'
          sx={theme => ({
             padding: '80px 32px 0 32px',
             [theme.breakpoints.down('sm')]: {

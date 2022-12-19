@@ -16,19 +16,32 @@
 
 .category-swiper-container .swiper-button-container {
    position: absolute;
-   bottom: -65px;
+   top: 464px;
    left: 50%;
    transform: translateX(-50%);
    display: flex;
    align-items: center;
    justify-content: center;
    column-gap: 12px;
+   z-index: 99;
+}
+
+@media screen and (max-width: 900px) {
+   .category-swiper-container .swiper-button-container {
+      top: 414px;
+   }
+}
+
+@media screen and (max-width: 600px) {
+   .category-swiper-container .swiper-button-container {
+      top: 348px;
+   }
 }
 
 .category-swiper-container .swiper-button,
 .product-swiper-container .swiper-button {
-   height: 37px;
-   min-width: 55px;
+   height: 35px;
+   min-width: 50px;
    background: rgb(59, 38, 103);
    background: linear-gradient(90deg, rgb(109, 69, 196) 0%, rgb(126, 66, 196) 100%);
    color: #fff;

@@ -23,11 +23,11 @@ const ActionButton = styled(Button)({
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_API_KEY);
 
-const PaymentForm = ({ backStep, shippingData, handleSubmitOrder }) => {
+const PaymentForm = ({ backStep, shippingData }) => {
    const [error, setError] = useState(null);
    const [loading, setLoading] = useState(false);
    const checkoutToken = useSelector(state => state.checkout.checkoutToken);
-   const userData = JSON.parse(useSelector(state => state.auth.userData));
+   const userData = (useSelector(state => state.auth.userData));
 
    const dispatch = useDispatch();
 
@@ -142,7 +142,6 @@ const PaymentForm = ({ backStep, shippingData, handleSubmitOrder }) => {
                         })}
                      >
                         <ActionButton
-                           disableElevation
                            color='secondary'
                            variant='contained'
                            type='button'
@@ -152,7 +151,6 @@ const PaymentForm = ({ backStep, shippingData, handleSubmitOrder }) => {
                            Back
                         </ActionButton>
                         <ActionButton
-                           disableElevation
                            type='submit'
                            variant='contained'
                            color='primary'

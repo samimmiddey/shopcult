@@ -88,7 +88,6 @@ const CheckoutError = () => {
                <Button
                   onClick={() => history.replace('/cart')}
                   className='primary-button'
-                  disableElevation
                   variant='contained'
                   sx={theme => ({
                      marginTop: '2rem',

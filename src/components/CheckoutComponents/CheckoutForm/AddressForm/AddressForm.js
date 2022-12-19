@@ -245,7 +245,6 @@ const AddressForm = ({ next }) => {
                >
                   <Link style={{ width: '100%' }} to='/cart'>
                      <ActionButton
-                        disableElevation
                         color='secondary'
                         variant='contained'
                         type='button'
@@ -254,7 +253,6 @@ const AddressForm = ({ next }) => {
                      </ActionButton>
                   </Link>
                   <ActionButton
-                     disableElevation
                      type='submit'
                      onClick={handleSubmit((data) => {
                         next({ ...data, selectOption: option });

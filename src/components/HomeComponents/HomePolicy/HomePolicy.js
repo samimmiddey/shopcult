@@ -33,45 +33,52 @@ const HomePolicy = () => {
       borderRadius: '10px',
    }
 
+   const data = [
+      {
+         img: authentic,
+         text: <>100% {xsWidth && <br />}Authentic<br />Products</>
+      },
+      {
+         img: shipping,
+         text: <>Free {xsWidth && <br />}Shipping<br />Worldwide</>
+      },
+      {
+         img: guarantee,
+         text: <>100% {xsWidth && <br />}Moneyback<br />Guarantee</>
+      },
+      {
+         img: support,
+         text: <>24/7 {xsWidth && <br />}Customer<br />Support</>
+      }
+   ];
+
    return (
       <Grid
          spacing={mdWidth && !smWidth ? 1.5 : mdWidth && smWidth ? 1 : 3}
-         sx={{ marginTop: '2rem' }}
+         sx={theme => ({
+            marginTop: '3rem',
+            [theme.breakpoints.down('md')]: {
+               marginTop: '2.5rem'
+            }
+         })}
          container
       >
-         <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
-            <BoxItem sx={mdWidth ? { ...style } : {}}>
-               <img src={authentic} alt="Authentic" />
-               <Typography variant='h6' sx={{ fontWeight: 600, fontSize: `${smWidth ? '15px' : '18px'}` }}>
-                  100% {xsWidth && <br />}Authentic<br />Products
-               </Typography>
-            </BoxItem>
-         </Grid>
-         <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
-            <BoxItem sx={mdWidth ? { ...style } : {}}>
-               <img src={shipping} alt="Shipping" />
-               <Typography variant='h6' sx={{ fontWeight: 600, fontSize: `${smWidth ? '15px' : '18px'}` }}>
-                  Free {xsWidth && <br />}Shipping<br />Worldwide
-               </Typography>
-            </BoxItem>
-         </Grid>
-         <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
-            <BoxItem sx={mdWidth ? { ...style } : {}}>
-               <img src={guarantee} alt="Guarantee" />
-               <Typography variant='h6' sx={{ fontWeight: 600, fontSize: `${smWidth ? '15px' : '18px'}` }}>
-                  100% {xsWidth && <br />}Moneyback<br />Guarantee
-               </Typography>
-            </BoxItem>
-         </Grid>
-         <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
-            <BoxItem sx={mdWidth ? { ...style } : {}}>
-               <img src={support} alt="Support" />
-               <Typography variant='h6' sx={{ fontWeight: 600, fontSize: `${smWidth ? '15px' : '18px'}` }}>
-                  24/7 {xsWidth && <br />}Customer<br />Support
-               </Typography>
-            </BoxItem>
-         </Grid>
-
+         {data.map((item, index) => (
+            <Grid key={index} item xs={6} sm={6} md={3} lg={3} xl={3}>
+               <BoxItem sx={mdWidth ? { ...style } : {}}>
+                  <img src={item.img} alt='' />
+                  <Typography
+                     variant='h6'
+                     sx={{
+                        fontWeight: 600,
+                        fontSize: `${smWidth ? '15px' : '18px'}`
+                     }}
+                  >
+                     {item.text}
+                  </Typography>
+               </BoxItem>
+            </Grid>
+         ))}
       </Grid >
    )
 }

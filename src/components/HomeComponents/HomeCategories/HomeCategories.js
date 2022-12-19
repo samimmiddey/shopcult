@@ -3,13 +3,10 @@ import { Box } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { styled } from '@mui/material/styles';
-import Shoes from './Shoes/Shoes';
-import Headphones from './Headphones/Headphones';
-import Sunglasses from './Sunglasses/Sunglasses';
-import Watches from './Watches/Watches';
 import { useTheme } from '@mui/system';
 import { useMediaQuery } from '@mui/material';
 import CustomHeaderText from '../../UI/CustomHeaderText';
+import CategoryTab from './CategoryTab/CategoryTab';
 
 const StyledTabs = styled((props) => (
    <Tabs
@@ -29,15 +26,12 @@ const StyledTabs = styled((props) => (
    }
 });
 
-const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
+const StyledTab = styled((props) => <Tab {...props} />)(
    ({ theme }) => ({
       textTransform: 'none',
-      margin: '0 1rem',
+      margin: '0 0.5rem',
       '&.Mui-selected': {
          color: 'rgb(132, 76, 196)',
-      },
-      [theme.breakpoints.down('md')]: {
-         margin: '0 0.5rem'
       },
       [theme.breakpoints.down('sm')]: {
          margin: '0'
@@ -45,15 +39,10 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(
    })
 );
 
-const HomeCategories = ({ headphones, shoes, sunglasses, watches }) => {
-   const tabs = [
-      <Shoes shoes={shoes} />,
-      <Watches watches={watches} />,
-      <Sunglasses sunglasses={sunglasses} />,
-      <Headphones headphones={headphones} />
-   ];
+const HomeCategories = () => {
    const homeCategory = parseInt(localStorage.getItem('homeCategory'));
    const [value, setValue] = useState(homeCategory ? homeCategory : 0);
+
    const theme = useTheme();
    const smallWidth = useMediaQuery(theme.breakpoints.down(435));
 
@@ -62,36 +51,16 @@ const HomeCategories = ({ headphones, shoes, sunglasses, watches }) => {
       localStorage.setItem('homeCategory', newValue);
    };
 
+   const tabValues = ['Shoes', 'Watches', 'Sunglasses', 'Headphones'];
+
    return (
-      <Box
-         sx={theme => ({
-            marginTop: '8rem',
-            [theme.breakpoints.down('xl')]: {
-               marginTop: '6rem'
-            },
-            [theme.breakpoints.down('lg')]: {
-               marginTop: '5rem'
-            },
-            [theme.breakpoints.down('md')]: {
-               marginTop: '4rem'
-            },
-            [theme.breakpoints.down('sm')]: {
-               marginTop: '3.5rem'
-            }
-         })}
-      >
+      <Box>
          <Box sx={{ textAlign: 'center' }}>
             <CustomHeaderText text='Shop by Categories' />
          </Box>
          <Box
             sx={theme => ({
-               marginTop: '1.5rem',
-               [theme.breakpoints.down('lg')]: {
-                  marginTop: '1.25rem'
-               },
-               [theme.breakpoints.down('md')]: {
-                  marginTop: '1rem'
-               },
+               marginTop: '1rem',
                [theme.breakpoints.down('sm')]: {
                   marginTop: '0.5rem'
                }
@@ -106,7 +75,7 @@ const HomeCategories = ({ headphones, shoes, sunglasses, watches }) => {
                allowScrollButtonsMobile={smallWidth ? true : false}
             >
                {
-                  ['Shoes', 'Watches', 'Sunglasses', 'Headphones'].map((label, index) => (
+                  tabValues.map((label, index) => (
                      <StyledTab
                         key={index}
                         sx={{
@@ -120,21 +89,7 @@ const HomeCategories = ({ headphones, shoes, sunglasses, watches }) => {
                }
             </StyledTabs>
          </Box>
-         <Box
-            sx={theme => ({
-               marginTop: '2rem',
-               [theme.breakpoints.down('lg')]: {
-                  marginTop: '1.75rem'
-               },
-               [theme.breakpoints.down('md')]: {
-                  marginTop: '1.5rem'
-               },
-               [theme.breakpoints.down('sm')]: {
-                  marginTop: '1.25rem'
-               }
-            })}>
-            {tabs[value]}
-         </Box>
+         <CategoryTab value={tabValues[value]} />
       </Box >
    );
 };

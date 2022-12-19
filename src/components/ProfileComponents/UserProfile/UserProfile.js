@@ -132,7 +132,12 @@ const UserProfile = () => {
                         id="icon-button-file"
                         type="file"
                      />
-                     <IconButton sx={{ color: 'rgb(90, 57, 161)' }} component="span">
+                     <IconButton
+                        sx={{
+                           color: 'rgb(90, 57, 161)'
+                        }}
+                        component="span"
+                     >
                         <PhotoCameraIcon />
                      </IconButton>
                   </label>
@@ -178,7 +183,6 @@ const UserProfile = () => {
                            {pic.name}
                         </Typography>
                         <Button
-                           disableElevation
                            variant='contained'
                            type='submit'
                            sx={{
@@ -251,7 +255,6 @@ const UserProfile = () => {
                      }}
                      variant='contained'
                      color='primary'
-                     disableElevation
                   >
                      <ArrowBackOutlinedIcon sx={{ fontSize: '16px' }} /> Back
                   </Button>

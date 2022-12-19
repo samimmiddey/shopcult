@@ -11,7 +11,7 @@ import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useMediaQuery, useTheme } from '@mui/material';
-import { Link, NavLink, useParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 
@@ -41,10 +41,12 @@ const SideDrawer = ({ menuItems }) => {
    const showMenu = useSelector(state => state.ui.showMenu);
    const dispatch = useDispatch();
 
-   const { id } = useParams();
+   const { pathname } = useLocation();
 
    const theme = useTheme();
    const mdWidth = useMediaQuery(theme.breakpoints.down('md'));
+
+   const links = menuItems.map(item => item.toLowerCase());
 
    return (
       <div>
@@ -53,24 +55,32 @@ const SideDrawer = ({ menuItems }) => {
                open={showMenu}
                onClose={() => dispatch(uiActions.toggleMenu())}
             >
-               <Link
-                  to='/'
-                  onClick={() => dispatch(uiActions.toggleMenu())}
-               >
-                  <DrawerHeader>
-                     <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        columnGap: '5px',
-                     }}>
+               <DrawerHeader>
+                  <Link
+                     to='/'
+                     onClick={() => dispatch(uiActions.toggleMenu())}
+                  >
+                     <div
+                        style={{
+                           display: 'flex',
+                           alignItems: 'center',
+                           columnGap: '5px',
+                        }}
+                     >
                         <ShoppingBagOutlinedIcon sx={{ color: 'rgb(132, 76, 196)' }} />
-                        <Typography variant='h6' sx={{ fontWeight: 700 }}><span style={{ color: 'rgb(132, 76, 196)' }}>shop</span><span style={{ color: 'rgb(90, 57, 161)' }}>cult</span></Typography>
+                        <Typography
+                           variant='h6'
+                           sx={{ fontWeight: 700 }}
+                        >
+                           <span style={{ color: 'rgb(132, 76, 196)' }}>shop</span>
+                           <span style={{ color: 'rgb(90, 57, 161)' }}>cult</span>
+                        </Typography>
                      </div>
-                     <IconButton onClick={() => dispatch(uiActions.toggleMenu())}>
-                        <ChevronLeftIcon />
-                     </IconButton>
-                  </DrawerHeader>
-               </Link>
+                  </Link>
+                  <IconButton onClick={() => dispatch(uiActions.toggleMenu())}>
+                     <ChevronLeftIcon />
+                  </IconButton>
+               </DrawerHeader>
                <Box
                   sx={{ width: 250, marginTop: '1rem' }}
                   role="presentation"
@@ -80,7 +90,7 @@ const SideDrawer = ({ menuItems }) => {
                      sx={theme => ({
                         fontSize: '16px',
                         fontWeight: 600,
-                        color: 'text.disabled',
+                        color: 'text.secondary',
                         marginLeft: '2rem',
                         [theme.breakpoints.down('sm')]: {
                            marginLeft: '1.5rem'
@@ -90,63 +100,51 @@ const SideDrawer = ({ menuItems }) => {
                      General
                   </Typography>
                   <List>
-                     {[...menuItems, 'Order History', 'Profile'].map((item, index) => {
+                     {links.map((link, index) => {
                         if (!mdWidth && (index === 5 || index === 6)) {
                            return null;
                         }
                         return (
                            <Fragment key={index}>
-                              <NavLink
-                                 onClick={() => localStorage.setItem('currentPage', 1)}
-                                 activeClassName='active-drawer-nav'
-                                 exact={item === 'Home' ? true : false}
-                                 to={
-                                    {
-                                       ...item === 'Home' ? { pathname: '/' } : {
-                                          ...item === 'About' ? { pathname: '/about' } : {
-                                             ...item === 'Shop' ? { pathname: `/shop/${id ? id : 'all'}` } : {
-                                                ...item === 'Brands' ? { pathname: '/brands' } : {
-                                                   ...item === 'Help' ? { pathname: '/help' } : {
-                                                      ...item === 'Order History' ? { pathname: '/orderhistory' } : {
-                                                         ...item === 'Profile' ? { pathname: '/profile' } : ''
-                                                      }
-                                                   }
-                                                }
-                                             }
-                                          }
-                                       }
-                                    }
-                                 }
-                              >
+                              <Link to={link === 'Home' ? '/' : link === 'shop' ? `/${link}/all` : `/${link}`}>
                                  <ListItemButton
-                                    className='active-drawer-nav-item'
                                     sx={{
-                                       // margin: '2px 0 2px 1rem',
-                                       // borderRadius: '10px 0 0 10px',
-                                       // minHeight: 48,
                                        margin: '5px 10px',
-                                       borderRadius: '10px',
+                                       borderRadius: '5px',
                                        minHeight: 48,
                                        px: 2.5,
+                                       color: (((link === 'home' && pathname === '/') || (link === 'shop' && pathname === '/shop/all')) ? 'true' : `/${link}` === pathname) ? 'secondary.main' : 'text.primary',
+                                       backgroundColor: (((link === 'home' && pathname === '/') || (link === 'shop' && pathname === '/shop/all')) ? 'true' : `/${link}` === pathname) ? '#5a39a125' : '',
+                                       '&:hover': {
+                                          backgroundColor: (((link === 'home' && pathname === '/') || (link === 'shop' && pathname === '/shop/all')) ? 'true' : `/${link}` === pathname) ? '#5a39a125' : '',
+                                       }
                                     }}
                                  >
                                     <ListItemIcon
                                        sx={{
                                           minWidth: 0,
                                           mr: 3,
-                                          color: 'rgb(132, 76, 196)'
+                                          color: (((link === 'home' && pathname === '/') || (link === 'shop' && pathname === '/shop/all')) ? 'true' : `/${link}` === pathname) ? 'secondary.main' : 'text.primary'
                                        }}
                                     >
                                        {icons[index]}
                                     </ListItemIcon>
                                     <ListItemText
                                        primary={
-                                          <Typography style={{ fontSize: '15px', fontWeight: 500 }}>{item}</Typography>
+                                          <Typography
+                                             sx={{
+                                                fontSize: '15px',
+                                                fontWeight: 600,
+                                                color: (((link === 'home' && pathname === '/') || (link === 'shop' && pathname === '/shop/all')) ? 'true' : `/${link}` === pathname) ? 'secondary.main' : 'text.primary'
+                                             }}
+                                          >
+                                             {link.charAt(0).toUpperCase() + link.slice(1)}
+                                          </Typography>
                                        }
                                        sx={{ color: 'text.secondary' }}
                                     />
                                  </ListItemButton>
-                              </NavLink>
+                              </Link>
                            </Fragment>
                         )
                      })}

@@ -7,7 +7,7 @@ const EmptyTemplate = ({ img, text, button, subtext }) => {
       <Box
          sx={{
             textAlign: 'center',
-            margin: '3rem 0',
+            marginTop: '3rem',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center'
@@ -32,7 +32,7 @@ const EmptyTemplate = ({ img, text, button, subtext }) => {
             <img className='image' src={img} alt="search" />
          </Box>
          <Typography
-            mb={!subtext && 2}
+            mb={subtext && !button ? 0.5 : !subtext && button ? 2 : 0}
             variant='h6'
             sx={theme => ({
                fontWeight: 600,

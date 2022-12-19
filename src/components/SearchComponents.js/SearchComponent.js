@@ -83,7 +83,7 @@ const SearchComponent = () => {
             />
             {searchedProducts.length === 0 && <EmptyTemplate img={search} text='No product found!' />}
             {
-               searchedProducts.length &&
+               searchedProducts.length >= 1 &&
                <Grid spacing={1} container>
                   <Grid item xs={12}>
                      <ShopProducts

@@ -2,16 +2,20 @@ import React from 'react';
 import AboutHero from './AboutHero/AboutHero';
 import AboutPoints from './AboutPoints/AboutPoints';
 import AboutFeatured from './AboutFeatured.js/AboutFeatured';
-import AboutForm from './AboutForm/AboutForm';
+import { Box } from '@mui/material';
+import CustomForm from '../UI/CustomForm';
 
 const AboutComponents = () => {
    return (
-      <div className='small-container' style={{ paddingTop: '80px' }}>
+      <Box className='small-container' style={{ paddingTop: '80px' }}>
          <AboutHero />
          <AboutPoints />
-         <AboutForm />
+         <CustomForm
+            list={['Name', 'Email', 'Phone', 'Query']}
+            title='Have Any Queries? Contact Us'
+         />
          <AboutFeatured />
-      </div>
+      </Box>
    );
 };
 

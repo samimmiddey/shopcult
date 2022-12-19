@@ -8,25 +8,14 @@ const HomeBox = () => {
       <Box
          className='gradient-background'
          sx={theme => ({
-            marginTop: '12.75rem',
             padding: '2rem 3rem',
             borderRadius: '30px',
             display: 'flex',
             alignItems: 'center',
-            [theme.breakpoints.down('xl')]: {
-               marginTop: '10.75rem'
-            },
-            [theme.breakpoints.down('lg')]: {
-               marginTop: '9.75rem'
-            },
-            [theme.breakpoints.down('md')]: {
-               marginTop: '8.75rem'
-            },
             [theme.breakpoints.down('sm')]: {
                flexDirection: 'column',
                justifyContent: 'center',
-               rowGap: '2rem',
-               marginTop: '7.75rem'
+               rowGap: '2rem'
             }
          })}
       >
@@ -55,11 +44,11 @@ const HomeBox = () => {
             })}
          >
             <Typography
-               variant='h3'
                sx={theme => ({
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: 'rgb(196, 174, 243)',
                   lineHeight: '1.4',
+                  fontSize: '3rem',
                   [theme.breakpoints.down('xl')]: {
                      fontSize: '2.5rem'
                   },
@@ -73,7 +62,7 @@ const HomeBox = () => {
                      fontSize: '1.3rem',
                      textAlign: 'center'
                   },
-                  [theme.breakpoints.down(400)]: {
+                  [theme.breakpoints.down('xm')]: {
                      fontSize: '1.2rem'
                   }
                })}

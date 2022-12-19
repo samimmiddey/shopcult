@@ -17,7 +17,6 @@ const WishlistItems = ({ product, path }) => {
 
    return (
       <MenuItem
-         disableRipple
          sx={{
             border: '1px solid #eceff1',
             padding: '16px 20px',
@@ -128,7 +127,6 @@ const WishlistItems = ({ product, path }) => {
                dispatch(addToCart(product.id, 1, 'product-card'));
                dispatch(uiActions.setCurrentProduct(product.id));
             }}
-            disableElevation
             color='primary'
             sx={theme => ({
                fontSize: '12px',

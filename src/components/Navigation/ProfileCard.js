@@ -206,7 +206,6 @@ const UserProfile = ({ anchorEl, open, userData, handleClose }) => {
                            >
                               <Button
                                  variant='contained'
-                                 disableElevation
                                  sx={{
                                     minWidth: '42px',
                                     minHeight: '42px',
@@ -271,7 +270,6 @@ const UserProfile = ({ anchorEl, open, userData, handleClose }) => {
                color='primary'
                variant='contained'
                disabled={authProgress}
-               disableElevation
                sx={{
                   minHeight: 0,
                   minWidth: 0,

@@ -56,7 +56,7 @@ const UL = styled('ul')({
    rowGap: '8px'
 });
 
-const Footer = () => {
+const Footer = ({ marginFalse }) => {
    const theme = useTheme();
    const xsWidth = useMediaQuery(theme.breakpoints.down(500));
 
@@ -67,22 +67,22 @@ const Footer = () => {
       <>
          {!route &&
             <Box
-               className='gradient-background'
+               className='gradient-background section-margin'
                sx={theme => ({
-                  marginTop: '8rem',
                   paddingTop: '4rem',
+                  marginTop: !marginFalse && '8rem',
                   [theme.breakpoints.down('xl')]: {
-                     marginTop: '6rem'
+                     marginTop: !marginFalse && '7rem'
                   },
                   [theme.breakpoints.down('lg')]: {
-                     marginTop: '5rem',
-                  },
-                  [theme.breakpoints.down('lg')]: {
-                     marginTop: '4rem',
+                     marginTop: !marginFalse && '6rem'
                   },
                   [theme.breakpoints.down('md')]: {
-                     paddingTop: '3.5rem',
-                     marginTop: '3.5rem'
+                     marginTop: !marginFalse && '5rem',
+                     paddingTop: '3.5rem'
+                  },
+                  [theme.breakpoints.down('sm')]: {
+                     marginTop: !marginFalse && '4.5rem'
                   }
                })}
             >
@@ -123,9 +123,8 @@ const Footer = () => {
                      >
                         <Typography
                            color='#fff'
-                           variant='h4'
                            sx={theme => ({
-                              fontWeight: 700,
+                              fontWeight: 600,
                               lineHeight: 1.4,
                               color: 'rgb(196, 174, 243)',
                               fontSize: '2.5rem',
@@ -139,7 +138,8 @@ const Footer = () => {
                                  fontSize: '1.5rem'
                               }
                            })}
-                        >Sign Up For Updates &amp; Newsletter
+                        >
+                           Sign Up For Updates &amp; Newsletter
                         </Typography>
                      </Box>
                      <Box
@@ -197,7 +197,6 @@ const Footer = () => {
                            }
                         }}
                            className='primary-button'
-                           disableElevation
                            variant='contained'
                         >
                            Subscribe Now

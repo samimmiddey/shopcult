@@ -1,5 +1,5 @@
+import React, { useRef } from 'react';
 import { Box, Button } from '@mui/material';
-import React, { useRef, useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -15,97 +15,76 @@ import TestimonialData from '../../../data/TestimonialData';
 import CustomHeaderText from '../../UI/CustomHeaderText';
 
 const HomeTestimonial = () => {
-   const [swiper, setSwiper] = useState();
-   const prevRef = useRef();
-   const nextRef = useRef();
+   const swiperRef = useRef();
 
    const theme = useTheme();
    const mdWidth = useMediaQuery(theme.breakpoints.down('md'));
    const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
+   const xmWidth = useMediaQuery(theme.breakpoints.down('xm'));
 
-   useEffect(() => {
-      if (swiper) {
-         swiper.params.navigation.prevEl = prevRef.current;
-         swiper.params.navigation.nextEl = nextRef.current;
-         swiper.navigation.init();
-         swiper.navigation.update();
-      }
-   }, [swiper]);
+   const text = <>What Our {xmWidth && <br />} Customers Say</>;
 
    return (
-      <Box className='product-swiper-container'
-         sx={theme => ({
-            marginTop: '8rem',
-            [theme.breakpoints.down('xl')]: {
-               marginTop: '6rem'
-            },
-            [theme.breakpoints.down('lg')]: {
-               marginTop: '5rem'
-            },
-            [theme.breakpoints.down('md')]: {
-               marginTop: '4rem'
-            },
-            [theme.breakpoints.down('sm')]: {
-               marginTop: '3.5rem'
-            }
-         })}>
-         <CustomHeaderText text='What Our Customers Say' />
-         <Box className='card-swiper'
-            sx={theme => ({
-               marginTop: '1.5rem',
-               [theme.breakpoints.down('sm')]: {
-                  marginTop: '2rem',
-               }
-            })}>
-            <div className='swiper-button-container'>
+      <Box className='product-swiper-container section-margin'>
+         <CustomHeaderText text={text} />
+         <Box className='card-swiper'>
+            <Box className='swiper-button-container'>
                <Button
                   className={`${mdWidth ? 'swiper-button prev small-swiper-button' : 'swiper-button prev'}`}
-                  ref={prevRef}
+                  onClick={() => swiperRef.current?.slidePrev()}
                >
                   <ArrowBackIcon sx={{ fontSize: `${mdWidth ? '1.5rem' : '1.75rem'}` }} />
                </Button>
                <Button
                   className={`${mdWidth ? 'swiper-button next small-swiper-button' : 'swiper-button next'}`}
-                  ref={nextRef}
+                  onClick={() => swiperRef.current?.slideNext()}
                >
                   <ArrowForwardIcon sx={{ fontSize: `${mdWidth ? '1.5rem' : '1.75rem'}` }} />
                </Button>
-            </div>
+            </Box>
             <Swiper
                slidesPerView={4}
                spaceBetween={smWidth ? 10 : 20}
                slidesPerGroup={1}
                loop={true}
-               navigation={{
-                  prevEl: prevRef?.current,
-                  nextEl: nextRef?.current
-               }}
                modules={[Navigation]}
-               className="mySwiper"
-               updateOnWindowResize
-               observer
-               observeParents
-               onSwiper={setSwiper}
+               onBeforeInit={(swiper) => swiperRef.current = swiper}
                breakpoints={{
                   250: {
                      slidesPerView: 1,
                   },
-                  600: {
+                  450: {
                      slidesPerView: 2,
                   },
-                  1200: {
+                  768: {
                      slidesPerView: 3,
                   },
-                  1536: {
+                  1250: {
                      slidesPerView: 4,
                   }
                }}
             >
                {TestimonialData.map((data, index) => (
                   <SwiperSlide key={index}>
-                     <TestimonialCard
-                        data={data}
-                     />
+                     <Box
+                        sx={theme => ({
+                           margin: '2rem 0 7rem 0',
+                           [theme.breakpoints.down('xl')]: {
+                              margin: '2rem 0 6rem 0'
+                           },
+                           [theme.breakpoints.down('lg')]: {
+                              margin: '2rem 0 5rem 0'
+                           },
+                           [theme.breakpoints.down('md')]: {
+                              margin: '2rem 0 4rem 0'
+                           },
+                           [theme.breakpoints.down('sm')]: {
+                              margin: '1.5rem 0 3.5rem 0'
+                           }
+                        })}
+                     >
+                        <TestimonialCard data={data} />
+                     </Box>
                   </SwiperSlide>
                ))}
             </Swiper>

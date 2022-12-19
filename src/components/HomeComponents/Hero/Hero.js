@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import HeroCard from './HeroCard';
 import { images } from '../../../data/HeroSliderData';
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,21 +14,10 @@ import { useTheme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 
 const Hero = () => {
-   const [swiper, setSwiper] = useState();
-   const prevRef = useRef();
-   const nextRef = useRef();
+   const swiperRef = useRef();
 
    const theme = useTheme();
    const mdWidth = useMediaQuery(theme.breakpoints.down(900));
-
-   useEffect(() => {
-      if (swiper) {
-         swiper.params.navigation.prevEl = prevRef.current;
-         swiper.params.navigation.nextEl = nextRef.current;
-         swiper.navigation.init();
-         swiper.navigation.update();
-      }
-   }, [swiper]);
 
    const HeroCards = images.map((item, index) => (
       <SwiperSlide key={index}>
@@ -43,13 +32,13 @@ const Hero = () => {
          <div className='hero-swiper-button-container'>
             <Button
                className={`${mdWidth ? 'hero-swiper-button hero-small-swiper-button prev' : 'hero-swiper-button prev'}`}
-               ref={prevRef}
+               onClick={() => swiperRef.current?.slidePrev()}
             >
                <ArrowBackIosNewIcon sx={{ fontSize: `${mdWidth ? '1.5rem' : '1.75rem'}` }} />
             </Button>
             <Button
                className={`${mdWidth ? 'hero-swiper-button hero-small-swiper-button next' : 'hero-swiper-button next'}`}
-               ref={nextRef}
+               onClick={() => swiperRef.current?.slideNext()}
             >
                <ArrowForwardIosIcon sx={{ fontSize: `${mdWidth ? '1.5rem' : '1.75rem'}` }} />
             </Button>
@@ -62,16 +51,8 @@ const Hero = () => {
                delay: 7000,
                disableOnInteraction: false
             }}
-            navigation={{
-               prevEl: prevRef?.current,
-               nextEl: nextRef?.current
-            }}
-            updateOnWindowResize
-            observer
-            observeParents
-            onSwiper={setSwiper}
             modules={[Autoplay, Navigation]}
-            className="mySwiper"
+            onBeforeInit={(swiper) => swiperRef.current = swiper}
          >
             {HeroCards}
          </Swiper>

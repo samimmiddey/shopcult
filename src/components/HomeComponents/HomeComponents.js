@@ -7,56 +7,38 @@ import HomeCategories from './HomeCategories/HomeCategories';
 import HomeBox from './HomeBox/HomeBox';
 import HomeTestimonial from './HomeTestimonial/HomeTestimonial';
 import HomePolicy from './HomePolicy/HomePolicy';
-import { useSelector } from 'react-redux';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 
 const HomeComponents = () => {
-   const products = useSelector(state => state.products.products);
-
-   // Bestsellers
-   const bestsellers = products.filter(product => {
-      return product.categories.some(category => category.name === 'Bestsellers') === true;
-   });
-
-   // Headphones
-   const headphones = products.filter(product => {
-      return product.categories.some(category => category.name === 'Headphones') === true;
-   });
-
-   // Shoes
-   const shoes = products.filter(product => {
-      return product.categories.some(category => category.name === 'Shoes') === true;
-   });
-
-   // Sunglasses
-   const sunglasses = products.filter(product => {
-      return product.categories.some(category => category.name === 'Sunglasses') === true;
-   });
-
-   // Watches
-   const watches = products.filter(product => {
-      return product.categories.some(category => category.name === 'Watches') === true;
-   });
+   const theme = useTheme();
+   const lgWidth = useMediaQuery(theme.breakpoints.down('lg'));
 
    return (
-      <div className='container' style={{ paddingTop: '80px' }}>
+      <Box
+         className={lgWidth ? '' : 'container'}
+         sx={{ paddingTop: '80px' }}
+      >
          <Hero />
-         <HomePolicy />
-         <div className='home-components-container' style={{ maxWidth: '1450px', margin: '0 auto' }}>
-            <PopularProducts
-               bestsellers={bestsellers}
-            />
-            <HomeCategories
-               headphones={headphones}
-               shoes={shoes}
-               sunglasses={sunglasses}
-               watches={watches}
-            />
+         {!lgWidth && <HomePolicy />}
+         <Box
+            sx={theme => ({
+               maxWidth: '1498px',
+               margin: '0 auto',
+               padding: '0 24px',
+               [theme.breakpoints.down('sm')]: {
+                  padding: '0 16px'
+               }
+            })}
+         >
+            {lgWidth && <HomePolicy />}
+            <PopularProducts />
+            <HomeCategories />
             <HomeBox />
             <HomeInformation />
             <HomeTestimonial />
-         </div>
+         </Box>
          <Brands />
-      </div>
+      </Box>
    );
 };
 

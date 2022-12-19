@@ -3,12 +3,12 @@ import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import Typography from '@mui/material/Typography';
 import { Card } from '@mui/material';
 import AddressForm from './AddressForm/AddressForm';
 import PaymentForm from './PaymentForm/PaymentForm';
 import { fetchGenerateToken } from '../../../store/product-thunks';
 import { useSelector, useDispatch } from 'react-redux';
+import CustomHeaderText from '../../UI/CustomHeaderText';
 
 const steps = ['Shipping Address', 'Payment Details'];
 const formTitle = ['Checkout Form', 'Payment'];
@@ -32,7 +32,7 @@ const CheckoutForm = () => {
    const next = (data) => {
       setShippingData(data);
       nextStep();
-   }
+   };
 
    const Form = () => activeStep === 0 ?
       <AddressForm
@@ -63,29 +63,8 @@ const CheckoutForm = () => {
             }
          })}
       >
-         <Typography
-            variant='h4'
-            color='primary'
-            sx={theme => ({
-               fontWeight: 700,
-               marginBottom: '2rem',
-               [theme.breakpoints.down('lg')]: {
-                  fontSize: '2rem'
-               },
-               [theme.breakpoints.down('md')]: {
-                  fontSize: '1.5rem'
-               },
-               [theme.breakpoints.down('sm')]: {
-                  fontSize: '1.3rem'
-               },
-               [theme.breakpoints.down(400)]: {
-                  fontSize: '1.2rem'
-               }
-            })}
-         >
-            {activeStep === steps.length ? `${formTitle[steps.length]}` : `${formTitle[activeStep]}`}
-         </Typography>
-         <Box sx={{ width: '100%' }}>
+         <CustomHeaderText text={activeStep === steps.length ? `${formTitle[steps.length]}` : `${formTitle[activeStep]}`} />
+         <Box sx={{ width: '100%', marginTop: '2rem' }}>
             <Stepper activeStep={activeStep}>
                {steps.map((label, index) => (
                   <Step key={index}>

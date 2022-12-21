@@ -94,10 +94,12 @@ const ShopFilter = () => {
             </Box>
          </Box>
          {/* Brands */}
-         <Box sx={{
-            flex: 5,
-            marginTop: '1rem'
-         }}>
+         <Box
+            sx={{
+               flex: 5,
+               marginTop: '1rem'
+            }}
+         >
             <Typography
                variant='h6'
                color='text.secondary'
@@ -109,12 +111,14 @@ const ShopFilter = () => {
             </Typography>
             <Box sx={{ marginTop: '1rem' }}>
                {Brands.map((brand, index) => (
-                  <Box key={index}
+                  <Box
+                     key={index}
                      sx={theme => ({
                         [theme.breakpoints.down('md')]: {
                            width: '100%'
                         }
-                     })}>
+                     })}
+                  >
                      <FilterAccordion
                         title={brand.name}
                         products={filteredProducts(brand.name, products)}

@@ -3,10 +3,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useDispatch } from 'react-redux';
-import { authActions } from '../../store/auth-slice';
-import { useSelector } from 'react-redux';
 import authErrorImg from '../../assets/authError.png'
 import { Button } from '@mui/material';
+import { uiActions } from '../../store/ui-slice';
 
 const style = {
    position: 'absolute',
@@ -22,12 +21,10 @@ const style = {
    display: 'flex',
    flexDirection: 'column',
    alignItems: 'center',
-   rowGap: '1.5rem'
+   rowGap: '1rem'
 };
 
-const AuthErrorModal = () => {
-   const authError = useSelector(state => state.auth.authErrorModal);
-   const errorMessage = useSelector(state => state.auth.authError);
+const ErrorModal = ({ errorModal, errorModalText }) => {
    const dispatch = useDispatch();
 
    return (
@@ -36,8 +33,8 @@ const AuthErrorModal = () => {
             sx={{
                margin: '0 1rem'
             }}
-            open={authError}
-            onClose={() => dispatch(authActions.setAuthErrorModal(false))}
+            open={errorModal}
+            onClose={() => dispatch(uiActions.setErrorModal(false))}
          >
             <Box sx={{
                ...style,
@@ -47,19 +44,35 @@ const AuthErrorModal = () => {
             }}>
                <img src={authErrorImg} alt="" />
                <Box>
-                  <Typography variant='h6' sx={{ fontWeight: '500', textAlign: 'center', marginBottom: '5px' }}>
+                  <Typography
+                     variant='h6'
+                     sx={{
+                        fontWeight: '600',
+                        textAlign: 'center',
+                        marginBottom: '5px',
+                        color: 'text.primary'
+                     }}
+                  >
                      Oh Snap!
                   </Typography>
-                  <Typography sx={{ fontSize: '16px', fontWeight: '300', textAlign: 'center' }}>
-                     {errorMessage}
+                  <Typography
+                     sx={{
+                        fontSize: '16px',
+                        fontWeight: '300',
+                        textAlign: 'center',
+                        color: 'text.secondary'
+                     }}
+                  >
+                     {errorModalText}
                   </Typography>
                </Box>
                <Button
-                  onClick={() => dispatch(authActions.setAuthErrorModal(false))}
+                  onClick={() => dispatch(uiActions.setErrorModal(false))}
                   color='primary'
                   variant='contained'
                   sx={{
-                     textTransform: 'none'
+                     textTransform: 'none',
+                     marginTop: '5px'
                   }}
                >
                   Dismiss
@@ -70,4 +83,4 @@ const AuthErrorModal = () => {
    );
 }
 
-export default AuthErrorModal;
+export default ErrorModal;

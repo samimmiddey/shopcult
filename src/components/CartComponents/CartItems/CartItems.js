@@ -48,9 +48,33 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                      }
                   })}
                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                     <Typography variant='h6' sx={{ fontWeight: 600, fontSize: '1rem' }}>Shopping Cart</Typography>
-                     <Typography variant='h6' sx={{ fontWeight: 600, fontSize: '1rem' }}>{totalItems} Items</Typography>
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                     }}
+                  >
+                     <Typography
+                        variant='h6'
+                        sx={{
+                           fontWeight: 600,
+                           fontSize: '1rem',
+                           color: 'text.primary'
+                        }}
+                     >
+                        Shopping Cart
+                     </Typography>
+                     <Typography
+                        variant='h6'
+                        sx={{
+                           fontWeight: 600,
+                           fontSize: '1rem',
+                           color: 'text.primary'
+                        }}
+                     >
+                        {totalItems} Items
+                     </Typography>
                   </Box>
                   <Divider sx={{ margin: '2rem 0' }} />
                   {/* Mobile Layout */}
@@ -103,13 +127,14 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                           />
                                        </Link>
                                     </Box>
-                                    <Box sx={{
-                                       display: 'flex',
-                                       flexDirection: 'column',
-                                       height: '100%',
-                                       justifyContent: 'space-between',
-                                       marginTop: mobWidth ? '-5px' : 0
-                                    }}
+                                    <Box
+                                       sx={{
+                                          display: 'flex',
+                                          flexDirection: 'column',
+                                          height: '100%',
+                                          justifyContent: 'space-between',
+                                          marginTop: mobWidth ? '-5px' : 0
+                                       }}
                                     >
                                        <Link to={`/product/${product.product_id}`}>
                                           <Typography
@@ -120,6 +145,7 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                                 fontSize: '14px',
                                                 maxWidth: '150px',
                                                 width: '100%',
+                                                color: 'text.primary',
                                                 [theme.breakpoints.down(350)]: {
                                                    fontSize: '12px',
                                                    maxWidth: '117px',
@@ -135,6 +161,7 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                              sx={theme => ({
                                                 fontWeight: 500,
                                                 fontSize: '13px',
+                                                color: 'text.primary',
                                                 [theme.breakpoints.down(350)]: {
                                                    fontSize: '12px'
                                                 }
@@ -146,6 +173,7 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                              sx={theme => ({
                                                 fontWeight: 500,
                                                 fontSize: '13px',
+                                                color: 'text.primary',
                                                 [theme.breakpoints.down(350)]: {
                                                    fontSize: '12px'
                                                 }
@@ -190,7 +218,14 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                               </Card>
                            ))
                         }
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', rowGap: '2px' }}>
+                        <Box
+                           sx={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'flex-start',
+                              rowGap: '2px'
+                           }}
+                        >
                            <Link to='/shop/all'>
                               <Button sx={{ textTransform: 'none' }}>
                                  Continue Shopping <ArrowRightAltIcon sx={{ marginLeft: '5px' }} />
@@ -311,6 +346,7 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                           <Typography
                                              sx={theme => ({
                                                 fontWeight: 600,
+                                                color: 'text.primary',
                                                 [theme.breakpoints.down(1300)]: {
                                                    fontSize: '14px'
                                                 }
@@ -356,6 +392,7 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                        sx={theme => ({
                                           fontWeight: 600,
                                           fontSize: '15px',
+                                          color: 'text.primary',
                                           [theme.breakpoints.down('md')]: {
                                              fontSize: '13px',
                                           }
@@ -367,6 +404,7 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                        sx={theme => ({
                                           fontWeight: 600,
                                           fontSize: '15px',
+                                          color: 'text.primary',
                                           [theme.breakpoints.down('md')]: {
                                              fontSize: '13px',
                                           }
@@ -377,7 +415,13 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                  </Box>
                               </Box>
                            ))}
-                           <Box sx={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
+                           <Box
+                              sx={{
+                                 marginTop: '1rem',
+                                 display: 'flex',
+                                 justifyContent: 'space-between'
+                              }}
+                           >
                               <Link to='/shop/all'>
                                  <Button sx={{ textTransform: 'none' }}>
                                     Continue Shopping <ArrowRightAltIcon sx={{ marginLeft: '5px' }} />
@@ -398,32 +442,51 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                <Box
                   sx={theme => ({
                      width: '30%',
-                     background: '#F2F3F4',
+                     background: '#F8F9F9',
                      [theme.breakpoints.down(1300)]: {
                         width: '100%'
                      }
                   })}
                >
-                  <Box sx={theme => ({
-                     padding: '3rem 2rem',
-                     height: '100%',
-                     width: '100%',
-                     display: 'flex',
-                     flexDirection: 'column',
-                     justifyContent: 'space-between',
-                     [theme.breakpoints.down('sm')]: {
-                        padding: '2rem 1rem'
-                     }
-                  })}
+                  <Box
+                     sx={theme => ({
+                        padding: '3rem 2rem',
+                        height: '100%',
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        [theme.breakpoints.down('sm')]: {
+                           padding: '2rem 1rem'
+                        }
+                     })}
                   >
                      <Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                           <Typography variant='h6' sx={{ fontWeight: 600, fontSize: '1rem' }}>
+                        <Box
+                           sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between'
+                           }}
+                        >
+                           <Typography
+                              variant='h6'
+                              sx={{
+                                 fontWeight: 600,
+                                 fontSize: '1rem',
+                                 color: 'text.primary'
+                              }}
+                           >
                               Order Summary
                            </Typography>
                         </Box>
                         <Divider sx={{ margin: '2rem 0' }} />
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Box
+                           sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between'
+                           }}
+                        >
                            <Typography sx={{ fontWeight: 600, color: 'text.primary', fontSize: '12px', textTransform: 'uppercase' }}>
                               Total Items
                            </Typography>
@@ -467,7 +530,8 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                        sx={{
                                           fontSize: '12px',
                                           textTransform: 'uppercase',
-                                          fontWeight: 600
+                                          fontWeight: 600,
+                                          color: 'text.primary'
                                        }}
                                     >
                                        {product.name} ({product.quantity})
@@ -476,7 +540,8 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                                        sx={{
                                           fontSize: '12px',
                                           textTransform: 'uppercase',
-                                          fontWeight: 600
+                                          fontWeight: 600,
+                                          color: 'text.primary'
                                        }}
                                     >
                                        ${`${(product.quantity * product.price.raw).toFixed(2)}`}
@@ -517,14 +582,20 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                         </Box>
                         <Link to='/cart/checkout'>
                            <Button
-                              sx={{
+                              sx={theme => ({
                                  textTransform: 'none',
                                  width: '100%',
-                                 marginTop: '2rem'
-                              }}
+                                 marginTop: '2rem',
+                                 fontSize: '14px',
+                                 minHeight: 0,
+                                 minWidth: 0,
+                                 height: '45px',
+                                 [theme.breakpoints.down('sm')]: {
+                                    height: '42px'
+                                 }
+                              })}
                               variant='contained'
-                              size='large'
-                              className='primary-button'
+                              color='primary'
                            >
                               Checkout
                            </Button>
@@ -542,7 +613,10 @@ const CartItems = ({ totalItems, totalPrice, cartProducts }) => {
                button={true}
                subtext={
                   <Typography
-                     sx={{ fontSize: '14px' }}
+                     sx={{
+                        fontSize: '14px',
+                        color: 'text.secondary'
+                     }}
                      mb={2}
                   >
                      Add items to the cart

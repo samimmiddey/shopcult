@@ -20,7 +20,11 @@ const initialState = {
    cartProgress: false,
    currentProduct: '',
    inputFocus: false,
-   activeSearch: false
+   activeSearch: false,
+   errorModal: false,
+   errorModalText: '',
+   error: false,
+   errorText: ''
 };
 
 const uiSlice = createSlice({
@@ -83,6 +87,18 @@ const uiSlice = createSlice({
       },
       setActiveSearch(state, action) {
          state.activeSearch = action.payload;
+      },
+      setErrorModal(state, action) {
+         state.errorModal = action.payload;
+      },
+      setErrorModalText(state, action) {
+         state.errorModalText = action.payload;
+      },
+      setError(state, action) {
+         state.error = action.payload;
+      },
+      setErrorText(state, action) {
+         state.errorText = action.payload;
       }
    }
 });

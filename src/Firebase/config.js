@@ -1,7 +1,7 @@
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import 'firebase/compat/storage';
+import { initializeApp } from 'firebase/app';
+import { initializeAuth, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -13,14 +13,17 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-// Initialize Service
-const projectFirestore = firebase.firestore();
-const projectAuth = firebase.auth();
-const projectStorage = firebase.storage();
+// Initialize Auth Service
+const auth = initializeAuth(app, {
+   persistence: [browserLocalPersistence, browserSessionPersistence]
+});
 
-// Firestore Timestamp
-const timestamp = firebase.firestore.Timestamp;
+// Create a root reference
+const storage = getStorage();
 
-export { projectFirestore, projectAuth, projectStorage, timestamp };
+// Initialize firestore Service
+const db = getFirestore(app);
+
+export { auth, db, storage };

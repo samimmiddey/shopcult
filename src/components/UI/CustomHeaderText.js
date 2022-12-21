@@ -7,6 +7,7 @@ const CustomHeaderText = ({ text, fontSize, variant }) => {
          variant={variant ? variant : 'h4'}
          sx={theme => ({
             fontWeight: 700,
+            color: 'text.primary',
             fontSize: fontSize ? fontSize : '2rem',
             [theme.breakpoints.down('lg')]: {
                fontSize: fontSize ? fontSize : '1.75rem',

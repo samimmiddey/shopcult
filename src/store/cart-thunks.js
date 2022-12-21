@@ -1,8 +1,9 @@
-import { projectFirestore, timestamp } from "../Firebase/config";
+import { Timestamp, doc, getDoc, updateDoc } from "firebase/firestore";
 import { commerce } from "../lib/commerce";
 import { authActions } from "./auth-slice";
 import { cartActions } from "./cart-slice";
 import { uiActions } from "./ui-slice";
+import { db } from "../Firebase/config";
 
 // Add items to the cart
 export const addToCart = (productID, quantity, card) => {
@@ -37,7 +38,8 @@ export const addToCart = (productID, quantity, card) => {
          dispatch(uiActions.setButtonProgress(false));
          dispatch(uiActions.setCategoryButtonProgress(false));
          dispatch(uiActions.setProductDetailsProgress(false));
-         dispatch(uiActions.setShowSnackbar({ value: true, text: error.data.error.message }));
+
+         console.log(error.message);
       }
    }
 }
@@ -58,7 +60,8 @@ export const removeItemFromCart = (productID) => {
          await handleRemoveFromCart();
       } catch (error) {
          dispatch(uiActions.setCartProgress(false));
-         dispatch(uiActions.setShowSnackbar({ value: true, text: error.data.error.message }));
+
+         console.log(error.message);
       }
    }
 }
@@ -79,7 +82,8 @@ export const updateCartItems = (productID, quantity) => {
          await handleUpdateCartItems();
       } catch (error) {
          dispatch(uiActions.setCartProgress(false));
-         dispatch(uiActions.setShowSnackbar({ value: true, text: error.data.error.message }));
+
+         console.log(error.message);
       }
    }
 }
@@ -100,21 +104,25 @@ export const emptyCart = () => {
          await handleEmptyCart();
       } catch (error) {
          dispatch(uiActions.setCartProgress(false));
-         dispatch(uiActions.setShowSnackbar({ value: true, text: error.data.error.message }));
+
+         console.log(error.message);
       }
    }
 }
 
 // Add orders to firestore
-export const addOrder = (data, uid) => {
+export const addOrder = (data, userID) => {
    return async (dispatch) => {
       const fetchAddOrder = async () => {
-         const createdAt = timestamp.fromDate(new Date());
+         const createdAt = Timestamp.fromDate(new Date());;
          const created = (createdAt.seconds * 1000);
-         const ref = await projectFirestore.collection('users').doc(uid).get();
+         const ref = doc(db, 'users', userID);
 
-         if (!ref.data().order) {
-            await projectFirestore.collection('users').doc(uid).update({
+         // Get data from firebase
+         const dataSnap = await getDoc(ref);
+
+         if (!dataSnap.data().order) {
+            await updateDoc(ref, {
                order: [
                   {
                      createdAt: created,
@@ -123,21 +131,27 @@ export const addOrder = (data, uid) => {
                ]
             });
          } else {
-            const existingOrders = ref.data().order;
+            const existingOrders = dataSnap.data().order;
             existingOrders.push({ createdAt: created, data });
-            await projectFirestore.collection('users').doc(uid).update({
+            await updateDoc(ref, {
                order: [
                   ...existingOrders
                ]
             });
          }
+
+         // Get user data from firebase
+         const docSnap = await getDoc(ref);
+
+         // Update user data on client
+         dispatch(authActions.setUserData(docSnap.data()));
       }
+
 
       try {
          await fetchAddOrder();
       } catch (error) {
-         dispatch(authActions.setAuthError(JSON.stringify(error)));
-         dispatch(authActions.setAuthErrorModal(true));
+         console.log(error.message)
       }
    }
 }

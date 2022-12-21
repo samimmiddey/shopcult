@@ -21,20 +21,20 @@ const HeroCard = ({ image }) => {
          <Card
             elevation={0}
             sx={theme => ({
-               height: '600px',
+               height: '625px',
                borderRadius: '30px',
                position: 'relative',
                background: `url(${image}) no-repeat center center/cover`,
                [theme.breakpoints.down('xl')]: {
-                  height: '500px',
+                  height: '525px',
                   borderRadius: '20px'
                },
                [theme.breakpoints.down('lg')]: {
-                  height: '450px',
+                  height: '475px',
                   borderRadius: 0
                },
                [theme.breakpoints.down('md')]: {
-                  height: '400px'
+                  height: '425px'
                },
                [theme.breakpoints.down('sm')]: {
                   height: '300px'

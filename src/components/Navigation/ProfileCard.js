@@ -146,7 +146,7 @@ const UserProfile = ({ anchorEl, open, userData, handleClose }) => {
                      }
                   })}
                >
-                  {userData.firstName + " " + userData.lastName}
+                  {userData?.name}
                </Typography>
                <Typography
                   className='profile-text-wrap'
@@ -160,7 +160,7 @@ const UserProfile = ({ anchorEl, open, userData, handleClose }) => {
                      }
                   })}
                >
-                  {userData.email}
+                  {userData?.email}
                </Typography>
             </Box>
          </Box>
@@ -280,7 +280,8 @@ const UserProfile = ({ anchorEl, open, userData, handleClose }) => {
                      marginTop: '1.25rem'
                   },
                   [theme.breakpoints.down('sm')]: {
-                     marginTop: '1rem'
+                     marginTop: '1rem',
+                     height: '42px'
                   }
                }}
             >

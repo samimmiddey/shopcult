@@ -5,12 +5,20 @@ import UserProfile from './UserProfile/UserProfile';
 const ProfileComponents = () => {
    return (
       <Box
-         className='container'
          sx={theme => ({
-            padding: '80px 32px 0 32px',
+            maxWidth: '1072px',
+            padding: '80px 24px 0 24px',
+            margin: '0 auto',
+            marginTop: '5.5rem',
+            [theme.breakpoints.down('lg')]: {
+               marginTop: '3.5rem'
+            },
+            [theme.breakpoints.down('md')]: {
+               marginTop: '2.5rem'
+            },
             [theme.breakpoints.down('sm')]: {
-               paddingLeft: '16px',
-               paddingRight: '16px'
+               padding: '80px 16px 0 16px',
+               marginTop: '2rem'
             }
          })}
       >

@@ -1,21 +1,36 @@
-import { projectAuth, projectFirestore, projectStorage } from "../Firebase/config";
+import { EmailAuthProvider, browserLocalPersistence, browserSessionPersistence, createUserWithEmailAndPassword, reauthenticateWithCredential, setPersistence, signInWithEmailAndPassword, signOut, updateEmail, updatePassword } from "firebase/auth";
+import { auth, db, storage } from "../Firebase/config";
 import { authActions } from "./auth-slice";
 import { uiActions } from "./ui-slice";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import ErrorMessages from "../Firebase/ErrorMessages";
 
 // Create an account
-export const signup = (data) => {
+export const signup = ({ name, email, password }) => {
    return async (dispatch) => {
       const requestSignup = async () => {
          dispatch(authActions.setAuthProgress(true));
 
-         const response = await projectAuth.createUserWithEmailAndPassword(data.email, data.password);
-         await projectFirestore.collection('users').doc(response.user.uid).set({
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email,
+         // Set Persistence
+         await setPersistence(auth, browserLocalPersistence);
+
+         // Create an account
+         const response = await createUserWithEmailAndPassword(auth, email, password);
+
+         // Store data on firestore database
+         await setDoc(doc(db, 'users', response.user.uid), {
+            name: name,
+            email: email,
             id: response.user.uid
          });
-         await dispatch(userData(response.user.uid));
+
+         // Get user data from firebase
+         const docRef = doc(db, 'users', response.user.uid);
+         const docSnap = await getDoc(docRef);
+
+         // Update user data on client
+         dispatch(authActions.setUserData(docSnap.data()));
 
          dispatch(authActions.setAuthProgress(false));
          dispatch(dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully logged in!' })));
@@ -24,27 +39,40 @@ export const signup = (data) => {
       try {
          await requestSignup();
       } catch (error) {
-         const errorMessage = error.message.substring(error.message.indexOf(':') + 1, error.message.indexOf('('));
+         dispatch(authActions.setAuthProgress(false));
 
+         const errorMessage = ErrorMessages.find(item => item.code === error.code);
+
+         let message;
          if (errorMessage) {
-            dispatch(authActions.setAuthError(errorMessage));
+            message = errorMessage.message;
          } else {
-            dispatch(authActions.setAuthError(error));
+            message = error.message;
          }
 
-         dispatch(authActions.setAuthErrorModal(true));
-         dispatch(authActions.setAuthProgress(false));
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(message));
       }
    }
-}
+};
 
 // Sign In User
-export const login = (email, password) => {
+export const login = (email, password, remembered) => {
    return async (dispatch) => {
       const requestLogin = async () => {
          dispatch(authActions.setAuthProgress(true));
 
-         const response = await projectAuth.signInWithEmailAndPassword(email, password);
+         // Set Persistence
+         if (remembered) {
+            await setPersistence(auth, browserLocalPersistence);
+         } else {
+            await setPersistence(auth, browserSessionPersistence);
+         }
+
+         // Sign in
+         const response = await signInWithEmailAndPassword(auth, email, password);
+
+         // Get the user data
          await dispatch(userData(response.user.uid));
 
          dispatch(authActions.setAuthProgress(false));
@@ -54,13 +82,22 @@ export const login = (email, password) => {
       try {
          await requestLogin();
       } catch (error) {
-         const errorMessage = error.message.substring(error.message.indexOf(':') + 1, error.message.indexOf('('));
-         dispatch(authActions.setAuthError(errorMessage));
-         dispatch(authActions.setAuthErrorModal(true));
          dispatch(authActions.setAuthProgress(false));
+
+         const errorMessage = ErrorMessages.find(item => item.code === error.code);
+
+         let message;
+         if (errorMessage) {
+            message = errorMessage.message;
+         } else {
+            message = error.message;
+         }
+
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(message));
       }
    }
-}
+};
 
 // Logout User
 export const logout = () => {
@@ -68,7 +105,10 @@ export const logout = () => {
       const requestLogout = async () => {
          dispatch(authActions.setAuthProgress(true));
 
-         await projectAuth.signOut();
+         // Signing out the user
+         await signOut(auth);
+
+         // Set the user data to null
          dispatch(authActions.setUserData(null));
 
          dispatch(authActions.setAuthProgress(false));
@@ -78,13 +118,22 @@ export const logout = () => {
       try {
          await requestLogout();
       } catch (error) {
-         const errorMessage = error.message.substring(error.message.indexOf(':') + 1, error.message.indexOf('('));
-         dispatch(authActions.setAuthError(errorMessage));
-         dispatch(authActions.setAuthErrorModal(true));
          dispatch(authActions.setAuthProgress(false));
+
+         const errorMessage = ErrorMessages.find(item => item.code === error.code);
+
+         let message;
+         if (errorMessage) {
+            message = errorMessage.message;
+         } else {
+            message = error.message;
+         }
+
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(message));
       }
    }
-}
+};
 
 // Get User Data
 export const userData = (uid) => {
@@ -92,9 +141,15 @@ export const userData = (uid) => {
       const fetchUserData = async () => {
          dispatch(authActions.setUserDataProgress(true));
 
-         const docRef = projectFirestore.collection('users').doc(uid);
-         const res = await docRef.get();
-         dispatch(authActions.setUserData(res.data()));
+         // Get a ref
+         const docRef = doc(db, 'users', uid);
+
+         // Get user data
+         const docSnap = await getDoc(docRef);
+
+         if (docSnap.data()) {
+            dispatch(authActions.setUserData(docSnap.data()));
+         }
 
          dispatch(authActions.setUserDataProgress(false));
       }
@@ -103,86 +158,201 @@ export const userData = (uid) => {
          await fetchUserData();
       } catch (error) {
          dispatch(authActions.setUserDataProgress(false));
-         dispatch(authActions.setAuthError(error));
-         dispatch(authActions.setAuthErrorModal(true));
+
+         const errorMessage = ErrorMessages.find(item => item.code === error.code);
+
+         let message;
+         if (errorMessage) {
+            message = errorMessage.message;
+         } else {
+            message = error.message;
+         }
+
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(message));
       }
    }
-}
+};
 
 // Update First & Last Name
-export const updateName = (data, uid) => {
+export const updateUserName = ({ name }, userID) => {
    return async (dispatch) => {
       const fetchUpdateName = async () => {
-         await projectFirestore.collection('users').doc(uid).update({
-            ...data
-         });
+         dispatch(authActions.setUpdateProgress(true));
+
+         // Update user data on firebase
+         const docRef = doc(db, 'users', userID);
+         await updateDoc(docRef, { name: name });
+
+         // Get user data from firebase
+         const docSnap = await getDoc(docRef);
+
+         // Update user data on client
+         dispatch(authActions.setUserData(docSnap.data()));
+
+         dispatch(authActions.setUpdateProgress(false));
          dispatch(dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully Updated!' })));
       }
 
       try {
          await fetchUpdateName();
       } catch (error) {
-         dispatch(authActions.setAuthError(error));
-         dispatch(authActions.setAuthErrorModal(true));
+         dispatch(authActions.setUpdateProgress(false));
+
+         const errorMessage = ErrorMessages.find(item => item.code === error.code);
+
+         let message;
+         if (errorMessage) {
+            message = errorMessage.message;
+         } else {
+            message = error.message;
+         }
+
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(message));
       }
    }
-}
+};
 
 // Update email
-export const updateEmail = (user, data, uid) => {
+export const updateUserEmail = ({ email, password, newEmail }, userID) => {
    return async (dispatch) => {
       const fetchUpdateEmail = async () => {
-         await user.updateEmail(data.email);
-         await projectFirestore.collection('users').doc(uid).update({
-            ...data
-         });
+         dispatch(authActions.setUpdateProgress(true));
+
+         // Get the current user
+         const currentUser = auth.currentUser;
+
+         // Create credential
+         const credential = EmailAuthProvider.credential(email, password);
+
+         // Re-authenticate before updating the email
+         await reauthenticateWithCredential(currentUser, credential);
+
+         // Update the email
+         await updateEmail(currentUser, newEmail);
+
+         // Update firestore data
+         const docRef = doc(db, 'users', userID);
+         await updateDoc(docRef, { email: newEmail });
+
+         // Get user data from firebase
+         const docSnap = await getDoc(docRef);
+
+         // Update user data on client
+         dispatch(authActions.setUserData(docSnap.data()));
+
+         dispatch(authActions.setUpdateProgress(false));
          dispatch(dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully Updated!' })));
       }
 
       try {
          await fetchUpdateEmail();
       } catch (error) {
-         dispatch(authActions.setAuthError(error));
-         dispatch(authActions.setAuthErrorModal(true));
+         dispatch(authActions.setUpdateProgress(false));
+
+         const errorMessage = ErrorMessages.find(item => item.code === error.code);
+
+         let message;
+         if (errorMessage) {
+            message = errorMessage.message;
+         } else {
+            message = error.message;
+         }
+
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(message));
       }
    }
-}
+};
 
 // Update password
-export const updatePassword = (user, data) => {
+export const updateUserPassword = ({ email, password, newPassword }) => {
    return async (dispatch) => {
       const fetchUpdatePassword = async () => {
-         await user.updatePassword(data.password);
+         dispatch(authActions.setUpdateProgress(true));
+
+         // Create credential
+         const credential = EmailAuthProvider.credential(email, password);
+
+         // Re-authenticate before updating the password
+         await reauthenticateWithCredential(auth.currentUser, credential);
+
+         // Update the password
+         await updatePassword(auth.currentUser, newPassword);
+
+         dispatch(authActions.setUpdateProgress(false));
          dispatch(dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully Updated!' })));
       }
 
       try {
          await fetchUpdatePassword();
       } catch (error) {
-         dispatch(authActions.setAuthError(error));
-         dispatch(authActions.setAuthErrorModal(true));
+         dispatch(authActions.setUpdateProgress(false));
+
+         const errorMessage = ErrorMessages.find(item => item.code === error.code);
+
+         let message;
+         if (errorMessage) {
+            message = errorMessage.message;
+         } else {
+            message = error.message;
+         }
+
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(message));
       }
    }
-}
+};
 
 // Upload profile picture
-export const uploadPicture = (user, image) => {
+export const uploadPicture = (userID, data) => {
    return async (dispatch) => {
       const fetchUploadPicture = async () => {
-         const path = `thumbnails/${user.uid}/${image.name}`;
-         const pic = await projectStorage.ref().child(path).put(image);
-         const url = await pic.ref.getDownloadURL();
-         await projectFirestore.collection('users').doc(user.uid).update({
-            img: url
-         });
+         dispatch(authActions.setUploadPicProgress(true));
+
+         // Create a path
+         const path = `thumbnails/${userID}/${data.image[0].name}`;
+
+         // Get a reference
+         const picRef = ref(storage, path);
+
+         // Upload the file
+         const uploadTask = await uploadBytesResumable(picRef, data.image[0]);
+
+         // Get the url
+         const url = await getDownloadURL(uploadTask.ref);
+
+         // Update firestore data
+         const docRef = doc(db, 'users', userID);
+         await updateDoc(docRef, { img: url });
+
+         // Get user data from firebase
+         const docSnap = await getDoc(docRef);
+
+         // Update user data on client
+         dispatch(authActions.setUserData(docSnap.data()));
+
+         dispatch(authActions.setUploadPicProgress(false));
          dispatch(dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully Uploaded!' })));
       }
 
       try {
          await fetchUploadPicture();
       } catch (error) {
-         dispatch(authActions.setAuthError(error));
-         dispatch(authActions.setAuthErrorModal(true));
+         dispatch(authActions.setUploadPicProgress(false));
+
+         const errorMessage = ErrorMessages.find(item => item.code === error.code);
+
+         let message;
+         if (errorMessage) {
+            message = errorMessage.message;
+         } else {
+            message = error.message;
+         }
+
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(message));
       }
    }
-}
+};

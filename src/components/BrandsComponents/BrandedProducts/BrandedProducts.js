@@ -25,7 +25,6 @@ const BrandedProducts = () => {
    const { id } = useParams();
 
    const theme = useTheme();
-   const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
    const xlUpWidth = useMediaQuery(theme.breakpoints.up('xl'));
 
 
@@ -70,7 +69,7 @@ const BrandedProducts = () => {
             />
             {
                products.length >= 1 &&
-               <Grid spacing={smWidth ? 1.5 : 2} container>
+               <Grid spacing={2} container>
                   {currentProducts.map((product, index) => (
                      <Grid
                         sx={{

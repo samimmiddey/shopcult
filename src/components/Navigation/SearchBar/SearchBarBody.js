@@ -48,7 +48,7 @@ const SearchBarBody = React.forwardRef(({ setValue, submitted, setSubmitted, ter
          </Typography>
          <Box sx={{ margin: '5px 0 0.5rem 0' }}>
             {
-               terms.map((term, index) => (
+               terms?.map((term, index) => (
                   <Box
                      key={index}
                      sx={{

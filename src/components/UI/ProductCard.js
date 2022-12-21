@@ -26,8 +26,8 @@ const ProductCard = ({ product, path }) => {
    const lgWidth = useMediaQuery(theme.breakpoints.down(1200));
    const smWidth = useMediaQuery(theme.breakpoints.down(600));
 
-   const floatNum = (Math.random() * (5.00 - 1.00) + 1.00).toFixed(1);
-   const rating = Math.round(floatNum);
+   const num = String(Math.floor(product.price.raw * 6)).charAt(0);
+   const rating = Number(num);
 
    return (
       <Card
@@ -49,12 +49,15 @@ const ProductCard = ({ product, path }) => {
                <Typography
                   gutterBottom
                   variant="h6"
-                  sx={{
+                  sx={theme => ({
                      color: 'text.primary',
                      fontWeight: 700,
                      padding: smWidth ? '3px 0' : '6px 0',
-                     fontSize: smWidth ? '16px' : '18px'
-                  }}
+                     fontSize: '20px',
+                     [theme.breakpoints.down('lg')]: {
+                        fontSize: '18px'
+                     }
+                  })}
                >
                   {product.name}
                </Typography>
@@ -74,18 +77,15 @@ const ProductCard = ({ product, path }) => {
                   padding: '10px 16px'
                }}
             >
-               <Rating value={rating} />
+               <Rating value={rating >= 5 ? 5 : rating} />
                <Typography
                   variant='h6'
                   sx={{
                      fontSize: '12px',
-                     color: '#fff',
-                     padding: '0 6px',
-                     borderRadius: '3px',
-                     backgroundColor: '#00b3b3'
+                     color: 'text.disabled'
                   }}
                >
-                  {floatNum}
+                  ({Math.floor(product.price.raw * 6)})
                </Typography>
             </CardContent>
             <CardContent
@@ -116,11 +116,15 @@ const ProductCard = ({ product, path }) => {
                      }}
                   >
                      <Typography
-                        sx={{
-                           fontSize: smWidth ? '15px' : '18px',
+                        sx={theme => ({
+                           fontSize: '20px',
                            fontWeight: 600,
-                           color: 'text.disabled'
-                        }}>
+                           color: 'text.secondary',
+                           [theme.breakpoints.down('lg')]: {
+                              fontSize: '18px'
+                           }
+                        })}
+                     >
                         {product.price.formatted_with_symbol}
                      </Typography>
                      <Typography

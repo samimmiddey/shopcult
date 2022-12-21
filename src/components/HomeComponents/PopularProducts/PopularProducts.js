@@ -21,7 +21,6 @@ const PopularProducts = () => {
 
    const theme = useTheme();
    const mdWidth = useMediaQuery(theme.breakpoints.down(900));
-   const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
 
    // Bestsellers
    const bestsellers = products.filter(product => {
@@ -48,7 +47,7 @@ const PopularProducts = () => {
             </Box>
             <Swiper
                slidesPerView={4}
-               spaceBetween={smWidth ? 8 : 16}
+               spaceBetween={16}
                slidesPerGroup={1}
                loop={true}
                modules={[Navigation]}

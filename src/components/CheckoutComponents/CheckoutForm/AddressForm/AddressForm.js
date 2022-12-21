@@ -12,24 +12,60 @@ import { checkoutActions } from '../../../../store/checkout-slice';
 import TransparentProgress from '../../../UI/TransparentProgress';
 import { Link, useHistory } from 'react-router-dom';
 
-const ActionButton = styled(Button)({
+const ActionButton = styled(Button)(({ theme }) => ({
    minHeight: 0,
    minWidth: 0,
    height: '45px',
    width: '100%',
-   textTransform: 'none'
-});
+   textTransform: 'none',
+   [theme.breakpoints.down('sm')]: {
+      height: '42px'
+   }
+}));
+
+const fields = [
+   {
+      name: 'name',
+      label: 'Name',
+      type: 'text'
+   },
+   {
+      name: 'email',
+      label: 'Email',
+      type: 'email'
+   },
+   {
+      name: 'address',
+      label: 'Address',
+      type: 'text'
+   },
+   {
+      name: 'landmark',
+      label: 'Landmark',
+      type: 'text'
+   },
+   {
+      name: 'city',
+      label: 'City',
+      type: 'text'
+   },
+   {
+      name: 'zip',
+      label: 'ZIP / Postal Code',
+      type: 'number'
+   }
+];
 
 const defaultValues = {
-   firstName: '',
-   lastName: '',
+   name: '',
    address: '',
+   landmark: '',
    email: '',
    city: '',
    zip: '',
    selectCountry: '',
    selectSubdivision: ''
-}
+};
 
 const AddressForm = ({ next }) => {
    const checkoutToken = useSelector(state => state.checkout.checkoutToken);
@@ -40,8 +76,6 @@ const AddressForm = ({ next }) => {
    const options = useSelector(state => state.checkout.shippingOptions)
       .map(option => ({ id: option.id, label: `${option.description} - ${option.price.formatted_with_symbol}` }));
    const option = useSelector(state => state.checkout.shippingOption);
-   const dispatch = useDispatch();
-
    const isLoading = useSelector(state => state.checkout.checkoutProgress);
    const isCountryLoading = useSelector(state => state.checkout.checkoutCountryProgress);
    const isSubdivisionLoading = useSelector(state => state.checkout.checkoutSubdivisionProgress);
@@ -49,31 +83,32 @@ const AddressForm = ({ next }) => {
    const cart = useSelector(state => state.cart.cart);
    const incomingOrder = useSelector(state => state.checkout.incomingOrder);
 
+   const dispatch = useDispatch();
    const history = useHistory();
 
    const theme = useTheme();
    const width = useMediaQuery(theme.breakpoints.down(700));
 
    const validationSchema = Yup.object().shape({
-      firstName: Yup.string()
-         .required('First Name is required')
-         .min(2, 'First Name must be at least 2 characters')
-         .max(50, 'First Name must not exceed 50 characters')
-         .matches(/^[A-Z][a-z]*/, 'First letter must be capital'),
-      lastName: Yup.string()
-         .required('Last Name is required')
-         .min(2, 'Last Name must be at least 2 characters')
-         .max(50, 'Last Name must not exceed 50 characters')
-         .matches(/^[A-Z][a-z]*/, 'First letter must be capital'),
+      name: Yup.string()
+         .required('Name is required')
+         .min(2, 'Name must be at least 2 characters')
+         .max(100, 'Name must not exceed 100 characters')
+         .matches(/^\s*([A-Za-z]{1,}([.,] |[-']| ))+[A-Za-z]+.?\s*$/, 'Please enter a valid full name'),
+      email: Yup.string()
+         .required('Email is required')
+         .email('Email is invalid')
+         .matches(/^([a-z0-9_.-]+)@([a-z\d-]+)\.([a-z]{2,10})(\.[a-z]{2,10})?$/, 'Please enter a valid email address'),
       address: Yup.string()
          .required('Address is required')
          .min(2, 'Address must be at least 2 characters')
          .max(500, 'Address must not exceed 500 characters')
          .matches(/^[a-zA-Z0-9\s,.'-]{3,}$/, 'Please enter a valid address'),
-      email: Yup.string()
-         .required('Email is required')
-         .email('Email is invalid')
-         .matches(/^([a-z0-9_.-]+)@([a-z\d-]+)\.([a-z]{2,10})(\.[a-z]{2,10})?$/, 'Please enter a valid email address'),
+      landmark: Yup.string()
+         .required('Landmark is required')
+         .min(2, 'Landmark must be at least 2 characters')
+         .max(500, 'Landmark must not exceed 500 characters')
+         .matches(/^[a-zA-Z0-9\s,.'-]{3,}$/, 'Please enter a valid landmark'),
       city: Yup.string()
          .required('City is required')
          .min(2, 'City must be at least 2 characters')
@@ -149,12 +184,18 @@ const AddressForm = ({ next }) => {
             </Typography>
             <Box>
                <Grid container spacing={3}>
-                  <CustomInput name='firstName' label='First Name' register={register} errors={errors} />
-                  <CustomInput name='lastName' label='Last Name' register={register} errors={errors} />
-                  <CustomInput name='address' label='Address' register={register} errors={errors} />
-                  <CustomInput name='email' label='Email' register={register} errors={errors} />
-                  <CustomInput name='city' label='City' register={register} errors={errors} />
-                  <CustomInput name='zip' label='ZIP / Postal Code' register={register} errors={errors} />
+                  {
+                     fields.map((item, index) => (
+                        <CustomInput
+                           key={index}
+                           name={item.name}
+                           label={item.label}
+                           type={item.type}
+                           register={register}
+                           errors={errors}
+                        />
+                     ))
+                  }
                   <Grid item xs={12} sm={6}>
                      <CustomSelect
                         title='Country'
@@ -219,11 +260,11 @@ const AddressForm = ({ next }) => {
                         >
                            {
                               width ? (
-                                 isOptionLoading ? 'Loading...' :
+                                 !options.length ? 'Loading...' :
                                     'Shipping - ' + options[0].label.substring(options[0].label.indexOf('$'))
                               )
                                  : (
-                                    isOptionLoading ? 'Loading...' :
+                                    !options.length ? 'Loading...' :
                                        options[0].label
                                  )
                            }

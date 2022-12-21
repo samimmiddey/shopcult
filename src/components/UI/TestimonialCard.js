@@ -47,7 +47,6 @@ const TestimonialCard = ({ data }) => {
                }}
             >
                <Typography
-                  color='text.secondary'
                   sx={theme => ({
                      textAlign: 'center',
                      color: 'text.secondary',

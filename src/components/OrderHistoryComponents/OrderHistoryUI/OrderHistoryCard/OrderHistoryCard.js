@@ -51,7 +51,9 @@ const OrderHistoryCard = ({ data }) => {
                      objectFit: 'cover',
                      borderRadius: mdWidth && !smWidth ? '5px' : mdWidth && smWidth ? '50%' : '10px'
                   }}
-                  src={data.img} alt="" />
+                  src={data.img}
+                  alt=""
+               />
             </Box>
             <Box
                sx={{
@@ -64,6 +66,7 @@ const OrderHistoryCard = ({ data }) => {
                <Typography
                   sx={theme => ({
                      fontWeight: 600,
+                     color: 'text.primary',
                      [theme.breakpoints.down('md')]: {
                         fontSize: '14px'
                      }
@@ -137,9 +140,9 @@ const OrderHistoryCard = ({ data }) => {
                !smWidth &&
                <>
                   <Typography sx={theme => ({
-                     fontWeight: 600,
+                     fontWeight: 500,
                      fontSize: '14px',
-                     color: 'text.disabled',
+                     color: 'text.secondary',
                      [theme.breakpoints.down(1300)]: {
                         fontSize: '13px'
                      }
@@ -148,9 +151,9 @@ const OrderHistoryCard = ({ data }) => {
                      Status : Unfulfilled
                   </Typography>
                   <Typography sx={theme => ({
-                     fontWeight: 600,
+                     fontWeight: 500,
                      fontSize: '14px',
-                     color: 'text.disabled',
+                     color: 'text.secondary',
                      [theme.breakpoints.down(1300)]: {
                         fontSize: '13px'
                      }

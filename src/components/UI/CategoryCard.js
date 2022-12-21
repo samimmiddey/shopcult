@@ -16,7 +16,7 @@ import { uiActions } from '../../store/ui-slice';
 import { addToCart } from '../../store/cart-thunks';
 import ProgressButton from './ProgressButton';
 
-const HomeCategoryCard = ({ item, index, path }) => {
+const HomeCategoryCard = ({ item, path }) => {
    const wishlistItems = useSelector(state => state.wishlist.wishlistItems);
    const buttonLoading = useSelector(state => state.ui.categoryButtonProgress);
    const currentProduct = useSelector(state => state.ui.currentProduct);
@@ -47,10 +47,14 @@ const HomeCategoryCard = ({ item, index, path }) => {
             <Box
                sx={{
                   position: 'absolute',
+                  top: 0,
                   bottom: 0,
                   color: '#fff',
                   width: '100%',
-                  zIndex: 99
+                  zIndex: 99,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end'
                }}
             >
                <CardContent
@@ -65,12 +69,15 @@ const HomeCategoryCard = ({ item, index, path }) => {
                   <Typography
                      gutterBottom
                      variant="h6"
-                     sx={{
+                     sx={theme => ({
                         color: '#fff',
                         fontWeight: 700,
                         padding: smWidth ? '3px 0' : '6px 0',
-                        fontSize: smWidth ? '16px' : '18px'
-                     }}
+                        fontSize: '20px',
+                        [theme.breakpoints.down('lg')]: {
+                           fontSize: '18px'
+                        }
+                     })}
                   >
                      {item.name}
                   </Typography>
@@ -103,11 +110,14 @@ const HomeCategoryCard = ({ item, index, path }) => {
                         }}
                      >
                         <Typography
-                           sx={{
-                              fontSize: smWidth ? '15px' : '18px',
+                           sx={theme => ({
+                              fontSize: '20px',
                               fontWeight: 600,
-                              color: 'text.#fff'
-                           }}
+                              color: '#fff',
+                              [theme.breakpoints.down('lg')]: {
+                                 fontSize: '18px'
+                              }
+                           })}
                         >
                            {item.price.formatted_with_symbol}
                         </Typography>

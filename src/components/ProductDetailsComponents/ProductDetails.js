@@ -23,13 +23,16 @@ import productnotfound from '../../assets/productempty.svg';
 import Footer from '../Footer/Footer';
 import { productActions } from '../../store/product-slice';
 
-const ActionButton = styled(Button)({
+const ActionButton = styled(Button)(({ theme }) => ({
    minHeight: 0,
    minWidth: 0,
    height: '45px',
    width: '100%',
-   textTransform: 'none'
-});
+   textTransform: 'none',
+   [theme.breakpoints.down('sm')]: {
+      height: '42px'
+   }
+}));
 
 const CardElement = styled(CardContent)({
    padding: '10px 16px',
@@ -106,8 +109,8 @@ const ProductDetails = () => {
       return <BodySpinner open={progress} />;
    };
 
-   const floatNum = (Math.random() * (5.00 - 1.00) + 1.00).toFixed(1);
-   const rating = Math.round(floatNum);
+   const num = String(Math.floor(product?.price?.raw * 6)).charAt(0);
+   const rating = Number(num);
 
    return (
       <>
@@ -235,18 +238,15 @@ const ProductDetails = () => {
                                     />
                                  </CardElement>
                                  <CardElement sx={{ display: 'flex', alignItems: 'center', columnGap: '10px' }}>
-                                    <Rating value={rating} />
+                                    <Rating value={rating >= 5 ? 5 : rating} />
                                     <Typography
                                        variant='h6'
                                        sx={{
                                           fontSize: '12px',
-                                          color: '#fff',
-                                          padding: '0 6px',
-                                          borderRadius: '3px',
-                                          backgroundColor: '#00b3b3'
+                                          color: 'text.disabled'
                                        }}
                                     >
-                                       {floatNum}
+                                       ({Math.floor(product.price.raw * 6)})
                                     </Typography>
                                  </CardElement>
                                  <ResponsiveCard sx={{ display: 'flex', alignItems: 'center', columnGap: '10px' }}>
@@ -318,7 +318,7 @@ const ProductDetails = () => {
                                  <Divider sx={{ margin: '1rem' }} />
                                  <ResponsiveActions>
                                     <ActionButton
-                                       disabled={buttonLoading && currentProduct === product.id}
+                                       disabled={buttonLoading && cartButton && currentProduct === product.id}
                                        onClick={() => {
                                           if (!buttonLoading) {
                                              setCartButton(true);
@@ -334,7 +334,7 @@ const ProductDetails = () => {
                                        {!cartButton && 'Add To Cart'}
                                     </ActionButton>
                                     <ActionButton
-                                       disabled={buttonLoading && currentProduct === product.id}
+                                       disabled={buttonLoading && buyButton && currentProduct === product.id}
                                        onClick={async () => {
                                           if (!buttonLoading) {
                                              setBuyButton(true);

@@ -1,15 +1,11 @@
 import React from 'react';
 import { Box, Grid } from '@mui/material';
 import ProductCard from '../../UI/ProductCard';
-import { useTheme, useMediaQuery } from '@mui/material';
 
 const ShopProducts = ({ shopProducts, xs, xm, sm, md, lg, xl, path }) => {
-   const theme = useTheme();
-   const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
-
    return (
       <Box>
-         <Grid spacing={smWidth ? 1.5 : 2} container>
+         <Grid spacing={2} container>
             {shopProducts.map((product, index) => (
                <Grid
                   sx={{

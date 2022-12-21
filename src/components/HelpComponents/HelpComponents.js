@@ -1,10 +1,15 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import HelpBody from './HelpBody/HelpBody';
 import StylishHeader from '../UI/StylishHeader';
 import CustomForm from '../UI/CustomForm';
 
 const HelpComponents = () => {
+   const theme = useTheme();
+   const width = useMediaQuery(theme.breakpoints.down(1050));
+
+   const subtext = <>We Are Setting a New Standard For{width ? ' ' : <br />}Customer Care Service.</>;
+
    return (
       <Box
          className='small-container'
@@ -12,7 +17,7 @@ const HelpComponents = () => {
       >
          <StylishHeader
             text='GET IN TOUCH WITH US'
-            subtext='We Are Setting a New Standard For Customer Care Service.'
+            subtext={subtext}
          />
          <HelpBody />
          <CustomForm

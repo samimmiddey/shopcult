@@ -19,7 +19,6 @@ const CategoryTab = ({ value }) => {
 
    const theme = useTheme();
    const mdWidth = useMediaQuery(theme.breakpoints.down(900));
-   const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
 
    // Filtered Products
    const filteredProducts = products.filter(product => {
@@ -45,7 +44,7 @@ const CategoryTab = ({ value }) => {
             </div>
             <Swiper
                slidesPerView={4}
-               spaceBetween={smWidth ? 8 : 16}
+               spaceBetween={16}
                slidesPerGroup={1}
                loop={true}
                modules={[Navigation]}
@@ -86,7 +85,6 @@ const CategoryTab = ({ value }) => {
                      >
                         <CategoryCard
                            item={item}
-                           index={index}
                            path={`/product/${item.id}`}
                         />
                      </Box>

@@ -76,7 +76,7 @@ const CheckoutSuccess = () => {
                      }
                   })}
                >
-                  Thank you for shopping, {incomingOrder.customer.firstname}!
+                  Thank you for shopping, {incomingOrder.customer.name}!
                </Typography>
                <Typography
                   color='primary'

@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { useSelector } from 'react-redux';
 import ProfileCard from './ProfileCard';
+import avatar from '../../assets/avatar.png';
 
 const UserMenu = () => {
    const [anchorEl, setAnchorEl] = React.useState(null);
@@ -35,10 +36,8 @@ const UserMenu = () => {
                         width: 36,
                         height: 36
                      }}
-                     src={userData.img || ''}
-                  >
-                     {userData.img || `${userData.firstName.slice(0, 1).toUpperCase()}`}
-                  </Avatar>
+                     src={userData.img || avatar}
+                  />
                </IconButton>
             </Tooltip>
          </Box>

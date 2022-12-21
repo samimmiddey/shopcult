@@ -24,7 +24,7 @@ export const fetchProducts = () => {
          dispatch(errorActions.setError((error.data.error.message)));
       }
    }
-}
+};
 
 // Fetching all categories
 export const fetchCategories = () => {
@@ -43,7 +43,7 @@ export const fetchCategories = () => {
          dispatch(errorActions.setError((error.data.error.message)));
       }
    }
-}
+};
 
 // Fetching the cart data
 export const fetchCart = () => {
@@ -62,7 +62,7 @@ export const fetchCart = () => {
          dispatch(errorActions.setError((error.data.error.message)));
       }
    }
-}
+};
 
 // Generate Checkout Token
 export const fetchGenerateToken = (cartID, type) => {
@@ -83,7 +83,7 @@ export const fetchGenerateToken = (cartID, type) => {
          dispatch(errorActions.setCheckoutError(error.data.error.message));
       }
    }
-}
+};
 
 // Fetch Countries
 export const fetchCountries = (checkoutTokenID) => {
@@ -106,7 +106,7 @@ export const fetchCountries = (checkoutTokenID) => {
          dispatch(errorActions.setCheckoutError(error.data.error.message));
       }
    }
-}
+};
 
 // Fetch Subdivisions
 export const fetchSubdivisions = (countryCode) => {
@@ -129,7 +129,7 @@ export const fetchSubdivisions = (countryCode) => {
          dispatch(errorActions.setCheckoutError(error.data.error.message));
       }
    }
-}
+};
 
 // Fetch Shipping Options
 export const fetchOptions = (checkoutTokenID, country, region = null) => {
@@ -151,7 +151,7 @@ export const fetchOptions = (checkoutTokenID, country, region = null) => {
          dispatch(errorActions.setCheckoutError(error.data.error.message));
       }
    }
-}
+};
 
 // Discount Check
 export const applyDiscount = (totkenID, code) => {
@@ -171,7 +171,7 @@ export const applyDiscount = (totkenID, code) => {
          dispatch(errorActions.setCheckoutError(error.data.error.message));
       }
    }
-}
+};
 
 // Search data
 export const searchProducts = (query) => {
@@ -193,7 +193,7 @@ export const searchProducts = (query) => {
          dispatch(errorActions.setError((error.data.error.message)));
       }
    }
-}
+};
 
 // Get branded products
 export const getBranedProducts = (brand) => {
@@ -215,7 +215,7 @@ export const getBranedProducts = (brand) => {
          dispatch(errorActions.setError((error.data.error.message)));
       }
    }
-}
+};
 
 // Get a single product
 export const getSingleProduct = (id) => {
@@ -237,4 +237,4 @@ export const getSingleProduct = (id) => {
          dispatch(errorActions.setError((error.data.error.message)));
       }
    }
-}
+};

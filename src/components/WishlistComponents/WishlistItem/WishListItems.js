@@ -15,14 +15,22 @@ const WishlistItems = ({ product, path }) => {
    const theme = useTheme();
    const xsWidth = useMediaQuery(theme.breakpoints.down(500));
 
+   const num = Math.floor(product.price.raw * 6);
+   const rating = String(num).charAt(0) + '.' + String(num).charAt(1);
+
    return (
       <MenuItem
          sx={{
-            border: '1px solid #eceff1',
+            border: '1px solid transparent',
+            boxShadow: 'rgb(90 114 123 / 11%) 0px 7px 30px 0px',
             padding: '16px 20px',
             borderRadius: '10px',
             width: '100%',
-            position: 'relative'
+            position: 'relative',
+            '&:hover': {
+               border: '1px solid #eceff1',
+               boxShadow: 'none'
+            }
          }}
       >
          <Link to={path} style={{ width: '100%' }}>
@@ -43,12 +51,12 @@ const WishlistItems = ({ product, path }) => {
                   alt='product'
                   variant={xsWidth ? 'rounded' : 'square'}
                   sx={theme => ({
-                     width: 100,
-                     height: 80,
+                     width: 125,
+                     height: 105,
                      borderRadius: '10px',
                      [theme.breakpoints.down(500)]: {
-                        height: 60,
-                        width: 60,
+                        height: 65,
+                        width: 65,
                         borderRadius: '50%'
                      }
                   })}
@@ -68,7 +76,8 @@ const WishlistItems = ({ product, path }) => {
                      className='wishlist-text-wrap'
                      sx={theme => ({
                         fontSize: '16px',
-                        fontWeight: 500,
+                        fontWeight: 600,
+                        color: 'text.primary',
                         [theme.breakpoints.down('sm')]: {
                            fontSize: '14px'
                         }
@@ -76,23 +85,49 @@ const WishlistItems = ({ product, path }) => {
                   >
                      {product.name}
                   </Typography>
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        columnGap: '5px',
+                        margin: '3px 0 5px 0'
+                     }}
+                  >
+                     <Typography
+                        sx={{
+                           fontSize: '12px',
+                           color: '#fff',
+                           padding: '0 6px',
+                           borderRadius: '3px',
+                           backgroundColor: '#00b3b3'
+                        }}
+                     >
+                        {rating >= 5 ? '5.0' : rating}
+                     </Typography>
+                     <Typography
+                        variant='h6'
+                        sx={{
+                           fontSize: '12px',
+                           color: 'text.disabled'
+                        }}
+                     >
+                        ({Math.floor(product.price.raw * 6)})
+                     </Typography>
+                  </Box>
                   <Typography
                      className='wishlist-text-wrap'
                      sx={{
                         fontSize: '13px',
                         maxWidth: '100%',
-                        color: 'text.secondary',
-                        marginTop: '3px'
+                        color: 'text.secondary'
                      }}
                   >
-                     {
-                        product.description.replace(/[<p></p>]/g, '')
-                     }
+                     {product.description.replace(/[<p></p>]/g, '')}
                   </Typography>
                   <Typography
                      sx={theme => ({
                         fontSize: '18px',
-                        color: 'text.primary',
+                        color: 'text.secondary',
                         fontWeight: 600,
                         marginTop: '10px',
                         [theme.breakpoints.down('sm')]: {

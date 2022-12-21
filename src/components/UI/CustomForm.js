@@ -26,6 +26,7 @@ const CustomForm = ({ list, title, subtitle }) => {
                variant='h4'
                sx={theme => ({
                   fontWeight: 600,
+                  color: 'text.primary',
                   [theme.breakpoints.down('md')]: {
                      fontSize: '1.5rem'
                   },

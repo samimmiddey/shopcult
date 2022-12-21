@@ -22,10 +22,23 @@ const OrderHistoryUI = ({ order }) => {
          })}
       >
          <Box>
-            <Typography sx={{ fontWeight: 600, fontSize: '16px' }}>
+            <Typography
+               sx={{
+                  fontWeight: 600,
+                  fontSize: '16px',
+                  color: 'text.primary'
+               }}
+            >
                Order Placed On
             </Typography>
-            <Typography sx={{ fontWeight: 600, fontSize: '13px', color: 'text.disabled', marginTop: '5px' }}>
+            <Typography
+               sx={{
+                  fontWeight: 600,
+                  fontSize: '13px',
+                  color: 'text.secondary',
+                  marginTop: '5px'
+               }}
+            >
                {date}, {time}
             </Typography>
          </Box>

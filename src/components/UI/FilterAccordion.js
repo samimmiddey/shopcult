@@ -59,7 +59,8 @@ const FilterAccordion = ({ title, products }) => {
                   sx={{
                      fontWeight: 600,
                      fontSize: '1.05rem',
-                     padding: 0
+                     padding: 0,
+                     color: 'text.primary'
                   }}
                   variant='h6'
                >

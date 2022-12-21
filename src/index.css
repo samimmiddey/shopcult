@@ -180,16 +180,6 @@ li {
   transform: scale(1.2);
 }
 
-/* Active Navbar Class */
-.active-nav .nav-text {
-  color: rgb(132, 76, 196);
-}
-
-/* Active Drawer Nav Class */
-.active-drawer-nav .active-drawer-nav-item {
-  background-color: rgb(236, 228, 255);
-}
-
 .image-cover {
   height: 100%;
   width: 100%;
@@ -260,7 +250,8 @@ li {
 
 .wishlist-text-wrap,
 .profile-text-wrap,
-.search-text-wrap {
+.search-text-wrap,
+.user-text-wrap {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

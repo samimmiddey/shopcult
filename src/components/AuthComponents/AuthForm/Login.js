@@ -1,5 +1,5 @@
 import { Box, Button, Checkbox, FormControlLabel, styled, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import CustomInput from '../../CheckoutComponents/CheckoutForm/CustomFields/CustomInput';
 import * as Yup from 'yup';
@@ -17,21 +17,37 @@ const ActionButton = styled(Button)(({ theme }) => ({
    height: '45px',
    width: '100%',
    textTransform: 'none',
-   marginTop: '1.5rem',
+   marginTop: '1.25rem',
    [theme.breakpoints.down('md')]: {
-      marginTop: '1.25rem',
+      marginTop: '1rem',
    },
    [theme.breakpoints.down('sm')]: {
-      marginTop: '1rem',
+      marginTop: '0.75rem',
+      height: '42px'
    }
 }));
+
+const fields = [
+   {
+      label: 'Email',
+      name: 'email',
+      type: 'email'
+   },
+   {
+      label: 'Password',
+      name: 'password',
+      type: 'password'
+   }
+];
 
 const defaultValues = {
    email: '',
    password: ''
-}
+};
 
 const Login = () => {
+   const [remembered, setRemembered] = useState(false);
+
    const userData = useSelector(state => state.auth.userData);
    const authProgress = useSelector(state => state.auth.authProgress);
    const dispatch = useDispatch();
@@ -63,7 +79,7 @@ const Login = () => {
 
    // Handle Login
    const handleLogin = (data) => {
-      dispatch(login(data.email, data.password));
+      dispatch(login(data.email, data.password, remembered));
    };
 
    // Resetting form & redirect after successfully logged in
@@ -81,6 +97,7 @@ const Login = () => {
             sx={theme => ({
                fontWeight: 700,
                marginBottom: '1rem',
+               color: 'text.primary',
                [theme.breakpoints.down('lg')]: {
                   fontSize: '2rem'
                },
@@ -93,8 +110,9 @@ const Login = () => {
                [theme.breakpoints.down(400)]: {
                   fontSize: '1.2rem'
                }
-            })}>
-            <span style={{ color: 'rgb(132, 76, 196)' }}>Log</span><span style={{ color: 'rgb(90, 57, 161)' }}>in</span>
+            })}
+         >
+            Login
          </Typography>
          <form onSubmit={handleSubmit((data) => handleLogin(data))}>
             <Box
@@ -110,19 +128,43 @@ const Login = () => {
                   }
                })}
             >
-               <CustomInput name='email' label='Email' register={register} errors={errors} />
-               <CustomInput type='password' name='password' label='Password' register={register} errors={errors} />
+               {
+                  fields.map((item, index) => (
+                     <CustomInput
+                        key={index}
+                        name={item.name}
+                        label={item.label}
+                        register={register}
+                        errors={errors}
+                        type={item.type}
+                     />
+                  ))
+               }
             </Box>
             <FormControlLabel
-               control={<Checkbox size="small" />}
-               label="Remember me"
+               control={
+                  <Checkbox
+                     size='small'
+                     onClick={event => setRemembered(event.target.checked)}
+                  />
+               }
+               label={
+                  <Typography
+                     sx={{
+                        fontSize: '15px',
+                        color: 'text.secondary'
+                     }}
+                  >
+                     Remember Me
+                  </Typography>
+               }
                sx={theme => ({
-                  marginTop: '1.5rem',
+                  marginTop: '1.25rem',
                   [theme.breakpoints.down('md')]: {
-                     marginTop: '1.25rem',
+                     marginTop: '1rem',
                   },
                   [theme.breakpoints.down('sm')]: {
-                     marginTop: '1rem',
+                     marginTop: '0.75rem',
                   }
                })}
             />

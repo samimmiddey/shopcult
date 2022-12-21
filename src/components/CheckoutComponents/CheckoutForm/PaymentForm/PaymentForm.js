@@ -13,13 +13,16 @@ import { commerce } from '../../../../lib/commerce';
 import { addOrder } from '../../../../store/cart-thunks';
 import { useHistory } from 'react-router-dom';
 
-const ActionButton = styled(Button)({
+const ActionButton = styled(Button)(({ theme }) => ({
    minHeight: 0,
    minWidth: 0,
    height: '45px',
    width: '100%',
-   textTransform: 'none'
-});
+   textTransform: 'none',
+   [theme.breakpoints.down('sm')]: {
+      height: '42px'
+   }
+}));
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_API_KEY);
 
@@ -53,13 +56,13 @@ const PaymentForm = ({ backStep, shippingData }) => {
             const orderData = {
                line_items: checkoutToken.live.line_items,
                customer: {
-                  firstname: shippingData.firstName,
-                  lastname: shippingData.lastName,
+                  name: shippingData.name,
                   email: shippingData.email
                },
                shipping: {
                   name: 'Primary',
                   street: shippingData.address,
+                  landmark: shippingData.landmark,
                   town_city: shippingData.city,
                   county_state: shippingData.selectSubdivision,
                   postal_zip_code: shippingData.zip,

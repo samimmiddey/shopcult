@@ -54,7 +54,7 @@ const HomePolicy = () => {
 
    return (
       <Grid
-         spacing={mdWidth && !smWidth ? 1.5 : mdWidth && smWidth ? 1 : 3}
+         spacing={2}
          sx={theme => ({
             marginTop: '3rem',
             [theme.breakpoints.down('md')]: {
@@ -71,7 +71,8 @@ const HomePolicy = () => {
                      variant='h6'
                      sx={{
                         fontWeight: 600,
-                        fontSize: `${smWidth ? '15px' : '18px'}`
+                        fontSize: `${smWidth ? '15px' : '18px'}`,
+                        color: 'text.primary'
                      }}
                   >
                      {item.text}

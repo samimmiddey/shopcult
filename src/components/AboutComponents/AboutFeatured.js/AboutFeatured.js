@@ -25,6 +25,7 @@ const AboutFeatured = () => {
                   sx={theme => ({
                      fontSize: '16px',
                      fontWeight: 600,
+                     color: 'text.primary',
                      [theme.breakpoints.down('md')]: {
                         fontSize: '15px'
                      },

@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, FormControlLabel, styled, Typography } from '@mui/material'
+import { Box, Button, styled, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import CustomInput from '../../CheckoutComponents/CheckoutForm/CustomFields/CustomInput';
@@ -16,22 +16,48 @@ const ActionButton = styled(Button)(({ theme }) => ({
    height: '45px',
    width: '100%',
    textTransform: 'none',
-   marginTop: '1.5rem',
+   marginTop: '2rem',
+   [theme.breakpoints.down('lg')]: {
+      marginTop: '1.75rem',
+   },
    [theme.breakpoints.down('md')]: {
-      marginTop: '1.25rem',
+      marginTop: '1.5rem',
    },
    [theme.breakpoints.down('sm')]: {
-      marginTop: '1rem',
+      marginTop: '1.25rem',
+      height: '42px'
    }
 }));
 
+const fields = [
+   {
+      label: 'Name',
+      name: 'name',
+      type: 'text'
+   },
+   {
+      label: 'Email',
+      name: 'email',
+      type: 'email'
+   },
+   {
+      label: 'Password',
+      name: 'password',
+      type: 'password'
+   },
+   {
+      label: 'Confirm Password',
+      name: 'confirmPassword',
+      type: 'password'
+   }
+];
+
 const defaultValues = {
-   firstName: '',
-   lastName: '',
+   name: '',
    email: '',
    username: '',
    password: ''
-}
+};
 
 const Signup = () => {
    const userData = useSelector(state => state.auth.userData);
@@ -40,16 +66,11 @@ const Signup = () => {
    const history = useHistory();
 
    const validationSchema = Yup.object().shape({
-      firstName: Yup.string()
-         .required('First Name is required')
-         .min(2, 'First Name must be at least 2 characters')
-         .max(20, 'First Name must not exceed 20 characters')
-         .matches(/^[A-Z][a-z]*/, 'First letter must be capital'),
-      lastName: Yup.string()
-         .required('Last Name is required')
-         .min(2, 'Last Name must be at least 2 characters')
-         .max(20, 'Last Name must not exceed 20 characters')
-         .matches(/^[A-Z][a-z]*/, 'First letter must be capital'),
+      name: Yup.string()
+         .required('Name is required')
+         .min(2, 'Name must be at least 2 characters')
+         .max(100, 'Name must not exceed 100 characters')
+         .matches(/^\s*([A-Za-z]{1,}([.,] |[-']| ))+[A-Za-z]+.?\s*$/, 'Please enter a valid full name'),
       email: Yup.string()
          .required('Email is required')
          .email('Email is invalid')
@@ -99,6 +120,7 @@ const Signup = () => {
             sx={theme => ({
                fontWeight: 700,
                marginBottom: '1rem',
+               color: 'text.primary',
                [theme.breakpoints.down('lg')]: {
                   fontSize: '2rem'
                },
@@ -111,13 +133,9 @@ const Signup = () => {
                [theme.breakpoints.down(400)]: {
                   fontSize: '1.2rem'
                }
-            })}>
-            <span
-               style={{ color: 'rgb(132, 76, 196)' }}>
-               Sign
-            </span> <span style={{ color: 'rgb(90, 57, 161)' }}>
-               Up
-            </span>
+            })}
+         >
+            Sign Up
          </Typography>
          <form onSubmit={handleSubmit((data) => handleSignup(data))}>
             <Box
@@ -133,25 +151,19 @@ const Signup = () => {
                   }
                })}
             >
-               <CustomInput name='firstName' label='First Name' register={register} errors={errors} />
-               <CustomInput name='lastName' label='Last Name' register={register} errors={errors} />
-               <CustomInput name='email' label='Email' register={register} errors={errors} />
-               <CustomInput type='password' name='password' label='Password' register={register} errors={errors} />
-               <CustomInput type='password' name='confirmPassword' label='Confirm Password' register={register} errors={errors} />
+               {
+                  fields.map((item, index) => (
+                     <CustomInput
+                        key={index}
+                        name={item.name}
+                        label={item.label}
+                        register={register}
+                        errors={errors}
+                        type={item.type}
+                     />
+                  ))
+               }
             </Box>
-            <FormControlLabel
-               control={<Checkbox size="small" />}
-               label="Remember me"
-               sx={theme => ({
-                  marginTop: '1.5rem',
-                  [theme.breakpoints.down('md')]: {
-                     marginTop: '1.25rem',
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                     marginTop: '1rem',
-                  }
-               })}
-            />
             <ActionButton
                type='submit'
                variant='contained'
@@ -166,6 +178,7 @@ const Signup = () => {
                fontWeight: 600,
                textAlign: 'center',
                marginTop: '2rem',
+               color: 'text.primary',
                [theme.breakpoints.down('md')]: {
                   marginTop: '1.5rem',
                },

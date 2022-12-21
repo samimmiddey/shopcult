@@ -14,7 +14,6 @@ import { styled } from '@mui/system';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AuthButtons from './AuthButtons';
 import { Backdrop, ListItemButton, Tooltip } from '@mui/material';
-import { NavLink, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
@@ -121,8 +120,8 @@ const Navbar = () => {
    const inputFocus = useSelector(state => state.ui.inputFocus);
    const totalItems = useSelector(state => state.cart.totalAmount);
    const wishlistItemsAmount = useSelector(state => state.wishlist.totalAmount);
+
    const dispatch = useDispatch();
-   const { id } = useParams();
 
    const { pathname } = useLocation();
    const route = pathname === '/signup' || pathname === '/login';
@@ -144,6 +143,8 @@ const Navbar = () => {
          }
       };
    }, []);
+
+   const links = menuItems.map(item => item.toLowerCase());
 
    return (
       <>
@@ -207,25 +208,9 @@ const Navbar = () => {
                            <SearchComponents />
                            <MenuList>
                               <List>
-                                 {menuItems.map((item, index) => (
+                                 {links.map((link, index) => (
                                     <Fragment key={index}>
-                                       <NavLink
-                                          activeClassName='active-nav'
-                                          exact={item === 'Home' ? true : false}
-                                          to={
-                                             {
-                                                ...item === 'Home' ? { pathname: '/' } : {
-                                                   ...item === 'About' ? { pathname: '/about' } : {
-                                                      ...item === 'Shop' ? { pathname: `/shop/${id ? id : 'all'}` } : {
-                                                         ...item === 'Brands' ? { pathname: '/brands' } : {
-                                                            ...item === 'Help' ? { pathname: '/help' } : ''
-                                                         }
-                                                      }
-                                                   }
-                                                }
-                                             }
-                                          }
-                                       >
+                                       <Link to={link === 'Home' ? '/' : link === 'shop' ? `/${link}/all` : `/${link}`}>
                                           <ListItemButton
                                              sx={{
                                                 borderRadius: '5px',
@@ -238,15 +223,17 @@ const Navbar = () => {
                                                 }
                                              }}
                                              key={index}>
-                                             <Typography className='nav-text' color='text.secondary'
+                                             <Typography
                                                 sx={{
                                                    fontSize: '15px',
-                                                   fontWeight: 600
-                                                }}>
-                                                {item}
+                                                   fontWeight: 600,
+                                                   color: (((link === 'home' && pathname === '/') || (link === 'shop' && pathname === '/shop/all')) ? 'true' : `/${link}` === pathname) ? 'secondary.main' : 'text.secondary'
+                                                }}
+                                             >
+                                                {link.charAt(0).toUpperCase() + link.slice(1)}
                                              </Typography>
                                           </ListItemButton>
-                                       </NavLink>
+                                       </Link>
                                     </Fragment>
                                  ))}
                               </List>

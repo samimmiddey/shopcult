@@ -40,6 +40,7 @@ const StylishHeader = ({ text, subtext }) => {
                sx={theme => ({
                   fontSize: '16px',
                   fontWeight: 600,
+                  color: 'text.primary',
                   [theme.breakpoints.down('md')]: {
                      fontSize: '15px'
                   },
@@ -55,6 +56,7 @@ const StylishHeader = ({ text, subtext }) => {
                fontWeight: 400,
                fontSize: '3.5rem',
                lineHeight: '1.4',
+               color: 'text.primary',
                [theme.breakpoints.down('xl')]: {
                   fontSize: '3.25rem',
                },

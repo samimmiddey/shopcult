@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, fetchCategories, fetchCart } from './store/product-thunks';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
-import { projectAuth } from './Firebase/config';
-import { authActions } from './store/auth-slice';
 import { userData } from './store/auth-thunks';
 import Navbar from './components/Navigation/Navbar';
 import Home from './pages/Home';
@@ -16,6 +14,9 @@ import ScrollToTop from './components/UI/ScrollToTopOnChange';
 import SuccessSnackbar from './components/UI/SuccessSnackbar';
 import ProgressBar from './components/UI/ProgressBar';
 import Search from './pages/Search';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './Firebase/config';
+import ErrorModal from './components/UI/ErrorModal';
 
 const About = React.lazy(() => import('./pages/About'));
 const Shop = React.lazy(() => import('./pages/Shop'));
@@ -50,7 +51,7 @@ const theme = createTheme({
 			main: 'rgb(132, 76, 196)',
 		},
 		text: {
-			primary: '#333',
+			primary: '#222',
 			secondary: '#868395',
 			disabled: '#a19fad',
 		},
@@ -96,6 +97,8 @@ const App = () => {
 	const categoryLoading = useSelector(state => state.products.categoryProgress);
 	const cartLoading = useSelector(state => state.cart.cartProgress);
 	const userLoading = useSelector(state => state.auth.userDataProgress);
+	const errorModal = useSelector(state => state.ui.errorModal);
+	const errorModalText = useSelector(state => state.ui.errorModalText);
 
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
@@ -112,13 +115,13 @@ const App = () => {
 
 	// Check if a user is signed in
 	useEffect(() => {
-		const unsub = projectAuth.onAuthStateChanged((user) => {
+		const unsub = onAuthStateChanged(auth, (user) => {
 			if (user) {
-				dispatch(authActions.setIsLoggedIn(true));
 				dispatch(userData(user.uid));
 			}
-			unsub();
 		});
+
+		return () => unsub();
 	}, [dispatch]);
 
 	// Fetch products, categories and cart
@@ -135,6 +138,13 @@ const App = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<Suspense fallback={<ProgressBar />}>
+				{
+					errorModal &&
+					<ErrorModal
+						errorModal={errorModal}
+						errorModalText={errorModalText}
+					/>
+				}
 				<SuccessSnackbar />
 				<ScrollToTop />
 				<Navbar />

@@ -12,7 +12,7 @@ const CustomSelect = ({ title, name, value, items, register, errors }) => {
 
    return (
       <FormControl variant="standard" sx={{ width: '100%', textAlign: 'start' }}>
-         <InputLabel>Shipping {title}</InputLabel>
+         <InputLabel sx={{ fontSize: '15px' }}>Shipping {title}</InputLabel>
          <Select
             value={value}
             label={`Shipping ${title}`}
@@ -48,7 +48,15 @@ const CustomSelect = ({ title, name, value, items, register, errors }) => {
                </MenuItem>
             ))}
          </Select>
-         <Typography sx={{ textAlign: 'start', fontSize: '14px', marginTop: '5px', color: 'red' }}>
+         <Typography
+            sx={{
+               textAlign: 'start',
+               fontSize: '14px',
+               marginTop: '5px',
+               color: 'red',
+               fontWeight: 500
+            }}
+         >
             {errors[name]?.message}
          </Typography>
       </FormControl >

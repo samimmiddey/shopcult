@@ -19,7 +19,6 @@ const HomeTestimonial = () => {
 
    const theme = useTheme();
    const mdWidth = useMediaQuery(theme.breakpoints.down('md'));
-   const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
    const xmWidth = useMediaQuery(theme.breakpoints.down('xm'));
 
    const text = <>What Our {xmWidth && <br />} Customers Say</>;
@@ -44,7 +43,7 @@ const HomeTestimonial = () => {
             </Box>
             <Swiper
                slidesPerView={4}
-               spaceBetween={smWidth ? 10 : 20}
+               spaceBetween={16}
                slidesPerGroup={1}
                loop={true}
                modules={[Navigation]}

@@ -3,19 +3,15 @@ import { Box } from '@mui/system';
 import HomeInfoCard from '../../UI/HomeInfoCard';
 import { Grid } from '@mui/material';
 import HomeInfoCardData from '../../../data/HomeInfoCardData';
-import { useTheme, useMediaQuery } from '@mui/material';
 import CustomHeaderText from '../../UI/CustomHeaderText';
 
 const HomeInformation = () => {
-   const theme = useTheme();
-   const mdWidth = useMediaQuery(theme.breakpoints.down('md'));
-
    return (
       <Box className='section-margin'>
          <CustomHeaderText text='Services To Help You Shop' />
          <Grid
             sx={{ marginTop: '1rem' }}
-            spacing={mdWidth ? 2 : 2.5}
+            spacing={2}
             container
          >
             {HomeInfoCardData.map((data, index) => (

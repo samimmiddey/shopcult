@@ -43,6 +43,7 @@ const CustomSelect = ({ title, name, value, items, register, errors }) => {
                <MenuItem
                   key={index}
                   value={country.id}
+                  sx={{ height: '30px', fontSize: '14px', color: 'text.primary', fontWeight: 500 }}
                >
                   {country.label}
                </MenuItem>

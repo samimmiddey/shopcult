@@ -183,7 +183,7 @@ const AddressForm = ({ next }) => {
                Shipping Address
             </Typography>
             <Box>
-               <Grid container spacing={3}>
+               <Grid container spacing={2.5}>
                   {
                      fields.map((item, index) => (
                         <CustomInput

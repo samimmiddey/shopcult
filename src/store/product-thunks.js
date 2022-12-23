@@ -3,7 +3,6 @@ import { cartActions } from "./cart-slice";
 import { commerce } from '../lib/commerce';
 import { uiActions } from "./ui-slice";
 import { checkoutActions } from "./checkout-slice";
-import { errorActions } from "./error-slice";
 
 // Fetching all products
 export const fetchProducts = () => {
@@ -21,7 +20,8 @@ export const fetchProducts = () => {
          await fetchData();
       } catch (error) {
          dispatch(productActions.setProductProgress(false));
-         dispatch(errorActions.setError((error.data.error.message)));
+         dispatch(uiActions.setError(true));
+         dispatch(uiActions.setErrorText(error.data.error.message));
       }
    }
 };
@@ -40,7 +40,8 @@ export const fetchCategories = () => {
          await fetchCategories();
       } catch (error) {
          dispatch(productActions.setCategoryProgress(false));
-         dispatch(errorActions.setError((error.data.error.message)));
+         dispatch(uiActions.setError(true));
+         dispatch(uiActions.setErrorText(error.data.error.message));
       }
    }
 };
@@ -59,7 +60,8 @@ export const fetchCart = () => {
          await fetchCartData();
       } catch (error) {
          dispatch(uiActions.setCartProgress(false));
-         dispatch(errorActions.setError((error.data.error.message)));
+         dispatch(uiActions.setError(true));
+         dispatch(uiActions.setErrorText(error.data.error.message));
       }
    }
 };
@@ -80,7 +82,8 @@ export const fetchGenerateToken = (cartID, type) => {
          await fetchToken();
       } catch (error) {
          dispatch(checkoutActions.setCheckoutProgress(false));
-         dispatch(errorActions.setCheckoutError(error.data.error.message));
+         dispatch(uiActions.setCheckoutError(true));
+         dispatch(uiActions.setCheckoutErrorText(error.data.error.message));
       }
    }
 };
@@ -103,7 +106,8 @@ export const fetchCountries = (checkoutTokenID) => {
          await fetchShippingCountries();
       } catch (error) {
          dispatch(checkoutActions.setCheckoutCountryProgress(false));
-         dispatch(errorActions.setCheckoutError(error.data.error.message));
+         dispatch(uiActions.setCheckoutError(true));
+         dispatch(uiActions.setCheckoutErrorText(error.data.error.message));
       }
    }
 };
@@ -126,7 +130,8 @@ export const fetchSubdivisions = (countryCode) => {
          fetchShippingSubdivisions();
       } catch (error) {
          dispatch(checkoutActions.setCheckoutSubdivisionProgress(false));
-         dispatch(errorActions.setCheckoutError(error.data.error.message));
+         dispatch(uiActions.setCheckoutError(true));
+         dispatch(uiActions.setCheckoutErrorText(error.data.error.message));
       }
    }
 };
@@ -148,7 +153,8 @@ export const fetchOptions = (checkoutTokenID, country, region = null) => {
          await fetchShippingOptions();
       } catch (error) {
          dispatch(checkoutActions.setCheckoutOptionProgress(false));
-         dispatch(errorActions.setCheckoutError(error.data.error.message));
+         dispatch(uiActions.setCheckoutError(true));
+         dispatch(uiActions.setCheckoutErrorText(error.data.error.message));
       }
    }
 };
@@ -158,7 +164,9 @@ export const applyDiscount = (totkenID, code) => {
    return async (dispatch) => {
       const fetchApplyDiscount = async () => {
          dispatch(checkoutActions.setDiscountProgress(true));
+
          const discount = await commerce.checkout.checkDiscount(totkenID, code);
+
          dispatch(checkoutActions.setCheckoutToken(discount));
          dispatch(checkoutActions.setDiscountProgress(false));
          dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully Applied!' }));
@@ -168,7 +176,8 @@ export const applyDiscount = (totkenID, code) => {
          await fetchApplyDiscount();
       } catch (error) {
          dispatch(checkoutActions.setDiscountProgress(false));
-         dispatch(errorActions.setCheckoutError(error.data.error.message));
+         dispatch(uiActions.setDiscountError(true));
+         dispatch(uiActions.setDiscountErrorText(error.data.error.message));
       }
    }
 };
@@ -190,7 +199,8 @@ export const searchProducts = (query) => {
          await fetchData();
       } catch (error) {
          dispatch(productActions.setSearchLoading(false));
-         dispatch(errorActions.setError((error.data.error.message)));
+         dispatch(uiActions.setSearchError(true));
+         dispatch(uiActions.setSearchErrorText(error.data.error.message));
       }
    }
 };
@@ -212,7 +222,8 @@ export const getBranedProducts = (brand) => {
          await fetchData();
       } catch (error) {
          dispatch(productActions.setProgress(false));
-         dispatch(errorActions.setError((error.data.error.message)));
+         dispatch(uiActions.setBrandedProductsError(true));
+         dispatch(uiActions.setBrandedProductsErrorText(error.data.error.message));
       }
    }
 };
@@ -234,7 +245,8 @@ export const getSingleProduct = (id) => {
          await fetchProduct();
       } catch (error) {
          dispatch(productActions.setProgress(false));
-         dispatch(errorActions.setError((error.data.error.message)));
+         dispatch(uiActions.setProductDetailsError(true));
+         dispatch(uiActions.setProductDetailsErrorText(error.data.error.message));
       }
    }
 };

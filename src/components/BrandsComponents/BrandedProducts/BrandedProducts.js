@@ -13,6 +13,7 @@ import EmptyTemplate from '../../UI/EmptyTemplate';
 import brand from '../../../assets/brand.svg';
 import Footer from '../../Footer/Footer';
 import { productActions } from '../../../store/product-slice';
+import ErrorCard from '../../UI/ErrorCard';
 
 const BrandedProducts = () => {
    const [currentPage, setCurrentPage] = useState(1);
@@ -20,6 +21,8 @@ const BrandedProducts = () => {
    const progress = useSelector(state => state.products.progress);
    const products = useSelector(state => state.products.brandedProducts);
    const brandedProductsURL = useSelector(state => state.products.brandedProductsURL);
+   const error = useSelector(state => state.ui.brandedProductsError);
+   const errorText = useSelector(state => state.ui.brandedProductsErrorText);
 
    const dispatch = useDispatch();
    const { id } = useParams();
@@ -58,6 +61,16 @@ const BrandedProducts = () => {
    if (progress) {
       return <BodySpinner open={progress} />
    };
+
+   // Error state
+   if (error) {
+      return (
+         <>
+            <ErrorCard errorText={errorText} />
+            <Footer />
+         </>
+      );
+   }
 
    return (
       <>

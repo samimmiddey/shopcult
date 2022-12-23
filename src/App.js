@@ -22,12 +22,12 @@ const About = React.lazy(() => import('./pages/About'));
 const Shop = React.lazy(() => import('./pages/Shop'));
 const Brands = React.lazy(() => import('./pages/Brands'));
 const Help = React.lazy(() => import('./pages/Help'));
-const BrandedProducts = React.lazy(() => import('./components/BrandsComponents/BrandedProducts/BrandedProducts'));
+const BrandedProductsPage = React.lazy(() => import('./pages/BrandedProductsPage'));
 const ProductDetailsPage = React.lazy(() => import('./pages/ProductDetailsPage'));
 const Wishlist = React.lazy(() => import('./pages/Wishlist'));
 const Cart = React.lazy(() => import('./pages/Cart'));
 const Checkout = React.lazy(() => import('./pages/Checkout'));
-const OrderConfirmationPage = React.lazy(() => import('./pages/OrderConfirmationPage'));
+const Confirmation = React.lazy(() => import('./pages/Confirmation'));
 const Authentication = React.lazy(() => import('./pages/Authentication'));
 const OrderHistory = React.lazy(() => import('./pages/OrderHistory'));
 const Profile = React.lazy(() => import('./pages/Profile'));
@@ -152,12 +152,14 @@ const App = () => {
 					<Route path='/' exact>
 						<Home />
 					</Route>
-					{authRoutes.map((route, index) => (
-						<Route key={index} path={route} exact>
-							{!user && <Authentication />}
-							{user && <Redirect to='/' />}
-						</Route>
-					))}
+					{
+						authRoutes.map((route, index) => (
+							<Route key={index} path={route} exact>
+								{!user && <Authentication />}
+								{user && <Redirect to='/' />}
+							</Route>
+						))
+					}
 					<Route path='/about' exact>
 						<About />
 					</Route>
@@ -171,7 +173,7 @@ const App = () => {
 						<Brands />
 					</Route>
 					<Route path='/brands/:id' exact>
-						<BrandedProducts />
+						<BrandedProductsPage />
 					</Route>
 					<Route path='/help' exact>
 						<Help />
@@ -187,7 +189,7 @@ const App = () => {
 						{!user && <Redirect to='/login' />}
 					</Route>
 					<Route path='/confirmation' exact>
-						<OrderConfirmationPage />
+						<Confirmation />
 					</Route>
 					<Route path='/orderhistory' exact>
 						{user && <OrderHistory />}

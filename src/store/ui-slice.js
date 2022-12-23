@@ -24,7 +24,17 @@ const initialState = {
    errorModal: false,
    errorModalText: '',
    error: false,
-   errorText: ''
+   errorText: '',
+   checkoutError: false,
+   checkoutErrorText: '',
+   discountError: false,
+   discountErrorText: '',
+   searchError: false,
+   searchErrorText: '',
+   brandedProductsError: false,
+   brandedProductsErrorText: '',
+   productDetailsError: false,
+   productDetailsErrorText: ''
 };
 
 const uiSlice = createSlice({
@@ -99,6 +109,36 @@ const uiSlice = createSlice({
       },
       setErrorText(state, action) {
          state.errorText = action.payload;
+      },
+      setCheckoutError(state, action) {
+         state.checkoutError = action.payload;
+      },
+      setCheckoutErrorText(state, action) {
+         state.checkoutErrorText = action.payload;
+      },
+      setDiscountError(state, action) {
+         state.discountError = action.payload;
+      },
+      setDiscountErrorText(state, action) {
+         state.discountErrorText = action.payload;
+      },
+      setSearchError(state, action) {
+         state.searchError = action.payload;
+      },
+      setSearchErrorText(state, action) {
+         state.searchErrorText = action.payload;
+      },
+      setBrandedProductsError(state, action) {
+         state.brandedProductsError = action.payload;
+      },
+      setBrandedProductsErrorText(state, action) {
+         state.brandedProductsErrorText = action.payload;
+      },
+      setProductDetailsError(state, action) {
+         state.productDetailsError = action.payload;
+      },
+      setProductDetailsErrorText(state, action) {
+         state.productDetailsErrorText = action.payload;
       }
    }
 });

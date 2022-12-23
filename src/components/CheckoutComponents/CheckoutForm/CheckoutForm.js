@@ -17,6 +17,7 @@ const CheckoutForm = () => {
    const [activeStep, setActiveStep] = useState(0);
    const [shippingData, setShippingData] = useState({});
    const cart = useSelector(state => state.cart.cart);
+
    const dispatch = useDispatch();
 
    // Generate Checkout Token
@@ -56,10 +57,11 @@ const CheckoutForm = () => {
                marginTop: '4rem'
             },
             [theme.breakpoints.down('lg')]: {
-               marginTop: '3rem'
+               marginTop: '3rem',
+               padding: '2rem 1rem',
             },
-            [theme.breakpoints.down('md')]: {
-               marginTop: '2rem'
+            [theme.breakpoints.down('sm')]: {
+               marginTop: '1rem'
             }
          })}
       >

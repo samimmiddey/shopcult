@@ -12,12 +12,12 @@ const OrderHistoryUI = ({ order }) => {
       <Card
          elevation={0}
          sx={theme => ({
-            padding: '3rem 2rem',
-            [theme.breakpoints.down('md')]: {
-               padding: '2rem 1rem'
+            padding: '2rem 1.5rem',
+            [theme.breakpoints.down('lg')]: {
+               padding: '1.5rem 1rem'
             },
             [theme.breakpoints.down('sm')]: {
-               padding: '1.5rem 1rem'
+               padding: '1rem'
             }
          })}
       >

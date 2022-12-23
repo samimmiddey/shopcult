@@ -11,6 +11,7 @@ import CustomHeader from '../UI/CustomHeader';
 import CustomPagination from '../UI/CustomPagination';
 import Footer from '../Footer/Footer';
 import { productActions } from '../../store/product-slice';
+import ErrorCard from '../UI/ErrorCard';
 
 const SearchComponent = () => {
    const [currentPage, setCurrentPage] = useState(1);
@@ -19,6 +20,8 @@ const SearchComponent = () => {
    const sortProducts = useSelector(state => state.ui.sortProducts);
    const loading = useSelector(state => state.products.searchLoading);
    const searchKey = useSelector(state => state.products.searchKey);
+   const error = useSelector(state => state.ui.searchError);
+   const errorText = useSelector(state => state.ui.searchErrorText);
 
    const theme = useTheme();
    const xlUpWidth = useMediaQuery(theme.breakpoints.up('xl'));
@@ -67,6 +70,16 @@ const SearchComponent = () => {
    if (loading) {
       return <BodySpinner open={loading} />;
    };
+
+   // Error state
+   if (error) {
+      return (
+         <>
+            <ErrorCard errorText={errorText} />
+            <Footer />
+         </>
+      );
+   }
 
    return (
       <>

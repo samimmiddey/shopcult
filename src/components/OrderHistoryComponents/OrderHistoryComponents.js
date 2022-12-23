@@ -17,8 +17,8 @@ const OrderHistoryComponents = () => {
    const smWidth = useMediaQuery(theme.breakpoints.down('sm'));
 
    let sortedArray = [];
-   if (userData.order) {
-      const dateArray = userData.order.map(order => {
+   if (userData?.order) {
+      const dateArray = userData?.order?.map(order => {
          return {
             ...order,
             createdAt: parseFloat(order.createdAt)
@@ -53,23 +53,21 @@ const OrderHistoryComponents = () => {
          })}
       >
          <CustomHeader
-            text={`Recent Orders (${userData.order.length})`}
+            text={`Recent Orders (${userData?.order?.length ? userData?.order?.length : 0})`}
             filter={false}
             selectMenu={false}
             fontSize={smWidth ? '1rem' : '1.25rem'}
             variant='h6'
          />
-         {currentOrders.length &&
+         {
+            userData?.order?.length &&
             <Box sx={{ maxWidth: '1024px', margin: '0 auto' }}>
                <Box
                   sx={theme => ({
                      marginTop: '2rem',
                      display: 'flex',
                      flexDirection: 'column',
-                     rowGap: '20px',
-                     [theme.breakpoints.down('md')]: {
-                        rowGap: '1rem',
-                     },
+                     rowGap: '1rem',
                      [theme.breakpoints.down('sm')]: {
                         marginTop: '1.5rem'
                      }
@@ -87,7 +85,7 @@ const OrderHistoryComponents = () => {
             </Box>
          }
          {
-            !userData.order &&
+            !userData?.order?.length &&
             <EmptyTemplate
                img={order}
                text='No recent orders!'

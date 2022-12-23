@@ -4,6 +4,7 @@ import { authActions } from "./auth-slice";
 import { cartActions } from "./cart-slice";
 import { uiActions } from "./ui-slice";
 import { db } from "../Firebase/config";
+import ErrorMessages from "../Firebase/ErrorMessages";
 
 // Add items to the cart
 export const addToCart = (productID, quantity, card) => {
@@ -39,17 +40,20 @@ export const addToCart = (productID, quantity, card) => {
          dispatch(uiActions.setCategoryButtonProgress(false));
          dispatch(uiActions.setProductDetailsProgress(false));
 
-         console.log(error.message);
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(error.data.error.message));
       }
    }
-}
+};
 
 // Remove items from the cart
 export const removeItemFromCart = (productID) => {
    return async (dispatch) => {
       const handleRemoveFromCart = async () => {
          dispatch(uiActions.setCartProgress(true));
+
          const cart = await commerce.cart.remove(productID);
+
          dispatch(cartActions.addItemsToCart(cart.cart));
          dispatch(uiActions.setCartProgress(false));
          dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully Removed!' }));
@@ -61,17 +65,20 @@ export const removeItemFromCart = (productID) => {
       } catch (error) {
          dispatch(uiActions.setCartProgress(false));
 
-         console.log(error.message);
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(error.data.error.message));
       }
    }
-}
+};
 
 // Update cart items
 export const updateCartItems = (productID, quantity) => {
    return async (dispatch) => {
       const handleUpdateCartItems = async () => {
          dispatch(uiActions.setCartProgress(true));
+
          const cart = await commerce.cart.update(productID, quantity);
+
          dispatch(cartActions.addItemsToCart(cart.cart));
          dispatch(uiActions.setCartProgress(false));
          dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully Updated!' }));
@@ -83,17 +90,20 @@ export const updateCartItems = (productID, quantity) => {
       } catch (error) {
          dispatch(uiActions.setCartProgress(false));
 
-         console.log(error.message);
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(error.data.error.message));
       }
    }
-}
+};
 
 // Empty the cart completely
 export const emptyCart = () => {
    return async (dispatch) => {
       const handleEmptyCart = async () => {
          dispatch(uiActions.setCartProgress(true));
+
          const cart = await commerce.cart.empty();
+
          dispatch(cartActions.addItemsToCart(cart.cart));
          dispatch(uiActions.setCartProgress(false));
          dispatch(uiActions.setShowSnackbar({ value: true, text: 'Successfully Emptied!' }));
@@ -105,10 +115,11 @@ export const emptyCart = () => {
       } catch (error) {
          dispatch(uiActions.setCartProgress(false));
 
-         console.log(error.message);
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(error.data.error.message));
       }
    }
-}
+};
 
 // Add orders to firestore
 export const addOrder = (data, userID) => {
@@ -151,7 +162,17 @@ export const addOrder = (data, userID) => {
       try {
          await fetchAddOrder();
       } catch (error) {
-         console.log(error.message)
+         const errorMessage = ErrorMessages.find(item => item.code === error.code);
+
+         let message;
+         if (errorMessage) {
+            message = errorMessage.message;
+         } else {
+            message = error.message;
+         }
+
+         dispatch(uiActions.setErrorModal(true));
+         dispatch(uiActions.setErrorModalText(message));
       }
    }
-}
+};

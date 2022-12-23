@@ -13,7 +13,6 @@ const initialState = {
    checkoutSubdivisionProgress: true,
    checkoutOptionProgress: true,
    incomingOrder: {},
-   orderError: '',
    discountProgress: false
 }
 
@@ -56,9 +55,6 @@ const checkoutSlice = createSlice({
       },
       setIncomingOrder(state, action) {
          state.incomingOrder = action.payload;
-      },
-      setOrderError(state, action) {
-         state.orderError = action.payload;
       },
       setDiscountProgress(state, action) {
          state.discountProgress = action.payload;

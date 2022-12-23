@@ -10,6 +10,8 @@ const ReviewProducts = () => {
    const [feedback, setFeedback] = useState({ type: '', value: false });
    const checkoutToken = useSelector(state => state.checkout.checkoutToken);
    const discountProgress = useSelector(state => state.checkout.discountProgress);
+   const discountError = useSelector(state => state.ui.discountError);
+   const discountErrorText = useSelector(state => state.ui.discountErrorText);
 
    const dispatch = useDispatch();
 
@@ -32,6 +34,10 @@ const ReviewProducts = () => {
       setInputValue('');
    }
 
+   if (!checkoutToken) {
+      return null;
+   }
+
    return (
       <Box
          sx={{
@@ -44,7 +50,8 @@ const ReviewProducts = () => {
                display: 'flex',
                flexDirection: 'column',
                rowGap: '1.5rem',
-               height: '200px',
+               minHeight: '90px',
+               maxHeight: '200px',
                overflowY: 'auto'
             }}
          >
@@ -136,22 +143,25 @@ const ReviewProducts = () => {
                      color: 'text.primary',
                      fontSize: '12px',
                      textTransform: 'uppercase',
-                     marginBottom: '1rem'
+                     marginBottom: '8px'
                   }}
                >
                   Promo Code
                </Typography>
-               <TextField
-                  sx={{ width: '100%' }}
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  id="outlined-basic"
-                  label="Enter Your Code"
-                  variant="outlined"
-                  size='small'
-                  inputProps={{ style: { fontSize: '16px', fontWeight: 500 } }}
-                  InputLabelProps={{ style: { fontSize: '13px', fontWeight: 500 } }}
-               />
+               {
+                  feedback.type !== 'valid' &&
+                  <TextField
+                     sx={{ width: '100%' }}
+                     value={inputValue}
+                     onChange={(e) => setInputValue(e.target.value)}
+                     id="outlined-basic"
+                     label="Enter Your Code"
+                     variant="outlined"
+                     size='small'
+                     inputProps={{ style: { fontSize: '16px', fontWeight: 500 } }}
+                     InputLabelProps={{ style: { fontSize: '13px', fontWeight: 500 } }}
+                  />
+               }
                <Typography
                   sx={{
                      fontSize: '12px',
@@ -164,28 +174,39 @@ const ReviewProducts = () => {
                   }}
                >
                   {
-                     feedback.value && feedback.type === 'empty' ? 'Field can not be empty' :
-                        feedback.value && feedback.type === 'invalid' ? 'Invalid coupon code. Type SHOPCULT' :
-                           feedback.value && feedback.type === 'valid' ? 'Discount successfully applied' :
-                              'Type SHOPCULT to get a discount'
+                     discountError ?
+                        discountErrorText :
+                        (
+                           feedback.value && feedback.type === 'empty' ? 'Field can not be empty' :
+                              feedback.value && feedback.type === 'invalid' ? 'Invalid coupon code. Type SHOPCULT' :
+                                 feedback.value && feedback.type === 'valid' ? 'Discount successfully applied' :
+                                    'Type SHOPCULT to get a discount'
+                        )
                   }
                </Typography>
             </Box>
-            <Button
-               onClick={handleApplyDiscount}
-               variant='outlined'
-               size='medium'
-               sx={{
-                  minHeight: 0,
-                  minWidth: 0,
-                  height: '40px',
-                  textTransform: 'none',
-                  width: '100%',
-                  marginBottom: '5px'
-               }}
-            >
-               {discountProgress ? <ProgressButton loading={discountProgress} /> : 'Apply'}
-            </Button>
+            {
+               feedback.type !== 'valid' &&
+               <Button
+                  onClick={handleApplyDiscount}
+                  variant='outlined'
+                  size='medium'
+                  disableElevation
+                  disabled={discountProgress}
+                  sx={{
+                     minHeight: 0,
+                     minWidth: 0,
+                     height: '40px',
+                     textTransform: 'none',
+                     width: '100%',
+                     marginBottom: '5px'
+                  }}
+               >
+                  {
+                     discountProgress ? <ProgressButton loading={discountProgress} /> : 'Apply'
+                  }
+               </Button>
+            }
          </Box>
          <Divider sx={{ margin: '1.5rem 0' }} />
          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

@@ -22,6 +22,7 @@ import EmptyTemplate from '../UI/EmptyTemplate';
 import productnotfound from '../../assets/productempty.svg';
 import Footer from '../Footer/Footer';
 import { productActions } from '../../store/product-slice';
+import ErrorCard from '../UI/ErrorCard';
 
 const ActionButton = styled(Button)(({ theme }) => ({
    minHeight: 0,
@@ -83,6 +84,8 @@ const ProductDetails = () => {
    const buttonLoading = useSelector(state => state.ui.productDetailsProgress);
    const currentProduct = useSelector(state => state.ui.currentProduct);
    const productURL = useSelector(state => state.products.productURL);
+   const error = useSelector(state => state.ui.productDetailsError);
+   const errorText = useSelector(state => state.ui.productDetailsErrorText);
 
    const dispatch = useDispatch();
 
@@ -105,9 +108,20 @@ const ProductDetails = () => {
       }
    }, [buttonLoading]);
 
+   // Loading progress
    if (progress) {
       return <BodySpinner open={progress} />;
    };
+
+   // Error state
+   if (error) {
+      return (
+         <>
+            <ErrorCard errorText={errorText} />
+            <Footer marginFalse={!product ? false : true} />
+         </>
+      );
+   }
 
    const num = String(Math.floor(product?.price?.raw * 6)).charAt(0);
    const rating = Number(num);

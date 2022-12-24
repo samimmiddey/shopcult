@@ -121,7 +121,7 @@ const StripeForm = ({ backStep, shippingData }) => {
 
    return (
       <>
-         <ReviewProducts />
+         <ReviewProducts loading={loading} />
          <Divider sx={{ margin: '1.5rem 0' }} />
          <form onSubmit={handleSubmit}>
             <PaymentElement />

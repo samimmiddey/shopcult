@@ -283,7 +283,7 @@ const ProductDetails = () => {
                                           }
                                        })}
                                     >
-                                       {Math.floor((Math.random() * 50) + 1) + '%'} off
+                                       {(Math.round(product.price.raw) / 2) + '%'} off
                                     </Typography>
                                     <Typography
                                        variant='h6'

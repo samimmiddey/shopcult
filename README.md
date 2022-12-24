@@ -1,9 +1,22 @@
-Shopcult is a fully fledged modern e-commerce website, built using various modern technologies.
+# **SHOPCULT**
 
-This is a personal project created by me for learning and development purposes. The main movtive behind creating such a big and complex project is to familiarize myself with as much complexities as possible. Because things like authentication, payment gateway etc. are some of the essential parts of any modern website, therefore implementing these features was a major target in this project. Although some of the features are in test mode only, because this is a personal project.
+Shopcult is a fully fledged modern e-commerce website, built using various modern services and technologies such as ReactJS, Redux Toolkit, Material UI, CommerceJS, Firebase, Stripe, SwiperJS etc. It includes some amazing features such as authentication, wishlisting items, filtering items, adding items to cart, placing orders, payment gateway and much more! <a href="https://shopcult.netlify.app" target="_blank">Visit</a>
 
-While creating this project I learned many things such as how to properly structure your project, how to create components with future scope and make them as much flexible as possible for resuability. I learned the best react practices and seperated all of my code properly for easy debugging. For example, instead of creating all the asynchronous tasks (functions) inside components, I used redux thunk for that and it helped me seperate the code in such a manner that would easily help me identify any problem related to those API calls.
+![demo image](./src/assets/demo.png)
 
-The biggest challenge I faced in this project was mainly related to the fact that I wanted to create something that would give users (in this case recruiters) the ultimate user experience. I made sure that whatever feature I implement, it should work flawlessly without any issue. That has always been the major target.
+## **ABOUT**
 
-Technologies Used : ReactJS, React Router, CSS, Material UI, Redux Toolkit, CommerceJS, Firebase Authentication, Firebase Firestore Database, SwiperJS, Stripe, React Hook Form, YUP Schema Builder, Canvas Confetti, Google Maps API etc.
+This is a personal project created for learning and development purposes. The main movtive behind creating such a big and complex project is to familiarize myself with as much complexities as possible. Because things like authentication, payment gateway, state management are some of the essential parts of any modern website, therefore implementing these features was a major target in this project. Although some of the features are in test mode only.
+
+## **TOOLS & TECHNOLOGIES USED**
+- ReactJS
+- React Router
+- Redux Toolkit
+- Material UI
+- Firebase
+- CommerceJS
+- SwiperJS
+- React Hook Form
+- Yup Schema Validation
+- Google Maps
+- Canvas Confetti

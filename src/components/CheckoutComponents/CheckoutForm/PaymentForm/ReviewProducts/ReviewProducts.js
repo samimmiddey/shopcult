@@ -5,7 +5,7 @@ import { useTheme, useMediaQuery } from '@mui/material';
 import { applyDiscount } from '../../../../../store/product-thunks';
 import ProgressButton from '../../../../UI/ProgressButton';
 
-const ReviewProducts = () => {
+const ReviewProducts = ({ loading }) => {
    const [inputValue, setInputValue] = useState('');
    const [feedback, setFeedback] = useState({ type: '', value: false });
    const checkoutToken = useSelector(state => state.checkout.checkoutToken);
@@ -127,88 +127,93 @@ const ReviewProducts = () => {
          </Box>
          <Divider sx={{ margin: '1.5rem 0' }} />
          {/* Coupon Box */}
-         <Box
-            sx={{
-               display: 'flex',
-               flexDirection: 'column',
-               alignItems: 'flex-start',
-               rowGap: '1rem',
-               width: '100%'
-            }}
-         >
-            <Box sx={{ width: '100%' }}>
-               <Typography
+         {
+            !loading &&
+            <>
+               <Box
                   sx={{
-                     fontWeight: 600,
-                     color: 'text.primary',
-                     fontSize: '12px',
-                     textTransform: 'uppercase',
-                     marginBottom: '8px'
+                     display: 'flex',
+                     flexDirection: 'column',
+                     alignItems: 'flex-start',
+                     rowGap: '1rem',
+                     width: '100%'
                   }}
                >
-                  Promo Code
-               </Typography>
-               {
-                  feedback.type !== 'valid' &&
-                  <TextField
-                     sx={{ width: '100%' }}
-                     value={inputValue}
-                     onChange={(e) => setInputValue(e.target.value)}
-                     id="outlined-basic"
-                     label="Enter Your Code"
-                     variant="outlined"
-                     size='small'
-                     inputProps={{ style: { fontSize: '16px', fontWeight: 500 } }}
-                     InputLabelProps={{ style: { fontSize: '13px', fontWeight: 500 } }}
-                  />
-               }
-               <Typography
-                  sx={{
-                     fontSize: '12px',
-                     fontWeight: 600,
-                     marginTop: '5px',
-                     color: (feedback.value && feedback.type === 'empty') ||
-                        (feedback.value && feedback.type === 'invalid') ? 'red' :
-                        feedback.value && feedback.type === 'valid' ? 'green' :
-                           'text.disabled'
-                  }}
-               >
+                  <Box sx={{ width: '100%' }}>
+                     <Typography
+                        sx={{
+                           fontWeight: 600,
+                           color: 'text.primary',
+                           fontSize: '12px',
+                           textTransform: 'uppercase',
+                           marginBottom: '8px'
+                        }}
+                     >
+                        Promo Code
+                     </Typography>
+                     {
+                        feedback.type !== 'valid' &&
+                        <TextField
+                           sx={{ width: '100%' }}
+                           value={inputValue}
+                           onChange={(e) => setInputValue(e.target.value)}
+                           id="outlined-basic"
+                           label="Enter Your Code"
+                           variant="outlined"
+                           size='small'
+                           inputProps={{ style: { fontSize: '16px', fontWeight: 500 } }}
+                           InputLabelProps={{ style: { fontSize: '13px', fontWeight: 500 } }}
+                        />
+                     }
+                     <Typography
+                        sx={{
+                           fontSize: '12px',
+                           fontWeight: 600,
+                           marginTop: '5px',
+                           color: (feedback.value && feedback.type === 'empty') ||
+                              (feedback.value && feedback.type === 'invalid') ? 'red' :
+                              feedback.value && feedback.type === 'valid' ? 'green' :
+                                 'text.disabled'
+                        }}
+                     >
+                        {
+                           discountError ?
+                              discountErrorText :
+                              (
+                                 feedback.value && feedback.type === 'empty' ? 'Field can not be empty' :
+                                    feedback.value && feedback.type === 'invalid' ? 'Invalid coupon code. Type SHOPCULT' :
+                                       feedback.value && feedback.type === 'valid' ? 'Discount successfully applied' :
+                                          'Type SHOPCULT to get a discount'
+                              )
+                        }
+                     </Typography>
+                  </Box>
                   {
-                     discountError ?
-                        discountErrorText :
-                        (
-                           feedback.value && feedback.type === 'empty' ? 'Field can not be empty' :
-                              feedback.value && feedback.type === 'invalid' ? 'Invalid coupon code. Type SHOPCULT' :
-                                 feedback.value && feedback.type === 'valid' ? 'Discount successfully applied' :
-                                    'Type SHOPCULT to get a discount'
-                        )
+                     feedback.type !== 'valid' &&
+                     <Button
+                        onClick={handleApplyDiscount}
+                        variant='outlined'
+                        size='medium'
+                        disableElevation
+                        disabled={discountProgress}
+                        sx={{
+                           minHeight: 0,
+                           minWidth: 0,
+                           height: '40px',
+                           textTransform: 'none',
+                           width: '100%',
+                           marginBottom: '5px'
+                        }}
+                     >
+                        {
+                           discountProgress ? <ProgressButton loading={discountProgress} /> : 'Apply'
+                        }
+                     </Button>
                   }
-               </Typography>
-            </Box>
-            {
-               feedback.type !== 'valid' &&
-               <Button
-                  onClick={handleApplyDiscount}
-                  variant='outlined'
-                  size='medium'
-                  disableElevation
-                  disabled={discountProgress}
-                  sx={{
-                     minHeight: 0,
-                     minWidth: 0,
-                     height: '40px',
-                     textTransform: 'none',
-                     width: '100%',
-                     marginBottom: '5px'
-                  }}
-               >
-                  {
-                     discountProgress ? <ProgressButton loading={discountProgress} /> : 'Apply'
-                  }
-               </Button>
-            }
-         </Box>
-         <Divider sx={{ margin: '1.5rem 0' }} />
+               </Box>
+               <Divider sx={{ margin: '1.5rem 0' }} />
+            </>
+         }
          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Typography
                sx={theme => ({

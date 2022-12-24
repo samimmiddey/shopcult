@@ -16,20 +16,22 @@ const appearance = {
    }
 };
 
+const URL = process.env.REACT_APP_BACKEND_URL;
+
 const PaymentForm = ({ backStep, shippingData }) => {
    const [stripePromise, setStripePromise] = useState(null);
-   const [clientSecret, setClientSecret] = useState("");
+   const [clientSecret, setClientSecret] = useState('');
 
    useEffect(() => {
-      fetch("http://localhost:5000/config").then(async (r) => {
+      fetch(`${URL}/config`).then(async (r) => {
          const { publishableKey } = await r.json();
          setStripePromise(loadStripe(publishableKey));
       });
    }, []);
 
    useEffect(() => {
-      fetch("http://localhost:5000/create-payment-intent", {
-         method: "POST",
+      fetch(`${URL}/create-payment-intent`, {
+         method: 'POST',
          body: JSON.stringify({}),
       }).then(async (result) => {
          var { clientSecret } = await result.json();

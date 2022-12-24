@@ -27,6 +27,9 @@ const HomeCategoryCard = ({ item, path }) => {
    const mdWidth = useMediaQuery(theme.breakpoints.down(900));
    const smWidth = useMediaQuery(theme.breakpoints.down(600));
 
+   const amount = String(Math.round(item?.price?.raw)).slice(0, 2);
+   const discount = Math.round(Number(amount) / 2);
+
    return (
       <Card
          className='home-category-card'
@@ -131,7 +134,7 @@ const HomeCategoryCard = ({ item, path }) => {
                               }
                            })}
                         >
-                           {Math.floor((Math.random() * 50) + 1) + '%'} off
+                           {`${discount}% off`}
                         </Typography>
                      </Box>
                   </Box>

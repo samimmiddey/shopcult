@@ -126,6 +126,9 @@ const ProductDetails = () => {
    const num = String(Math.floor(product?.price?.raw * 6)).charAt(0);
    const rating = Number(num);
 
+   const amount = String(Math.round(product?.price?.raw)).slice(0, 2);
+   const discount = Math.round(Number(amount) / 2);
+
    return (
       <>
          <Box className='small-container' sx={{ marginTop: '30px' }}>
@@ -283,7 +286,7 @@ const ProductDetails = () => {
                                           }
                                        })}
                                     >
-                                       {(Math.round(product.price.raw) / 2) + '%'} off
+                                       {`${discount}% off`}
                                     </Typography>
                                     <Typography
                                        variant='h6'

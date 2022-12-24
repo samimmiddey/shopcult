@@ -26,8 +26,11 @@ const ProductCard = ({ product, path }) => {
    const lgWidth = useMediaQuery(theme.breakpoints.down(1200));
    const smWidth = useMediaQuery(theme.breakpoints.down(600));
 
-   const num = String(Math.floor(product.price.raw * 6)).charAt(0);
+   const num = String(Math.floor(product?.price?.raw * 6)).charAt(0);
    const rating = Number(num);
+
+   const amount = String(Math.round(product?.price?.raw)).slice(0, 2);
+   const discount = Math.round(Number(amount) / 2);
 
    return (
       <Card
@@ -137,7 +140,7 @@ const ProductCard = ({ product, path }) => {
                            }
                         })}
                      >
-                        {(Math.round(product.price.raw) / 2) + '%'} off
+                        {`${discount}% off`}
                      </Typography>
                   </Box>
                </Box>

@@ -3,7 +3,7 @@ import ShopProducts from './ShopProducts/ShopProducts';
 import ShopFilter from './ShopFilter/ShopFilter';
 import { Box, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
-import FilterBottomModal from '../UI/FilterBottomModal';
+import FilterModal from './ShopFilter/FilterModal';
 import { useTheme, useMediaQuery } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import CustomPagination from '../UI/CustomPagination';
@@ -102,7 +102,7 @@ const ShopComponents = () => {
             selectMenu={categoryExists ? true : false}
          />
          {
-            mdWidth && categoryExists && <FilterBottomModal />
+            mdWidth && categoryExists && <FilterModal />
          }
          <Grid spacing={1} container>
             {

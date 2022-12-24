@@ -1,8 +1,9 @@
-import { Typography, Box } from '@mui/material';
 import React from 'react';
+import { Typography, Box } from '@mui/material';
 import img from '../../../assets/abouthero2.jpg';
 import PrimaryButton from '../../UI/PrimaryButton';
 import StylishHeader from '../../UI/StylishHeader';
+import { Link } from 'react-router-dom';
 
 const subtext = <>We Eat, Sleep & Breath<br />eCommerce.</>;
 
@@ -80,7 +81,9 @@ const AboutHero = () => {
                   })}>
                   The Best Shopping Experience<br />is Just One Click Away
                </Typography>
-               <PrimaryButton text='Explore Now' />
+               <Link to='/shop/all'>
+                  <PrimaryButton text='Explore Now' />
+               </Link>
             </Box>
          </Box>
          {/* Third Section */}
@@ -117,7 +120,9 @@ const AboutHero = () => {
                Shopcult is an award-winning online shopping store. We prioritize customer experience and customer satisfaction above everything else. Our team members work 24 hours a day to give you the best shopping experience you can possibly find online. We provide a wide range of authentic products which are 100% refundable. We accept all kind of credit and debit cards, online banking and pay on delivery as well. We provide a seven-day timeline for exchanging or returning a product. Our customer service is available 24/7 so you can contact us at your convenience, should you face any difficulty. Our aim is to provide you the ultimate satisfaction and make your life hassle-free.
             </Typography>
             <Box>
-               <PrimaryButton text='Contact Us' />
+               <Link to='/help'>
+                  <PrimaryButton text='Contact Us' />
+               </Link>
             </Box>
          </Box>
       </Box>

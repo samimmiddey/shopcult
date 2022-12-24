@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { uiActions } from '../../store/ui-slice';
+import { uiActions } from '../../../store/ui-slice';
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 

@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
-import image from '../../../assets/sneaker2.png';
+import image from '../../../assets/sneaker.png';
 import PrimaryButton from '../../UI/PrimaryButton';
 
 const HomeBox = () => {

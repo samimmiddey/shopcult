@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Box } from '@mui/material';
-import img from '../../../assets/abouthero2.jpg';
+import img from '../../../assets/abouthero.jpg';
 import PrimaryButton from '../../UI/PrimaryButton';
 import StylishHeader from '../../UI/StylishHeader';
 import { Link } from 'react-router-dom';

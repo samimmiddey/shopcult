@@ -25,8 +25,13 @@ const ActionButton = styled(Button)(({ theme }) => ({
 
 const fields = [
    {
-      name: 'name',
-      label: 'Name',
+      name: 'firstName',
+      label: 'First Name',
+      type: 'text'
+   },
+   {
+      name: 'lastName',
+      label: 'Last Name',
       type: 'text'
    },
    {
@@ -37,11 +42,6 @@ const fields = [
    {
       name: 'address',
       label: 'Address',
-      type: 'text'
-   },
-   {
-      name: 'landmark',
-      label: 'Landmark',
       type: 'text'
    },
    {
@@ -90,11 +90,16 @@ const AddressForm = ({ next }) => {
    const width = useMediaQuery(theme.breakpoints.down(700));
 
    const validationSchema = Yup.object().shape({
-      name: Yup.string()
-         .required('Name is required')
-         .min(2, 'Name must be at least 2 characters')
-         .max(100, 'Name must not exceed 100 characters')
-         .matches(/^\s*([A-Za-z]{1,}([.,] |[-']| ))+[A-Za-z]+.?\s*$/, 'Please enter a valid full name'),
+      firstName: Yup.string()
+         .required('First name is required')
+         .min(2, 'First name must be at least 2 characters')
+         .max(50, 'First name must not exceed 50 characters')
+         .matches(/^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i, 'Please enter a valid first name'),
+      lastName: Yup.string()
+         .required('Last name is required')
+         .min(2, 'Last name must be at least 2 characters')
+         .max(50, 'Last name must not exceed 50 characters')
+         .matches(/^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i, 'Please enter a valid last name'),
       email: Yup.string()
          .required('Email is required')
          .email('Email is invalid')
@@ -104,11 +109,6 @@ const AddressForm = ({ next }) => {
          .min(2, 'Address must be at least 2 characters')
          .max(500, 'Address must not exceed 500 characters')
          .matches(/^[a-zA-Z0-9\s,.'-]{3,}$/, 'Please enter a valid address'),
-      landmark: Yup.string()
-         .required('Landmark is required')
-         .min(2, 'Landmark must be at least 2 characters')
-         .max(500, 'Landmark must not exceed 500 characters')
-         .matches(/^[a-zA-Z0-9\s,.'-]{3,}$/, 'Please enter a valid landmark'),
       city: Yup.string()
          .required('City is required')
          .min(2, 'City must be at least 2 characters')

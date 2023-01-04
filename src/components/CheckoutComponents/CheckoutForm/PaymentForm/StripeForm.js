@@ -64,7 +64,8 @@ const StripeForm = ({ backStep, shippingData }) => {
             const orderData = {
                line_items: checkoutToken.live.line_items,
                customer: {
-                  name: shippingData.name,
+                  firstname: shippingData.firstName,
+                  lastname: shippingData.lastName,
                   email: shippingData.email
                },
                shipping: {

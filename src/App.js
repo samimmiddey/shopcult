@@ -137,6 +137,7 @@ const App = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
+			<Navbar />
 			<Suspense fallback={<ProgressBar />}>
 				{
 					errorModal &&
@@ -147,7 +148,6 @@ const App = () => {
 				}
 				<SuccessSnackbar />
 				<ScrollToTop />
-				<Navbar />
 				<Switch>
 					<Route path='/' exact>
 						<Home />
